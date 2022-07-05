@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-## 📌  Description
+## 📌  Feature Description
 
 ## 📝  To-do
 - [ ]
