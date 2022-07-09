@@ -60,6 +60,9 @@ web_modules/
 .eslintcache
 .eslintrc.json
 
+# Optional prettier cache
+.prettierrc.json
+
 # Optional stylelint cache
 .stylelintcache
 
