@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04 # 여기서 사용할 가상 환경의 인스턴스 지정하기. 
+    runs-on: ubuntu-18.04 # 여기서 사용할 가상 환경의 인스턴스 지정하기.
 
     strategy:
       matrix:
@@ -47,7 +47,7 @@ jobs:
           yarn
           yarn run build
 
-###################################### 추가된 부분 ######################################
+      ###################################### 추가된 부분 ######################################
 
       - name: zip file
         run: zip -r hous.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
