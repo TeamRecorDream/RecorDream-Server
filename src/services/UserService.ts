@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
+import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import User from "../models/User";
 import userMocking from "../models/UserMocking";
 
-const updateNickname = async (userId: string, userUpdateDto: UserUpdateDto) => {
+const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const updatedNickname = {

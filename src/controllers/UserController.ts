@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
+import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { validationResult } from "express-validator";
 import message from "../modules/reponseMessage";
 import statusCode from "../modules/statusCode";
@@ -13,7 +13,7 @@ import UserService from "../services/UserService";
  */
 const updateNickname = async (req: Request, res: Response): Promise<void> => {
   const err = validationResult(req);
-  const userUpdateDto: UserUpdateDto = req.body;
+  const userUpdateDto: UserNicknameUpdateDto = req.body;
   const userId = req.header("userId");
 
   try {
