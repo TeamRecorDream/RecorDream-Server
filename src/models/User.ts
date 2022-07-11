@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema({
   },
   time: {
     type: Date,
+    default: Date.now,
   },
   fcm_token: {
     type: Array,
