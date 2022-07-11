@@ -19,5 +19,5 @@ export default {
   /**
    * MongoDB URI
    */
-  mongoURI: process.env.MONGODB_URI as string,
+  mongoDB_URI: process.env.MONGODB_URI as string,
 };
