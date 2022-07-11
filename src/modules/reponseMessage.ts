@@ -6,6 +6,8 @@ const message = {
 
   // 유저
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
+  UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
+  READ_USER_SUCCESS: "회원 정보 조회 성공",
 };
 
 export default message;

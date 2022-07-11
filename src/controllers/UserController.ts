@@ -23,7 +23,7 @@ const updateNickname = async (req: Request, res: Response): Promise<void> => {
 
     await UserService.updateNickname(userId as string, userUpdateDto);
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, "닉네임 수정 성공"));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -44,7 +44,7 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
     }
     const data = await UserService.getUser(userId as string);
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, "회원 정보 조회 성공", data));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
