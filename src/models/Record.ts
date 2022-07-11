@@ -7,7 +7,7 @@ const RecordSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
   },
   date: {
-    type: Date,
+    type: String,
     default: dayjs().format("YYYY-MM-DD"),
   },
   voice_id: {

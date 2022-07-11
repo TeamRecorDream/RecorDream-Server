@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export interface RecordInfo {
   user_id: mongoose.Types.ObjectId;
-  date: Date;
+  date: String;
   voice_id: mongoose.Types.ObjectId;
   title: string;
   content: string;
