@@ -27,7 +27,7 @@
 
 ## Branch 전략, Commit Convention
 <details>
-<summary>❗️Git Workflow</summary>
+<summary>❗️ Git Workflow</summary>
 
 ### main → develop → feature/이슈번호-기능, fix/이슈번호-기능, refactor/이슈번호-기능
 
@@ -38,7 +38,7 @@
 </details>  
 
 <details>
-<summary>❗️Commit Convention</summary>
+<summary>❗️ Commit Convention</summary>
 
 |태그 이름|설명|
 |------|---|
@@ -65,9 +65,9 @@
 
 1. 변수나 함수명은 `camelCase`를 사용한다.
 2. 함수의 경우 동사+명사 사용한다.
-- ex) getInformation()
+- ex) getRecords()
 3. flag로 사용 되는 변수는 조동사 + flag 종류로 구성한다.
-- ex) isNum
+- ex) isDeleted
 4. Class /  Interface / Type / Namespace / Enum 명은 `PascalCase`를 사용한다.
 5. 약어는 되도록 사용하지 않는다.
 - 부득이하게 약어가 필요하다고 판단되는 경우 팀원과 상의를 거친다.
@@ -85,20 +85,16 @@
   */
 ```
 
-2. 함수에 대한 주석
+2. 컨트롤러에 대한 주석
 
 ```
-  /*** put /user/nickname
-  * 유저 닉네임 수정하기
+/**
+ * @route POST /record
+ * @desc Create Record
+ * @access Public
+ */
 ```
 
-3. Bracket 사용 시 내부에 주석을 작성한다.
-
-```
-  if (a == 5) {
-    // 주석
-  }
-```
 </details> 
 <details>
 <summary>Bracket</summary>
