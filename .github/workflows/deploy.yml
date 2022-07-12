@@ -7,22 +7,22 @@ on:
   push:
     branches: [develop]
   pull_request:
-    branches: [develop]
+    branches: [develop] # develop 브랜치에 push/pr 했을 때 workflow를 trigger 함.
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-18.04 # 여기서 사용할 가상 환경의 인스턴스 지정하기. 
 
     strategy:
       matrix:
-        node-version: [16.16.0]
+        node-version: [16.13.2] #노드 버전 -> 서경 16.13.2
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Checkout source code.
+      - name: Checkout source code. # 레포의 코드를 CI 서버로 내려받은 후 특정 브랜치고 전환
         uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }} # 노드 설치
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
@@ -30,7 +30,7 @@ jobs:
       - name: Check Npm -v
         run: npm -v
 
-      - name: create env file
+      - name: create env file # 깃헙에 등록한 환경변수들로 .env 생성.
         working-directory: ./
         run: |
           pwd
@@ -41,7 +41,7 @@ jobs:
           echo JWT_ALGO=${{ secrets.JWT_ALGO }} >> .env
           cat .env
 
-      - name: build server files
+      - name: build server files # yarn으로 필요한 디펜던시 설치 후 빌드
         working-directory: ./
         run: |
           yarn
