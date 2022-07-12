@@ -47,11 +47,6 @@ jobs:
 
       #추가
 
-      - name: zip file
-        working-directory: ./
-        run: zip -r recordream dist scripts appspec.yml .env package.json
-				# 명시한 파일, 폴더들을 recordream.zip 파일로 압축
-
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -59,6 +54,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 				# S3에 접근하기 위한 IAM 사용자 키 값을 등록
+
+      - name: zip file
+        working-directory: ./
+        run: zip -r recordream dist scripts appspec.yml .env package.json
+				# 명시한 파일, 폴더들을 recordream.zip 파일로 압축
 
       - name: upload to S3
         run: aws s3 cp --region ap-northeast-2 ./recordream.zip s3://recordream-build/deploy/
