@@ -44,7 +44,30 @@ const getUser = async (userId: string) => {
   }
 };
 
+const changeToggle = async (userId: string, toggle: string) => {
+  try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (user !== null) {
+      // toggle parameter 값이 1이면 푸시알림 설정 O
+      if (toggle == "1") {
+        user.is_notified = true;
+        // toggle parameter 값이 0이면 푸시알림 설정 X
+      } else if (toggle == "0") {
+        user.is_notified = false;
+      }
+
+      await User.findByIdAndUpdate(userObjectId, user).exec();
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   updateNickname,
   getUser,
+  changeToggle,
 };
