@@ -3,15 +3,18 @@ import { RecordInfo } from "../interfaces/record/RecordInfo";
 import dayjs from "dayjs";
 
 const RecordSchema = new mongoose.Schema({
-  user_id: {
+  writer: {
     type: mongoose.Types.ObjectId,
+    required: true,
+    ref: "User"
   },
   date: {
     type: String,
     default: dayjs().format("YYYY-MM-DD"),
   },
-  voice_id: {
+  voice: {
     type: mongoose.Types.ObjectId,
+    ref: "Voice"
   },
   title: {
     type: String,
@@ -36,6 +39,7 @@ const RecordSchema = new mongoose.Schema({
   },
   is_deleted: {
     type: Boolean,
+    default: false,
   },
 });
 
