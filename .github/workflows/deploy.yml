@@ -45,8 +45,11 @@ jobs:
           yarn
           yarn run build
 
+      #추가
+
       - name: zip file
-        run: zip -r recordream.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+        run: |
+          zip -r recordream.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
 				# 명시한 파일, 폴더들을 recordream.zip 파일로 압축
 
       - name: AWS configure credentials
