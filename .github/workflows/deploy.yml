@@ -37,8 +37,6 @@ jobs:
           touch .env
           echo PORT=${{ secrets.PORT }} >> .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-          echo JWT_ALGO=${{ secrets.JWT_ALGO }} >> .env
           cat .env
 
       - name: build server files # yarn으로 필요한 디펜던시 설치 후 빌드
