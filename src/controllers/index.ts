@@ -1,4 +1,6 @@
-// controller index file
+import UserController from "./UserController";
+import RecordController from "./RecordController";
 import VoiceController from './VoiceController';
 
-export { VoiceController };
+// controller index file
+export { UserController, RecordController, VoiceController };
