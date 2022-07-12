@@ -19,6 +19,24 @@ const createVoice = async (link: string, fileName: string): Promise<VoiceRespons
   }
 };
 
+const getVoice = async (voiceId: string): Promise<VoiceResponseDto | null> => {
+  try {
+    const voice = await Voice.findById(voiceId); //레퍼라
+    if (!voice) return null;
+
+    const data = {
+      _id: voice._id,
+      link: voice.link,
+    };
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export default {
   createVoice,
+  getVoice,
 };

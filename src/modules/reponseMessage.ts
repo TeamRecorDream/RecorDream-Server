@@ -7,6 +7,7 @@ const message = {
   //voice
   VOICE_UPLOAD_SUCCESS: '음성 녹음 업로드 성공',
   WRONG_VOICE_FORM: '음성 녹음 실패 (잘못된 폼 데이터입니다.)',
+  VOICE_PLAY_SUCCESS: '음성 녹음 재생 성공',
 };
 
 export default message;
