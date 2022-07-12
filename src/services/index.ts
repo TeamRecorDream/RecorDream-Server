@@ -1,5 +1,5 @@
 import UserService from "./UserService";
 import RecordService from "./RecordService";
+import VoiceService from './VoiceService';
 
-//service index file
-export { UserService, RecordService };
+export { UserService, RecordService, VoiceService };
