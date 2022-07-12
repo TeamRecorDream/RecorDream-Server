@@ -3,7 +3,7 @@ import config from "../config";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(config.mongo_URI);
+    await mongoose.connect(config.mongoURI);
 
     mongoose.set("autoCreate", true);
 
