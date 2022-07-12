@@ -55,7 +55,8 @@
 |[Rename]|파일 이름 변경 시 사용|
 |[Move]|프로젝트 내 파일이나 코드의 이동|
  
-</details> 
+</details> <br>
+<br />
 
 
 ## Coding Convention
@@ -104,7 +105,8 @@
 
 - [Prettier](https://prettier.io/)
 - [Eslint](https://eslint.org/)
-</details> 
+</details> <br>
+<br />
 
 
 
@@ -157,7 +159,9 @@
 ---------📄RecordService.ts
 ---------📄UserService.ts
 ---------📄VoiceService.ts
-```
+``` 
+<br>
+<br />
 
 ## 전체 API 로직 구현 진척도
 - [ ] GET baseurl 
