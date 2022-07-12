@@ -6,6 +6,10 @@ const message = {
 
   // 유저
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
+
+  // 레코드
+  CREATE_RECORD_SUCCESS: "꿈 기록 작성 성공",
+  CREATE_RECORD_FAIL: "제목이 필요합니다.",
 };
 
 export default message;

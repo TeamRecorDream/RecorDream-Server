@@ -1,4 +1,3 @@
-
 # Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,visualstudiocode
 
@@ -148,7 +147,6 @@ dist
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
