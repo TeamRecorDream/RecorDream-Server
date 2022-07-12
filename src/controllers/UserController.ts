@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { validationResult } from "express-validator";
-import message from "../modules/reponseMessage";
+import message from "../modules/responseMessage";
 import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import UserService from "../services/UserService";
