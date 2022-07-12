@@ -45,11 +45,9 @@ jobs:
           yarn
           yarn run build
 
-###################################### 추가된 부분 ######################################
-
       - name: zip file
         run: zip -r recordream.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
-				#명시한 파일, 폴더들을 recordream.zip 파일로 압축
+				# 명시한 파일, 폴더들을 recordream.zip 파일로 압축
 
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -57,11 +55,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
-				#S3에 접근하기 위한 IAM 사용자 키 값을 등록
+				# S3에 접근하기 위한 IAM 사용자 키 값을 등록
 
       - name: upload to S3
         run: aws s3 cp --region ap-northeast-2 ./recordream.zip s3://recordream-build/deploy/
-				#실제로 S3에 recordream.zip 압축파일을 옮기기
+				# 실제로 S3에 recordream.zip 압축파일을 옮기기
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
@@ -69,4 +67,4 @@ jobs:
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name GROUP
           --s3-location bucket=recordream-build,bundleType=zip,key=deploy/recordream.zip
-				#AWS CodeDeploy가 실행되고 가장 아랫줄에 지정한 곳에서 압축 파일을 풀어서 CodeDeploy와 연결된 EC2 인스턴스에 배포
+				# AWS CodeDeploy가 실행되고 가장 아랫줄에 지정한 곳에서 압축 파일을 풀어서 CodeDeploy와 연결된 EC2 인스턴스에 배포
