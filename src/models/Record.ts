@@ -12,8 +12,8 @@ const RecordSchema = new mongoose.Schema({
     default: userMocking
   },
   date: {
-    type: String,
-    default: dayjs().format("YYYY-MM-DD"),
+    type: Date,
+    default: Date.now,
   },
   voice: {
     type: mongoose.Types.ObjectId,

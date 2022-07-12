@@ -1,5 +1,5 @@
 export interface RecordCreateDto {
-  date?: string;
+  date?: Date;
   title: string;
   content?: string;
   emotion?: number;

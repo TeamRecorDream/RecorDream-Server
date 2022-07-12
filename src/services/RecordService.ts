@@ -3,6 +3,9 @@ import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import Record from "../models/Record";
 import Voice from "../models/Voice";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
+import dayjs from "dayjs";
+import 'dayjs/locale/ko'
+dayjs.locale('ko')
 
 
 const createRecord = async (
@@ -32,7 +35,7 @@ const getRecord = async(recordId:string): Promise<RecordResponseDto | null> => {
       const data = {
         _id: record._id,
         writer: record.writer.nickname,
-        date: record.date,
+        date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
         title: record.title,
         voice: {
           "_id":record.voice._id, 
