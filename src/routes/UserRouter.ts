@@ -6,5 +6,6 @@ const router: Router = Router();
 
 router.get("/", UserController.getUser);
 router.put("/nickname", [body("nickname").notEmpty().trim()], UserController.updateNickname);
+router.put("/:toggle", UserController.changeToggle);
 
 export default router;

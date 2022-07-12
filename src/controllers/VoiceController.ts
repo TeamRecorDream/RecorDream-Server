@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
-import statusCode from '../modules/statusCode';
-import message from '../modules/reponseMessage';
-import util from '../modules/util';
-import { VoiceService } from '../services';
+import express, { Request, Response } from "express";
+import statusCode from "../modules/statusCode";
+import message from "../modules/responseMessage";
+import util from "../modules/util";
+import { VoiceService } from "../services";
 
 /**
  *  @route POST /voice
