@@ -102,8 +102,8 @@
 <details>
 <summary>Bracket</summary>
 
-prettier
-eslint
+- [Prettier](https://prettier.io/)
+- [Eslint](https://eslint.org/)
 </details> 
 
 
