@@ -1,2 +1,3 @@
-//service index file
-export {};
+import VoiceService from './VoiceService';
+
+export { VoiceService };

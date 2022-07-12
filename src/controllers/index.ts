@@ -1,2 +1,4 @@
 // controller index file
-export {};
+import VoiceController from './VoiceController';
+
+export { VoiceController };

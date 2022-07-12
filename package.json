@@ -12,6 +12,8 @@
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^2.7.12",
     "@types/node": "^17.0.25",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
@@ -24,9 +26,12 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "aws-sdk": "^2.1171.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validator": "^6.14.0",
-    "mongoose": "^6.4.3"
+    "mongoose": "^6.4.3",
+    "multer": "^1.4.5-lts.1",
+    "multer-s3": "^2.10.0"
   }
 }
