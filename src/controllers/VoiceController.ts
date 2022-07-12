@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import statusCode from '../modules/statusCode';
 import message from '../modules/reponseMessage';
 import util from '../modules/util';
-import e from 'express';
 import { VoiceService } from '../services';
 
 /**

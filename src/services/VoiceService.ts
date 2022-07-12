@@ -1,16 +1,16 @@
 import Voice from '../models/Voice';
 import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
 
-const createVoice = async (link: string, fileName: string): Promise<VoiceResponseDto> => {
+const createVoice = async (url: string, fileName: string): Promise<VoiceResponseDto> => {
   try {
     const voice = new Voice({
-      link,
+      url,
       fileName,
     });
     await voice.save();
     const data = {
       _id: voice._id,
-      link,
+      url,
     };
     return data;
   } catch (error) {
@@ -26,7 +26,7 @@ const getVoice = async (voiceId: string): Promise<VoiceResponseDto | null> => {
 
     const data = {
       _id: voice._id,
-      link: voice.link,
+      url: voice.url,
     };
 
     return data;

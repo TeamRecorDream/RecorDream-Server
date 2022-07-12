@@ -3,7 +3,7 @@ import { VoiceInfo } from '../interfaces/voice/VoiceInfo';
 
 const VoiceSchema = new mongoose.Schema(
   {
-    link: {
+    url: {
       type: String,
       required: true,
     },

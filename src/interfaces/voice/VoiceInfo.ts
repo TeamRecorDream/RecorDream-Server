@@ -1,4 +1,4 @@
 export interface VoiceInfo {
-  link: string;
+  url: string;
   fileName: string;
 }
