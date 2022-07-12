@@ -1,6 +1,7 @@
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import Record from "../models/Record";
+import Voice from "../models/Voice";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";

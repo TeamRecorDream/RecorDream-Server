@@ -10,6 +10,9 @@ const message = {
   // 레코드
   CREATE_RECORD_SUCCESS: "꿈 기록 작성 성공",
   CREATE_RECORD_FAIL: "제목이 필요합니다.",
+  READ_RECORD_SUCCESS: "꿈 기록 조회 성공",
+  UPDATE_RECORD_SUCCESS: "꿈 기록 수정 성공",
+  DELETE_RECORD_SUCCESS: "꿈 기록 삭제 성공",
 };
 
 export default message;
