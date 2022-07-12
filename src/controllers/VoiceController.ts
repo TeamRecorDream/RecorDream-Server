@@ -43,6 +43,7 @@ const getVoice = async (req: Request, res: Response) => {
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
+
 export default {
   uploadVoiceFileToS3,
   getVoice,
