@@ -11,7 +11,7 @@
 
 
 ## Collection 설계
-> <img src="https://user-images.githubusercontent.com/76062959/178497382-47953217-a928-4673-9ed2-f9511a2775d4.png" width = "60%">  <br>
+> ![10](https://user-images.githubusercontent.com/64405757/178687084-c2b0c3a8-6692-49b8-b4dd-79009b597136.PNG)<br>
 <br />
 
 
@@ -21,7 +21,9 @@
 |:--:|:--:|:--:|
 |**서경**|**서연**|**시연**|
 |[@Seokyeong237](https://github.com/Seokyeong237)|[@ChooSeoyeon](https://github.com/ChooSeoyeon)|[@ksiyeon27](https://github.com/ksiyeon27)|
-|서경 역할|서연 역할|시연 역할|
+|프로젝트 세팅||리드미 작성|
+|DB 설계|DB 설계|DB 설계|
+|API 명세서 작성 및 구현|API 명세서 작성 및 구현|API 명세서 작성 및 구현|
 <br>
 <br />
 
@@ -161,23 +163,22 @@
 <br />
 
 ## 전체 API 로직 구현 진척도
-- [ ] GET baseurl 
-- [X] PUT baseurl/user/nickname
-- [ ] PUT baseurl/user/toggle
-- [X] GET baseurl/user
-- [ ] PUT baseurl/user/fcm-token
-- [X] POST baseurl/voice
-- [X] GET baseurl/voice/:voiceId
-- [X] POST baseurl/record
-- [ ] PATCH baseurl/record/:recordId
-- [ ] PUT baseurl/record/:recordId
-- [ ] GET baseurl/record/:recordId
-- [ ] DELETE baseurl/record/:recordId
-- [ ] GET baseurl/record/storage?filter=
-- [ ] GET baseurl/record/search?keyword=
-- [ ] POST baseurl/notice
-- [ ] PUT baseurl/notice/:noticeId
-
+- [X] 유저 닉네임 수정
+- [X] 회원정보 조회
+- [X] 푸시알림 여부(토글) 변경
+- [X] 음성녹음 업로드
+- [X] 음성녹음 재생
+- [X] 꿈 기록 작성
+- [ ] 꿈 기록 리스트 조회 (홈 뷰)
+- [ ] 꿈 기록 리스트 조회 (보관함 뷰)
+- [ ] 꿈 기록 조회 (상세보기 뷰)
+- [ ] 꿈 기록 일부 수정
+- [ ] 꿈 기록 전체 수정
+- [ ] 꿈 기록 삭제
+- [ ] 꿈 검색
+- [ ] 푸시알림 시간 설정
+- [ ] 푸시알림 시간 수정
+- [ ] 푸시알림 토큰 refresh
 
  
 <br>
