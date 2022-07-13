@@ -17,7 +17,7 @@
 
 ## 팀원 소개 및 역할 분담
 
-|<img src="https://user-images.githubusercontent.com/76062959/178496227-8a0d25cd-73c9-420e-b042-5733c1455f59.png" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178496227-8a0d25cd-73c9-420e-b042-5733c1455f59.png" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178496227-8a0d25cd-73c9-420e-b042-5733c1455f59.png" width=200>|
+|<img src="https://user-images.githubusercontent.com/76062959/178627113-b5a98f49-83aa-4d0e-8820-87ab895e185b.jpeg" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178627128-8b837ecd-5950-457d-bfcc-384af327a362.jpeg" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178627131-b2dcccb5-6456-4b5e-88a1-2bd034b64563.jpeg" width=200>|
 |:--:|:--:|:--:|
 |**서경**|**서연**|**시연**|
 |[@Seokyeong237](https://github.com/Seokyeong237)|[@ChooSeoyeon](https://github.com/ChooSeoyeon)|[@ksiyeon27](https://github.com/ksiyeon27)|
