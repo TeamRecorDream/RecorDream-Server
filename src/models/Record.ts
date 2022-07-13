@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import dayjs from "dayjs";
+import User from "./User";
+import Voice from "./Voice";
+import userMocking from "./UserMocking";
 
 const RecordSchema = new mongoose.Schema({
-  user: {
+  writer: {
     type: mongoose.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+    default: userMocking
   },
   date: {
-    type: String,
-    default: dayjs().format("YYYY-MM-DD"),
+    type: Date,
+    default: Date.now,
   },
   voice: {
     type: mongoose.Types.ObjectId,
