@@ -46,16 +46,8 @@ const getUser = async (userId: string) => {
   }
 };
 
-const changeToggle = async (userId: string, toggle: string) => {
+const changeToggle = async (userId: mongoose.Types.ObjectId, toggle: string, user: UserResponseDto) => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    // 우린 앱잼단에서 임의의 유저를 사용하기 때문에 여기서 null이 될 수 없음
-    const user: UserResponseDto | null = await User.findById(userObjectId);
-
-    if (!user) {
-      return null;
-    }
-
     // toggle parameter 값이 1이면 푸시알림 설정 O
     if (toggle == "1") {
       user.is_notified = true;
@@ -64,7 +56,7 @@ const changeToggle = async (userId: string, toggle: string) => {
       user.is_notified = false;
     }
 
-    await User.findByIdAndUpdate(userObjectId, user).exec();
+    await User.findByIdAndUpdate(userId, user).exec();
   } catch (err) {
     console.log(err);
     throw err;

@@ -5,6 +5,10 @@ import message from "../modules/responseMessage";
 import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import UserService from "../services/UserService";
+import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import mongoose from "mongoose";
+import userMocking from "../models/UserMocking";
+import User from "../models/User";
 
 /**
  * @route PUT /user/nickname
@@ -58,9 +62,12 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
  */
 const changeToggle = async (req: Request, res: Response): Promise<void> => {
   const userId = req.header("userId");
+  const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId as string) - 1];
   const toggle: string = req.params.toggle;
 
   try {
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
     if (!userId) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
@@ -68,7 +75,12 @@ const changeToggle = async (req: Request, res: Response): Promise<void> => {
       // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    await UserService.changeToggle(userId as string, toggle);
+    if (user === null) {
+      // request-header userId에 1이 아닌 다른 값을 넣었을 경우
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.USER_NOT_FOUND));
+    } else {
+      await UserService.changeToggle(userObjectId, toggle, user); // else 지양하려 했지만...
+    }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {
