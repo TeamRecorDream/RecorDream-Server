@@ -21,7 +21,8 @@
 |:--:|:--:|:--:|
 |**서경**|**서연**|**시연**|
 |[@Seokyeong237](https://github.com/Seokyeong237)|[@ChooSeoyeon](https://github.com/ChooSeoyeon)|[@ksiyeon27](https://github.com/ksiyeon27)|
-> [API 역할 분담](https://www.notion.so/API-d2c07056e6e048c082b0c3639b34f49d) <br>
+|서경 역할|서연 역할|시연 역할|
+<br>
 <br />
 
 
