@@ -1,7 +1,9 @@
 
 
 # 💜RecorDream-Server
-> <img src="https://user-images.githubusercontent.com/76062959/178496227-8a0d25cd-73c9-420e-b042-5733c1455f59.png" width = "5%"> 머라고요? 꿈 꿨는데 기억이 안난다고여? 지금 바로!! 💤레코드림💤 하세요!!!!!!  <br>
+> ### 머라고요? 꿈 꿨는데 기억이 안난다고여? 지금 바로!! 💤레코드림💤 하세요!!!!!!  <br>
+
+![178281860-743ffefc-f92d-4b20-84ee-58904794afce](https://user-images.githubusercontent.com/64405757/178695039-2c1f3ccf-8a8e-4b1e-a9f4-00be52287367.png)
 
 <br />
 
@@ -20,7 +22,6 @@
 |<img src="https://user-images.githubusercontent.com/76062959/178627113-b5a98f49-83aa-4d0e-8820-87ab895e185b.jpeg" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178627128-8b837ecd-5950-457d-bfcc-384af327a362.jpeg" width=200>|<img src="https://user-images.githubusercontent.com/76062959/178627131-b2dcccb5-6456-4b5e-88a1-2bd034b64563.jpeg" width=200>|
 |:--:|:--:|:--:|
 |**서경**|**서연**|**시연**|
-| ------------ | ------------- | ------------- |
 | [@Seokyeong237](https://github.com/Seokyeong237) | [@ChooSeoyeon](https://github.com/ChooSeoyeon) | [@ksiyeon27](https://github.com/ksiyeon27) |
 | DB 설계 | DB 설계 | DB 설계 |
 | API 명세서 작성 및 구현 | API 명세서 작성 및 구현 | API 명세서 작성 및 구현 |
