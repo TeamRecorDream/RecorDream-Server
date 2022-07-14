@@ -35,9 +35,8 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
         _id: record.voice._id,
         url: record.voice.url,
       };
-    } else {
-      voiceResponse = null;
     }
+    voiceResponse = null;
 
     const data = {
       _id: record._id,
