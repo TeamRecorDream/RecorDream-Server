@@ -30,13 +30,13 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
     if (!record) return null;
 
     let voiceResponse: VoiceResponseDto | null;
+    voiceResponse = null;
     if (record.voice) {
       voiceResponse = {
         _id: record.voice._id,
         url: record.voice.url,
       };
     }
-    voiceResponse = null;
 
     const data = {
       _id: record._id,
