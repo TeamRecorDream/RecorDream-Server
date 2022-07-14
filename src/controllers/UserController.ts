@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { validationResult } from "express-validator";
-import message from "../modules/reponseMessage";
+import message from "../modules/responseMessage";
 import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import UserService from "../services/UserService";
@@ -23,7 +23,7 @@ const updateNickname = async (req: Request, res: Response): Promise<void> => {
 
     await UserService.updateNickname(userId as string, userUpdateDto);
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, "닉네임 수정 성공"));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -31,7 +31,7 @@ const updateNickname = async (req: Request, res: Response): Promise<void> => {
 };
 
 /**
- * @route GET /user
+ * @route GET /user/toggle
  * @desc Get User
  * @access Public
  */
@@ -44,7 +44,33 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
     }
     const data = await UserService.getUser(userId as string);
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, "회원 정보 조회 성공", data));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
+/**
+ * @route PUT /user/:toggle
+ * @desc Push Alarm Toggle Change
+ * @access Public
+ */
+const changeToggle = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.header("userId");
+  const toggle: string = req.params.toggle;
+
+  try {
+    if (!userId) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+    if (toggle !== "1" && toggle !== "0") {
+      // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    await UserService.changeToggle(userId as string, toggle);
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -54,4 +80,5 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
 export default {
   updateNickname,
   getUser,
+  changeToggle,
 };

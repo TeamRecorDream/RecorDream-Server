@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
-import message from '../modules/reponseMessage';
+import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import RecordService from '../services/RecordService';
