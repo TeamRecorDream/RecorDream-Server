@@ -29,7 +29,7 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
     const record = await Record.findById(recordId).populate('writer', 'nickname').populate('voice', 'url');
     if (!record) return null;
 
-    var voiceResponse: VoiceResponseDto | null;
+    let voiceResponse: VoiceResponseDto | null;
     if (record.voice) {
       voiceResponse = {
         _id: record.voice._id,
