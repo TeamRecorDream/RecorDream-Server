@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
-import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
-import { UserResponseDto } from "../interfaces/user/UserResponseDto";
-import User from "../models/User";
-import userMocking from "../models/UserMocking";
+import mongoose from 'mongoose';
+import { UserNicknameUpdateDto } from '../interfaces/user/UserNicknameUpdateDto';
+import { UserResponseDto } from '../interfaces/user/UserResponseDto';
+import User from '../models/User';
+import userMocking from '../models/UserMocking';
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -57,10 +57,10 @@ const changeToggle = async (userId: string, toggle: string) => {
     }
 
     // toggle parameter 값이 1이면 푸시알림 설정 O
-    if (toggle == "1") {
+    if (toggle == '1') {
       user.is_notified = true;
       // toggle parameter 값이 0이면 푸시알림 설정 X
-    } else if (toggle == "0") {
+    } else if (toggle == '0') {
       user.is_notified = false;
     }
 

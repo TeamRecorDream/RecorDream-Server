@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
+import { UserInfo } from '../user/UserInfo';
+import { VoiceInfo } from '../voice/VoiceInfo';
 
 export interface RecordInfo {
-  user_id: mongoose.Types.ObjectId;
-  date: String;
-  voice_id: mongoose.Types.ObjectId;
+  writer: UserInfo;
+  date: Date;
+  voice: VoiceInfo;
   title: string;
   content: string;
   emotion: number;
