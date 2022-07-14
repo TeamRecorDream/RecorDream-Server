@@ -13,9 +13,9 @@ const createVoice = async (url: string, fileName: string): Promise<VoiceResponse
       url,
     };
     return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
 
@@ -30,9 +30,9 @@ const getVoice = async (voiceId: string): Promise<VoiceResponseDto | null> => {
     };
 
     return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
 
