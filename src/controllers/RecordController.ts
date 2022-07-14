@@ -51,7 +51,24 @@ const getRecord = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @route DELETE /record/:recordId
+ *  @desc DELETE Record
+ *  @access Public
+ */
+const deleteRecord = async (req: Request, res: Response) => {
+  const { recordId } = req.params;
+  try {
+    await RecordService.deleteRecord(recordId);
+    res.status(statusCode.NO_CONTENT).send(util.success(statusCode.NO_CONTENT, message.DELETE_RECORD_SUCCESS));
+  } catch (err) {
+    console.log(err); //서버 내부에서 오류 발생.
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   createRecord,
   getRecord,
+  deleteRecord,
 };

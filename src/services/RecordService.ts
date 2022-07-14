@@ -58,7 +58,17 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
   }
 };
 
+const deleteRecord = async (recordId: string): Promise<void> => {
+  try {
+    await Record.findByIdAndDelete(recordId);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   createRecord,
   getRecord,
+  deleteRecord,
 };
