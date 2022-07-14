@@ -1,5 +1,5 @@
-import { UserInfo } from "../user/UserInfo";
-import { VoiceInfo } from "../voice/VoiceInfo";
+import { UserInfo } from '../user/UserInfo';
+import { VoiceInfo } from '../voice/VoiceInfo';
 
 export interface RecordInfo {
   writer: UserInfo;

@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -26,6 +26,5 @@ export default {
    */
   s3AccessKey: process.env.S3_ACCESS_KEY as string,
   s3SecretKey: process.env.S3_SECRET_KEY as string,
-  bucketName: process.env.BUCKET_NAME as string
-  
+  bucketName: process.env.BUCKET_NAME as string,
 };

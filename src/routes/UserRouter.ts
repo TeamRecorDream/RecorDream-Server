@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { body } from "express-validator";
-import { UserController } from "../controllers";
+import { Router } from 'express';
+import { body } from 'express-validator';
+import { UserController } from '../controllers';
 
 const router: Router = Router();
 
-router.get("/", UserController.getUser);
-router.put("/nickname", [body("nickname").notEmpty().trim()], UserController.updateNickname);
-router.put("/:toggle", UserController.changeToggle);
+router.get('/', UserController.getUser);
+router.put('/nickname', [body('nickname').notEmpty().trim()], UserController.updateNickname);
+router.put('/:toggle', UserController.changeToggle);
 
 export default router;

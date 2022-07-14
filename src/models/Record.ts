@@ -1,23 +1,20 @@
-import mongoose from "mongoose";
-import { RecordInfo } from "../interfaces/record/RecordInfo";
-import dayjs from "dayjs";
-import User from "./User";
-import Voice from "./Voice";
-import userMocking from "./UserMocking";
+import mongoose from 'mongoose';
+import { RecordInfo } from '../interfaces/record/RecordInfo';
+import userMocking from './UserMocking';
 
 const RecordSchema = new mongoose.Schema({
   writer: {
     type: mongoose.Types.ObjectId,
-    ref: "User",
-    default: userMocking
+    ref: 'User',
+    default: userMocking,
   },
   date: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
   voice: {
     type: mongoose.Types.ObjectId,
-    ref: "Voice"
+    ref: 'Voice',
   },
   title: {
     type: String,
@@ -45,4 +42,4 @@ const RecordSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model<RecordInfo & mongoose.Document>("Record", RecordSchema);
+export default mongoose.model<RecordInfo & mongoose.Document>('Record', RecordSchema);
