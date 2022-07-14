@@ -37,9 +37,6 @@ const RecordSchema = new mongoose.Schema({
   note: {
     type: String,
   },
-  is_deleted: {
-    type: Boolean,
-  },
 });
 
 export default mongoose.model<RecordInfo & mongoose.Document>('Record', RecordSchema);
