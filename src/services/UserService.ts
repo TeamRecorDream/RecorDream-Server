@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import { UserNicknameUpdateDto } from '../interfaces/user/UserNicknameUpdateDto';
-import { UserResponseDto } from '../interfaces/user/UserResponseDto';
-import User from '../models/User';
-import userMocking from '../models/UserMocking';
+import mongoose from "mongoose";
+import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
+import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import User from "../models/User";
+import userMocking from "../models/UserMocking";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -49,7 +49,6 @@ const getUser = async (userId: string) => {
 const changeToggle = async (userId: string, toggle: string) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    // 우린 앱잼단에서 임의의 유저를 사용하기 때문에 여기서 null이 될 수 없음
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
     if (!user) {
@@ -57,10 +56,10 @@ const changeToggle = async (userId: string, toggle: string) => {
     }
 
     // toggle parameter 값이 1이면 푸시알림 설정 O
-    if (toggle == '1') {
+    if (toggle == "1") {
       user.is_notified = true;
       // toggle parameter 값이 0이면 푸시알림 설정 X
-    } else if (toggle == '0') {
+    } else if (toggle == "0") {
       user.is_notified = false;
     }
 
