@@ -3,8 +3,11 @@ import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
 import Record from '../models/Record';
 import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
 import { RecordResponseDto } from '../interfaces/record/RecordResponseDto';
+import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { RecordInfo } from '../interfaces/record/RecordInfo';
+
 dayjs.locale('ko');
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto> => {
@@ -48,7 +51,6 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
       dream_color: record.dream_color,
       genre: record.genre,
       note: record.note,
-      is_deleted: record.is_deleted,
     };
 
     return data;
@@ -58,7 +60,28 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
   }
 };
 
-const deleteRecord = async (recordId: string): Promise<Boolean> => {
+const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null> => {
+  try {
+    const record = await Record.findById(recordId);
+    if (!record) return null;
+    const update = recordUpdateDto;
+
+    const data = await Record.findOneAndUpdate(
+      { _id: recordId }, //filter
+      {
+        $set: update, //수정 사항
+      },
+      { new: true } //업데이트 후 도큐먼트 반환
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const deleteRecord = async (recordId: string): Promise<boolean> => {
   try {
     const record = await Record.findByIdAndDelete(recordId);
 
@@ -73,5 +96,6 @@ const deleteRecord = async (recordId: string): Promise<Boolean> => {
 export default {
   createRecord,
   getRecord,
+  updateRecord,
   deleteRecord,
 };
