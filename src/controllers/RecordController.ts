@@ -6,6 +6,7 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import RecordService from '../services/RecordService';
 import dayjs from 'dayjs';
+import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
 
 /**
  * @route POST /record
@@ -15,7 +16,7 @@ import dayjs from 'dayjs';
 const createRecord = async (req: Request, res: Response) => {
   const err = validationResult(req);
   if (!err.isEmpty()) {
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_FAIL));
+    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
   }
 
   req.body.date = dayjs(req.body.date).format('YYYY-MM-DD');
@@ -72,11 +73,35 @@ const getRecordList = async(req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
   } catch (err) {
     console.log(err);
-    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
 
 /** 
+ *  @route PATCH /record/:recordId
+ *  @desc update Record
+ *  @access Public
+ */
+const updateRecord = async (req: Request, res: Response) => {
+  const error = validationResult(req); //title empty 확인?
+  if (!error.isEmpty()) {
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FAIL));
+  }
+
+  const recordUpdateDto: RecordUpdateDto = req.body;
+  const { recordId } = req.params;
+  try {
+    const data = await RecordService.updateRecord(recordId, recordUpdateDto);
+    if (!data) {
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
+  } catch (error) {
+    console.log(error);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
+/**
  *  @route DELETE /record/:recordId
  *  @desc DELETE Record
  *  @access Public
@@ -125,6 +150,7 @@ export default {
   createRecord,
   getRecord,
   getRecordList,
+  updateRecord,
   deleteRecord,
   getRecordStorage,
 };
