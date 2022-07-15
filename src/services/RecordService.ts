@@ -73,7 +73,7 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
       return null;
     }
 
-    const recordList = await Record.find( { writer: userObjectId } ).sort( { "_id": -1 } ).limit(10);
+    const recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } ).limit(10);
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map(( record: any ) => {
