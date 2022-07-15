@@ -15,11 +15,8 @@ const message = {
   RECORD_CREATE_TITLE_FAIL: '제목이 없거나 길이를 초과하였습니다',
   RECORD_UPDATE_FAIL: '제목 오류 또는 음성/작성자 수정 시도',
   READ_RECORD_SUCCESS: '꿈 기록 조회 성공',
-<<<<<<< HEAD
   UPDATE_RECORD_SUCCESS: '꿈 기록 수정 성공',
-=======
   DELETE_RECORD_SUCCESS: '꿈 기록 삭제 성공',
->>>>>>> develop
 
   //voice
   VOICE_UPLOAD_SUCCESS: '음성 녹음 업로드 성공',
