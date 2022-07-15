@@ -36,7 +36,7 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
 
 const getRecord = async (recordId: string): Promise<RecordResponseDto | null> => {
   try {
-    const record = await Record.findById(recordId).populate('writer', 'nickname').populate('voice', 'url');
+    const record = await Record.findById(recordId).populate("writer", "nickname").populate("voice", "url");
     if (!record) return null;
 
     let voiceResponse: VoiceResponseDto | null = null;
@@ -50,7 +50,7 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
     const data = {
       _id: record._id,
       writer: record.writer.nickname,
-      date: dayjs(record.date).format('YYYY/MM/DD (ddd)'),
+      date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
       title: record.title,
       voice: voiceResponse,
       content: record.content,
@@ -76,15 +76,15 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
       return null;
     }
 
-    const recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } ).limit(10);
+    const recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 }).limit(10);
 
     const records: RecordListInfo[] = await Promise.all(
-      recordList.map(( record: any ) => {
+      recordList.map((record: any) => {
         const result = {
           _id: record._id,
           dream_color: record.dream_color,
           emotion: record.emotion,
-          date: dayjs(record.date).format('YYYY/MM/DD (ddd)'),
+          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
           title: record.title,
           genre: record.genre,
         };
@@ -95,11 +95,10 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
 
     const data = {
       nickname: user.nickname,
-      records: records
-    }
+      records: records,
+    };
 
     return data;
-
   } catch (err) {
     console.log(err);
     throw err;

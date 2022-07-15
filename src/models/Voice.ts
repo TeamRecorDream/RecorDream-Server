@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { VoiceInfo } from '../interfaces/voice/VoiceInfo';
+import mongoose from "mongoose";
+import { VoiceInfo } from "../interfaces/voice/VoiceInfo";
 
 const VoiceSchema = new mongoose.Schema(
   {
@@ -17,4 +17,4 @@ const VoiceSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<VoiceInfo & mongoose.Document>('Voice', VoiceSchema);
+export default mongoose.model<VoiceInfo & mongoose.Document>("Voice", VoiceSchema);
