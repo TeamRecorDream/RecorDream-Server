@@ -1,9 +1,8 @@
-import { VoiceInfo } from '../voice/VoiceInfo';
 import { VoiceResponseDto } from '../voice/VoiceResponseDto';
 
 export interface RecordResponseDto {
-  writer: string;
-  date: string;
+  writer: string; // nickname
+  date: string; // 2022/06/26 (일)
   voice: VoiceResponseDto | null;
   title: string;
   content: string;
@@ -11,5 +10,4 @@ export interface RecordResponseDto {
   dream_color: number;
   genre: number[];
   note: string;
-  is_deleted: boolean;
 }
