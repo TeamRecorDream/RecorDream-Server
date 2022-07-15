@@ -150,6 +150,8 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     
     var emotion = parseInt(filter);
 
+    
+
     var recordList = await Record.find({ $and: [{ "writer": userObjectId}, { "emotion": emotion }]} ).sort({ "date": -1, "_id": -1 });
 
     if(parseInt(filter)==0) {
