@@ -51,7 +51,33 @@ const getRecord = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @route GET /record/:userId
+ *  @desc Get RecordList
+ *  @access Public
+ */
+const getRecordList = async(req: Request, res: Response) => {
+  const userId = req.header('userId');
+
+  try {
+    if (!userId) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+
+    const data = await RecordService.getRecordList(userId as string);
+    if (!data) {
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   createRecord,
   getRecord,
+  getRecordList
 };
