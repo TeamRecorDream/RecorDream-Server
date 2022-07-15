@@ -135,6 +135,7 @@ const deleteRecord = async (req: Request, res: Response) => {
     }
 
     const data = await RecordService.getRecordStorage(userId as string, filter as string);
+    
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }

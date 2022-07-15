@@ -9,6 +9,7 @@ import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
 import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
 import { RecordResponseDto } from '../interfaces/record/RecordResponseDto';
 import { RecordListResponseDto } from '../interfaces/record/RecordListResponseDto';
+import { RecordStorageResponseDto } from '../interfaces/record/RecordStorageResponseDto';
 import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
 import { UserResponseDto } from '../interfaces/user/UserResponseDto';
 import { RecordInfo } from '../interfaces/record/RecordInfo';
@@ -138,7 +139,7 @@ const deleteRecord = async (recordId: string): Promise<boolean> => {
   }
 };
 
-const getRecordStorage = async (userId: string, filter: string): Promise<RecordListResponseDto | null> => {
+const getRecordStorage = async (userId: string, filter: string): Promise<RecordStorageResponseDto | null> => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
@@ -153,6 +154,8 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordL
       recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } );
     }
 
+    var count = 0;
+
     const records: RecordListInfo[] = await Promise.all(
       recordList.map(( record: any ) => {
         const result = {
@@ -163,13 +166,13 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordL
           title: record.title,
           genre: record.genre,
         };
-
+        count++;
         return result;
       })
     );
 
     const data = {
-      nickname: user.nickname,
+      records_count: count,
       records: records
     }
 
