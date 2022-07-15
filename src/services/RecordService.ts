@@ -1,16 +1,24 @@
-import { PostBaseResponseDto } from '../interfaces/common/PostBaseResponseDto';
-import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
 import Record from '../models/Record';
-import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
-import { RecordResponseDto } from '../interfaces/record/RecordResponseDto';
-import { RecordListResponseDto } from '../interfaces/record/RecordListResponseDto';
+import User from '../models/User';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import User from '../models/User';
-import { RecordListInfo } from '../interfaces/record/RecordInfo';
 import mongoose from 'mongoose';
 import userMocking from '../models/UserMocking';
+import { PostBaseResponseDto } from '../interfaces/common/PostBaseResponseDto';
+import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
+import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
+import { RecordResponseDto } from '../interfaces/record/RecordResponseDto';
+import { RecordListResponseDto } from '../interfaces/record/RecordListResponseDto';
+
+import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
 import { UserResponseDto } from '../interfaces/user/UserResponseDto';
+import { RecordInfo } from '../interfaces/record/RecordInfo';
+import { RecordListInfo } from '../interfaces/record/RecordInfo';
+
+
+
+
+
 dayjs.locale('ko');
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto> => {
@@ -54,7 +62,6 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
       dream_color: record.dream_color,
       genre: record.genre,
       note: record.note,
-      is_deleted: record.is_deleted,
     };
 
     return data;
@@ -102,7 +109,28 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
     throw err;
   }};
 
-const deleteRecord = async (recordId: string): Promise<Boolean> => {
+const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null> => {
+  try {
+    const record = await Record.findById(recordId);
+    if (!record) return null;
+    const update = recordUpdateDto;
+
+    const data = await Record.findOneAndUpdate(
+      { _id: recordId }, //filter
+      {
+        $set: update, //수정 사항
+      },
+      { new: true } //업데이트 후 도큐먼트 반환
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const deleteRecord = async (recordId: string): Promise<boolean> => {
   try {
     const record = await Record.findByIdAndDelete(recordId);
 
@@ -118,5 +146,6 @@ export default {
   createRecord,
   getRecord,
   getRecordList,
+  updateRecord,
   deleteRecord,
 };

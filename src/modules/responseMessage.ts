@@ -12,15 +12,17 @@ const message = {
 
   // 레코드
   CREATE_RECORD_SUCCESS: '꿈 기록 작성 성공',
-  CREATE_RECORD_FAIL: '제목이 필요합니다.',
+  CREATE_RECORD_TITLE_FAIL: '제목이 없거나 길이를 초과하였습니다',
+  UPDATE_RECORD_FAIL: '제목 오류 또는 음성/작성자 수정 시도',
   READ_RECORD_SUCCESS: '꿈 기록 조회 성공',
+  UPDATE_RECORD_SUCCESS: '꿈 기록 수정 성공',
   DELETE_RECORD_SUCCESS: '꿈 기록 삭제 성공',
   READ_RECORD_LIST_SUCCESS: '꿈 기록 목록(홈) 조회 성공',
 
   //voice
-  VOICE_UPLOAD_SUCCESS: '음성 녹음 업로드 성공',
-  WRONG_VOICE_FORM: '음성 녹음 실패 (잘못된 폼 데이터입니다.)',
-  VOICE_PLAY_SUCCESS: '음성 녹음 재생 성공',
+  UPLOAD_VOICE_SUCCESS: '음성 녹음 업로드 성공',
+  UPLOAD_VOICE_FORM_FAIL: '음성 녹음 실패 (잘못된 폼 데이터입니다.)',
+  PLAY_VOICE_SUCCESS: '음성 녹음 재생 성공',
 };
 
 export default message;
