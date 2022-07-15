@@ -53,7 +53,7 @@ const getRecord = async (req: Request, res: Response) => {
 };
 
 /**
- *  @route PUT /record/:recordId
+ *  @route PATCH /record/:recordId
  *  @desc update Record
  *  @access Public
  */
@@ -62,7 +62,6 @@ const updateRecord = async (req: Request, res: Response) => {
   if (!error.isEmpty()) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.RECORD_UPDATE_FAIL));
   }
-  console.log('abd');
 
   const recordUpdateDto: RecordUpdateDto = req.body;
   const { recordId } = req.params;
