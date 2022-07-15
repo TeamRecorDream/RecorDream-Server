@@ -72,7 +72,8 @@ const getRecordList = async(req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
   } catch (err) {
     console.log(err);
-  }};
+  }
+};
 
 /*
  *  @route DELETE /record/:recordId
