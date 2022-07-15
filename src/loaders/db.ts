@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import config from "../config";
 import * as admin from "firebase-admin";
-import serviceAccount from "../config/recordream-project-firebase-admin.json";
+import serviceAccount from "../config/firebase-admin.json";
 
 const connectDB = async () => {
   let firebase;

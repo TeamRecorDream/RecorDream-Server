@@ -27,6 +27,8 @@ const message = {
   // 푸시알림
   POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
   POST_NOTICE_FAIL: "푸시알림 시간 설정 실패",
+  UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
+  UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
 };
 
 export default message;
