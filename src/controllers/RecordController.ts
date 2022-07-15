@@ -52,7 +52,7 @@ const getRecord = async (req: Request, res: Response) => {
 };
 
 /**
- *  @route GET /record/:userId
+ *  @route GET /record
  *  @desc Get RecordList
  *  @access Public
  */
@@ -75,7 +75,7 @@ const getRecordList = async(req: Request, res: Response) => {
   }
 };
 
-/*
+/** 
  *  @route DELETE /record/:recordId
  *  @desc DELETE Record
  *  @access Public
