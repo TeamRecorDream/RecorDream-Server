@@ -10,8 +10,8 @@ import { VoiceService } from '../services';
  *  @access Public
  */
 const uploadVoiceFileToS3 = async (req: Request, res: Response) => {
-  if (!req.file)
-    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
+  // if (!req.file)
+  //   return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
 
   const voice: Express.MulterS3.File = req.file as Express.MulterS3.File; //req.file은 기본 Express.Multer.File 타입으로 추론되어서 s3버전으로 타입 단언 필요.
   const { originalname, location } = voice;
