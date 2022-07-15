@@ -1,10 +1,10 @@
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
-import { NoticeCreateDto } from "../interfaces/notice/NoticeCreateDto";
+import { NoticeBaseDto } from "../interfaces/notice/NoticeBaseDto";
 import Notice from "../models/Notice";
 
-const postNotice = async (noticeCreateDto: NoticeCreateDto): Promise<PostBaseResponseDto> => {
+const postNotice = async (noticeBaseDto: NoticeBaseDto): Promise<PostBaseResponseDto> => {
   try {
-    const notice = new Notice(noticeCreateDto);
+    const notice = new Notice(noticeBaseDto);
 
     await notice.save();
 
