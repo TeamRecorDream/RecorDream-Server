@@ -96,6 +96,18 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
     }
 
     return data;
+
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }};
+
+const deleteRecord = async (recordId: string): Promise<Boolean> => {
+  try {
+    const record = await Record.findByIdAndDelete(recordId);
+
+    if (!record) return false;
+    return true;
   } catch (err) {
     console.log(err);
     throw err;
@@ -105,5 +117,6 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
 export default {
   createRecord,
   getRecord,
-  getRecordList
+  getRecordList,
+  deleteRecord,
 };
