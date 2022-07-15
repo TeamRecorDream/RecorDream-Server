@@ -1,6 +1,7 @@
-import UserController from './UserController';
-import RecordController from './RecordController';
-import VoiceController from './VoiceController';
+import UserController from "./UserController";
+import RecordController from "./RecordController";
+import VoiceController from "./VoiceController";
+import NoticeController from "./NoticeController";
 
 // controller index file
-export { UserController, RecordController, VoiceController };
+export { UserController, RecordController, VoiceController, NoticeController };
