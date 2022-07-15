@@ -11,6 +11,7 @@ const message = {
   CHANGE_TOGGLE_SUCCESS: "푸시알림 여부 변경 성공",
 
   // 레코드
+<<<<<<< HEAD
   CREATE_RECORD_SUCCESS: "꿈 기록 작성 성공",
   CREATE_RECORD_TITLE_FAIL: "제목이 없거나 길이를 초과하였습니다",
   UPDATE_RECORD_FAIL: "제목 오류 또는 음성/작성자 수정 시도",
@@ -27,6 +28,19 @@ const message = {
   // 푸시알림
   POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
   POST_NOTICE_FAIL: "푸시알림 시간 설정 실패",
+=======
+  CREATE_RECORD_SUCCESS: '꿈 기록 작성 성공',
+  CREATE_RECORD_TITLE_FAIL: '제목이 없거나 길이를 초과하였습니다',
+  UPDATE_RECORD_FAIL: '제목 오류 또는 음성/작성자 수정 시도',
+  READ_RECORD_SUCCESS: '꿈 기록 조회 성공',
+  UPDATE_RECORD_SUCCESS: '꿈 기록 수정 성공',
+  DELETE_RECORD_SUCCESS: '꿈 기록 삭제 성공',
+
+  //voice
+  UPLOAD_VOICE_SUCCESS: '음성 녹음 업로드 성공',
+  UPLOAD_VOICE_FORM_FAIL: '음성 녹음 실패 (잘못된 폼 데이터입니다.)',
+  PLAY_VOICE_SUCCESS: '음성 녹음 재생 성공',
+>>>>>>> 39-Post-Notice
 };
 
 export default message;
