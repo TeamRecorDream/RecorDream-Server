@@ -11,5 +11,12 @@ export interface RecordInfo {
   dream_color: number;
   genre: number[];
   note: string;
-  is_deleted: boolean;
+}
+
+export interface RecordListInfo {
+  date: string;
+  title: string;
+  emotion: number;
+  dream_color: number;
+  genre: number[];
 }
