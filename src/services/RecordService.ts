@@ -100,7 +100,8 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
   } catch (err) {
     console.log(err);
     throw err;
-  }};
+  }
+};
 
 const deleteRecord = async (recordId: string): Promise<Boolean> => {
   try {
@@ -114,9 +115,53 @@ const deleteRecord = async (recordId: string): Promise<Boolean> => {
   }
 };
 
+const getRecordStorage = async (userId: string, filter: string): Promise<RecordListResponseDto | null> => {
+  try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (!user) {
+      return null;
+    }
+
+    var recordList = await Record.find({ $and: [{ "writer": userObjectId}, { "emotion": parseInt(filter) }]} ).sort({ "date": -1, "_id": -1 });
+
+    if(parseInt(filter)==0) {
+      recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } );
+    }
+
+    const records: RecordListInfo[] = await Promise.all(
+      recordList.map(( record: any ) => {
+        const result = {
+          _id: record._id,
+          dream_color: record.dream_color,
+          emotion: record.emotion,
+          date: dayjs(record.date).format('YYYY/MM/DD (ddd)'),
+          title: record.title,
+          genre: record.genre,
+        };
+
+        return result;
+      })
+    );
+
+    const data = {
+      nickname: user.nickname,
+      records: records
+    }
+
+    return data;
+
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   createRecord,
   getRecord,
   getRecordList,
   deleteRecord,
+  getRecordStorage,
 };
