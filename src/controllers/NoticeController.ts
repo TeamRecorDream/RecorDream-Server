@@ -1,12 +1,10 @@
-import dayjs from "dayjs";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { NoticeCreateDto } from "../interfaces/notice/NoticeCreateDto";
+import { NoticeBaseDto } from "../interfaces/notice/NoticeBaseDto";
 import message from "../modules/responseMessage";
 import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import NoticeService from "../services/NoticeService";
-dayjs.locale("en");
 
 /**
  * @route /notice
@@ -19,11 +17,10 @@ const postNotice = async (req: Request, res: Response) => {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_FAIL));
   }
 
-  req.body.time = dayjs().format("A hh:mm"); // mongoDB에 지정한 형식대로 넣으려고 추가
-  const noticecreateDto: NoticeCreateDto = req.body;
+  const noticeBaseDto: NoticeBaseDto = req.body;
 
   try {
-    const data = await NoticeService.postNotice(noticecreateDto);
+    const data = await NoticeService.postNotice(noticeBaseDto);
 
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS, data));
   } catch (err) {
@@ -32,6 +29,35 @@ const postNotice = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route /notice/:noticeId
+ * @desc PUT notice time (update)
+ * @access Public
+ */
+const updateNotice = async (req: Request, res: Response) => {
+  const noticeBaseDto: NoticeBaseDto = req.body;
+  const { noticeId } = req.params;
+  const err = validationResult(req);
+
+  if (!err.isEmpty()) {
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
+  }
+
+  if (!noticeId) {
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+  }
+
+  try {
+    await NoticeService.updateNotice(noticeId, noticeBaseDto);
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NOTICE_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   postNotice,
+  updateNotice,
 };
