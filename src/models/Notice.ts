@@ -14,10 +14,8 @@ const NoticeSchema = new mongoose.Schema({
     default: dayjs().format("A hh:mm"),
   },
   createdAt: {
-    type: Date,
-  },
-  updatedAt: {
-    type: Date,
+    type: String,
+    default: dayjs().format("YYYY-MM-DD HH:mm"),
   },
 });
 
