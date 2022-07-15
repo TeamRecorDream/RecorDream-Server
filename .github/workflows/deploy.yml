@@ -37,8 +37,15 @@ jobs:
           touch .env
           echo PORT=${{ secrets.PORT }} >> .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
-          echo FIREBASE_ADMIN=${{ secrets.FIREBASE_ADMIN }} >> .env
           cat .env
+
+      - name: create firebase-admin.json #디렉토리 접속 -> 파일 생성 -> 화면 출력
+        working-directory: ./src/config
+        run: |
+          pwd 
+          touch firebase-admin.json 
+          echo FIREBASE_ADMIN=${{ secrets.FIREBASE_ADMIN }} >> firebase-admin.json
+          cat firebase-admin.json
 
       - name: build server files # yarn으로 필요한 디펜던시 설치 후 빌드
         working-directory: ./
