@@ -22,6 +22,7 @@ router.post(
   RecordController.createRecord
 );
 router.get('/:recordId', RecordController.getRecord);
+router.get('/', RecordController.getRecordList);
 router.patch(
   '/:recordId',
   [

@@ -17,6 +17,7 @@ const message = {
   READ_RECORD_SUCCESS: '꿈 기록 조회 성공',
   UPDATE_RECORD_SUCCESS: '꿈 기록 수정 성공',
   DELETE_RECORD_SUCCESS: '꿈 기록 삭제 성공',
+  READ_RECORD_LIST_SUCCESS: '꿈 기록 목록(홈) 조회 성공',
 
   //voice
   UPLOAD_VOICE_SUCCESS: '음성 녹음 업로드 성공',

@@ -12,3 +12,11 @@ export interface RecordInfo {
   genre: number[];
   note: string;
 }
+
+export interface RecordListInfo {
+  date: string;
+  title: string;
+  emotion: number;
+  dream_color: number;
+  genre: number[];
+}
