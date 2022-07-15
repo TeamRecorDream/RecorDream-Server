@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import User from "../models/User";
@@ -70,8 +71,36 @@ const changeToggle = async (userId: string, toggle: string) => {
   }
 };
 
+// userId: parmas, fcmToken: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
+const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
+  const { fcm_token } = fcmTokenUpdateDto;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return undefined;
+    }
+
+    const filter = {
+      _id: userId,
+    };
+
+    const update = { fcm_token };
+    const updatedUser = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+
+    return updatedUser;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   changeToggle,
+  updateFcmToken,
 };
