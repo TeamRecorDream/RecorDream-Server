@@ -60,7 +60,7 @@ const deleteRecord = async (req: Request, res: Response) => {
   const { recordId } = req.params;
   try {
     const data = await RecordService.deleteRecord(recordId);
-    if (data == false) {
+    if (data === false) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.DELETE_RECORD_SUCCESS));
