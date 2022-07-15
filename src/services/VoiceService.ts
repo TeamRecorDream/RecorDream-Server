@@ -1,16 +1,18 @@
 import Voice from '../models/Voice';
 import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
+import voiceMocking from '../models/VoiceMocking';
+import mongoose from 'mongoose';
+import { VoiceInfo } from '../interfaces/voice/VoiceInfo';
 
-const createVoice = async (url: string, fileName: string): Promise<VoiceResponseDto> => {
+const createVoice = async (): Promise<VoiceResponseDto | null> => {
   try {
-    const voice = new Voice({
-      url,
-      fileName,
-    });
-    await voice.save();
+    const voiceObjectId: mongoose.Types.ObjectId = voiceMocking[0];
+    const voice = await Voice.findById(voiceObjectId);
+
+    if (!voice) return null;
     const data = {
       _id: voice._id,
-      url,
+      url: voice.url,
     };
     return data;
   } catch (err) {
