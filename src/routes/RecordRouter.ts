@@ -30,4 +30,6 @@ router.patch(
   ],
   RecordController.updateRecord
 ); //title not empty 어떻게?
+router.delete('/:recordId', RecordController.deleteRecord);
+
 export default router;
