@@ -81,7 +81,7 @@ const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto):
   }
 };
 
-const deleteRecord = async (recordId: string): Promise<Boolean> => {
+const deleteRecord = async (recordId: string): Promise<boolean> => {
   try {
     const record = await Record.findByIdAndDelete(recordId);
 

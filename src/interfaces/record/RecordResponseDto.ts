@@ -1,4 +1,3 @@
-import { VoiceInfo } from '../voice/VoiceInfo';
 import { VoiceResponseDto } from '../voice/VoiceResponseDto';
 
 export interface RecordResponseDto {
