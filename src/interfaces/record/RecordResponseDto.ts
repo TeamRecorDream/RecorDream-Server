@@ -1,4 +1,4 @@
-import { VoiceResponseDto } from '../voice/VoiceResponseDto';
+import { VoiceResponseDto } from "../voice/VoiceResponseDto";
 
 export interface RecordResponseDto {
   writer: string; // nickname
