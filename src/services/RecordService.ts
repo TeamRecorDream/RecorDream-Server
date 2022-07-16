@@ -196,6 +196,53 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
   }
 };
 
+const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordStorageResponseDto | null> => {
+  const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
+
+  try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (!user) {
+      return null;
+    }
+
+    const Regex: RegExp = regex(keyword);
+
+    const recordList = await Record.find({ $or: [{ content: { $regex: Regex } }, { note: { $regex: Regex } }] }).sort({
+      date: -1,
+      _id: -1,
+    });
+
+    let count = 0;
+
+    const records: RecordListInfo[] = await Promise.all(
+      recordList.map((record: any) => {
+        const result = {
+          _id: record._id,
+          dream_color: record.dream_color,
+          emotion: record.emotion,
+          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+          title: record.title,
+          genre: record.genre,
+        };
+        count++;
+        return result;
+      })
+    );
+
+    const data = {
+      records_count: count,
+      records: records,
+    };
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export default {
   createRecord,
   getRecord,
@@ -203,4 +250,5 @@ export default {
   updateRecord,
   deleteRecord,
   getRecordStorage,
+  getRecordsBySearch,
 };
