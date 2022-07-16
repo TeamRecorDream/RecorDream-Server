@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-import { UserNicknameUpdateDto } from '../interfaces/user/UserNicknameUpdateDto';
-import { UserResponseDto } from '../interfaces/user/UserResponseDto';
-import User from '../models/User';
-import userMocking from '../models/UserMocking';
+import mongoose from "mongoose";
+import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
+import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
+import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import User from "../models/User";
+import userMocking from "../models/UserMocking";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -49,7 +50,6 @@ const getUser = async (userId: string) => {
 const changeToggle = async (userId: string, toggle: string) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    // 우린 앱잼단에서 임의의 유저를 사용하기 때문에 여기서 null이 될 수 없음
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
     if (!user) {
@@ -57,10 +57,10 @@ const changeToggle = async (userId: string, toggle: string) => {
     }
 
     // toggle parameter 값이 1이면 푸시알림 설정 O
-    if (toggle == '1') {
+    if (toggle == "1") {
       user.is_notified = true;
       // toggle parameter 값이 0이면 푸시알림 설정 X
-    } else if (toggle == '0') {
+    } else if (toggle == "0") {
       user.is_notified = false;
     }
 
@@ -71,8 +71,36 @@ const changeToggle = async (userId: string, toggle: string) => {
   }
 };
 
+// userId: parmas, fcmToken: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
+const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
+  const { fcm_token } = fcmTokenUpdateDto;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return undefined;
+    }
+
+    const filter = {
+      _id: userId,
+    };
+
+    const update = { fcm_token };
+    const updatedUser = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+
+    return updatedUser;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   changeToggle,
+  updateFcmToken,
 };
