@@ -18,8 +18,8 @@ const message = {
   READ_RECORD_SUCCESS: "꿈 기록 조회 성공",
   UPDATE_RECORD_SUCCESS: "꿈 기록 수정 성공",
   DELETE_RECORD_SUCCESS: "꿈 기록 삭제 성공",
-  READ_RECORD_LIST_SUCCESS: '꿈 기록 목록(홈) 조회 성공',
-  READ_RECORD_STORAGE_SUCCESS: '꿈 기록 목록(보관함) 조회 성공',
+  READ_RECORD_LIST_SUCCESS: "꿈 기록 목록(홈) 조회 성공",
+  READ_RECORD_STORAGE_SUCCESS: "꿈 기록 목록(보관함) 조회 성공",
 
   //voice
   UPLOAD_VOICE_SUCCESS: "음성 녹음 업로드 성공",
@@ -29,6 +29,8 @@ const message = {
   // 푸시알림
   POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
   POST_NOTICE_FAIL: "푸시알림 시간 설정 실패",
+  UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
+  UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
 };
 
 export default message;
