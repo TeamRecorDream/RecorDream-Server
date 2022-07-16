@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
-import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
-import message from '../modules/responseMessage';
-import statusCode from '../modules/statusCode';
-import util from '../modules/util';
-import RecordService from '../services/RecordService';
-import dayjs from 'dayjs';
-import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
+import { Request, Response } from "express";
+import { validationResult } from "express-validator";
+import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
+import message from "../modules/responseMessage";
+import statusCode from "../modules/statusCode";
+import util from "../modules/util";
+import RecordService from "../services/RecordService";
+import dayjs from "dayjs";
+import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 
 /**
  * @route POST /record
@@ -19,7 +19,7 @@ const createRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
   }
 
-  req.body.date = dayjs(req.body.date).format('YYYY-MM-DD');
+  req.body.date = dayjs(req.body.date).format("YYYY-MM-DD");
   const recordCreateDto: RecordCreateDto = req.body;
 
   try {
@@ -57,8 +57,8 @@ const getRecord = async (req: Request, res: Response) => {
  *  @desc Get RecordList
  *  @access Public
  */
-const getRecordList = async(req: Request, res: Response) => {
-  const userId = req.header('userId');
+const getRecordList = async (req: Request, res: Response) => {
+  const userId = req.header("userId");
   try {
     if (!userId) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
@@ -76,7 +76,7 @@ const getRecordList = async(req: Request, res: Response) => {
   }
 };
 
-/** 
+/**
  *  @route PATCH /record/:recordId
  *  @desc update Record
  *  @access Public
@@ -125,9 +125,9 @@ const deleteRecord = async (req: Request, res: Response) => {
  *  @desc Get RecordStorage
  *  @access Public
  */
- const getRecordStorage = async(req: Request, res: Response) => {
+const getRecordStorage = async (req: Request, res: Response) => {
   const { filter } = req.query;
-  const userId = req.header('userId');
+  const userId = req.header("userId");
   try {
     if (!userId) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
