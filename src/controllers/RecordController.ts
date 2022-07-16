@@ -85,7 +85,7 @@ const getRecordList = async (req: Request, res: Response) => {
 const updateRecord = async (req: Request, res: Response) => {
   const error = validationResult(req); //title empty 확인?
   if (!error.isEmpty()) {
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FAIL));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FAIL));
   }
 
   const recordUpdateDto: RecordUpdateDto = req.body;

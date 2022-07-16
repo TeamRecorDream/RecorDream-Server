@@ -1,21 +1,21 @@
-import Record from '../models/Record';
-import User from '../models/User';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-import mongoose from 'mongoose';
-import userMocking from '../models/UserMocking';
-import { PostBaseResponseDto } from '../interfaces/common/PostBaseResponseDto';
-import { RecordCreateDto } from '../interfaces/record/RecordCreateDto';
-import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
-import { RecordResponseDto } from '../interfaces/record/RecordResponseDto';
-import { RecordListResponseDto } from '../interfaces/record/RecordListResponseDto';
-import { RecordStorageResponseDto } from '../interfaces/record/RecordStorageResponseDto';
-import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
-import { UserResponseDto } from '../interfaces/user/UserResponseDto';
-import { RecordInfo } from '../interfaces/record/RecordInfo';
-import { RecordListInfo } from '../interfaces/record/RecordInfo';
+import Record from "../models/Record";
+import User from "../models/User";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import mongoose from "mongoose";
+import userMocking from "../models/UserMocking";
+import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
+import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
+import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
+import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
+import { RecordListResponseDto } from "../interfaces/record/RecordListResponseDto";
+import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
+import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
+import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import { RecordInfo } from "../interfaces/record/RecordInfo";
+import { RecordListInfo } from "../interfaces/record/RecordInfo";
 
-dayjs.locale('ko');
+dayjs.locale("ko");
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto> => {
   try {
@@ -146,58 +146,36 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     if (!user) {
       return null;
     }
-    
-    var emotion = parseInt(filter);
 
-    switch( emotion ) {
-      case 2131165404 :
-        emotion = 0;
+    switch (filter) {
+      case "0":
+        var recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
         break;
-      case 2131165409 :
-        emotion = 1;
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+        recordList = await Record.find({ $and: [{ writer: userObjectId }, { emotion: parseInt(filter) }] }).sort({
+          date: -1,
+          _id: -1,
+        });
         break;
-      case 2131165410 :
-        emotion = 2;
-        break;
-      case 2131165406 :
-        emotion = 3;
-        break;
-      case 2131165408 :
-        emotion = 4;
-        break;
-      case 2131165407 :
-        emotion = 5;
-        break;
-      case 2131165405 :
-        emotion = 6;
-        break;
-      case 2131165411 :
-        emotion = 7;
-        break;
-      default :
-        emotion = 8;
-        break;
-    }
-
-    if(emotion == 8) {
-      return null;
-    }
-    
-    var recordList = await Record.find({ $and: [{ "writer": userObjectId}, { "emotion": emotion }]} ).sort({ "date": -1, "_id": -1 });
-
-    if(emotion == 0) {
-      recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } );
+      default:
+        return null;
     }
 
     var count = 0;
 
     const records: RecordListInfo[] = await Promise.all(
-      recordList.map(( record: any ) => {
+      recordList.map((record: any) => {
         const result = {
           _id: record._id,
           dream_color: record.dream_color,
           emotion: record.emotion,
-          date: dayjs(record.date).format('YYYY/MM/DD (ddd)'),
+          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
           title: record.title,
           genre: record.genre,
         };
@@ -208,8 +186,8 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
 
     const data = {
       records_count: count,
-      records: records
-    }
+      records: records,
+    };
 
     return data;
   } catch (err) {
