@@ -167,7 +167,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
         return null;
     }
 
-    var count = 0;
+    let count = 0;
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {
