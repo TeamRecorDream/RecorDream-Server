@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
-import { VoiceInfo } from '../interfaces/voice/VoiceInfo';
-import userMocking from './UserMocking';
+import mongoose from "mongoose";
+import { VoiceInfo } from "../interfaces/voice/VoiceInfo";
+import userMocking from "./UserMocking";
 
 const VoiceSchema = new mongoose.Schema(
   {
     recorder: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       default: userMocking,
     },
     url: {
@@ -24,4 +24,4 @@ const VoiceSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<VoiceInfo & mongoose.Document>('Voice', VoiceSchema);
+export default mongoose.model<VoiceInfo & mongoose.Document>("Voice", VoiceSchema);

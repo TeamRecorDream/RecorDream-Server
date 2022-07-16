@@ -1,8 +1,8 @@
-import Voice from '../models/Voice';
-import { VoiceResponseDto } from '../interfaces/voice/VoiceResponseDto';
-import voiceMocking from '../models/VoiceMocking';
-import mongoose from 'mongoose';
-import { VoiceInfo } from '../interfaces/voice/VoiceInfo';
+import Voice from "../models/Voice";
+import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
+import voiceMocking from "../models/VoiceMocking";
+import mongoose from "mongoose";
+import { VoiceInfo } from "../interfaces/voice/VoiceInfo";
 
 const createVoice = async (): Promise<VoiceResponseDto | null> => {
   try {
