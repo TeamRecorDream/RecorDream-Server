@@ -59,6 +59,7 @@ const getRecord = async (req: Request, res: Response) => {
  */
 const getRecordList = async (req: Request, res: Response) => {
   const userId = req.header("userId");
+
   try {
     if (!userId) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
