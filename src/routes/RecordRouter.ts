@@ -1,6 +1,6 @@
 import { Router } from "express";
 import RecordController from "../controllers/RecordController";
-import { body, validationResult } from "express-validator/check";
+import { body } from "express-validator/check";
 import { check } from "express-validator/check";
 
 const router: Router = Router();
@@ -41,5 +41,6 @@ router.patch(
   RecordController.updateRecord
 );
 router.delete("/:recordId", RecordController.deleteRecord);
+router.get("/storage/list", RecordController.getRecordStorage);
 
 export default router;

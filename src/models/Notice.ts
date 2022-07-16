@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import mongoose from "mongoose";
 import { NoticeInfo } from "../interfaces/notice/NoticeInfo";
 import userMocking from "./UserMocking";
-dayjs.locale("en");
 
 const NoticeSchema = new mongoose.Schema({
   user_id: {

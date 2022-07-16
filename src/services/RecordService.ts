@@ -9,7 +9,7 @@ import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordListResponseDto } from "../interfaces/record/RecordListResponseDto";
-
+import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
 import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
@@ -138,10 +138,69 @@ const deleteRecord = async (recordId: string): Promise<boolean> => {
   }
 };
 
+const getRecordStorage = async (userId: string, filter: string): Promise<RecordStorageResponseDto | null> => {
+  try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (!user) {
+      return null;
+    }
+
+    switch (filter) {
+      case "0":
+        var recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
+        break;
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+        recordList = await Record.find({ $and: [{ writer: userObjectId }, { emotion: parseInt(filter) }] }).sort({
+          date: -1,
+          _id: -1,
+        });
+        break;
+      default:
+        return null;
+    }
+
+    let count = 0;
+
+    const records: RecordListInfo[] = await Promise.all(
+      recordList.map((record: any) => {
+        const result = {
+          _id: record._id,
+          dream_color: record.dream_color,
+          emotion: record.emotion,
+          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+          title: record.title,
+          genre: record.genre,
+        };
+        count++;
+        return result;
+      })
+    );
+
+    const data = {
+      records_count: count,
+      records: records,
+    };
+
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   createRecord,
   getRecord,
   getRecordList,
   updateRecord,
   deleteRecord,
+  getRecordStorage,
 };
