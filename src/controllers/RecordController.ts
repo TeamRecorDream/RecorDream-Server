@@ -16,7 +16,7 @@ import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
 const createRecord = async (req: Request, res: Response) => {
   const err = validationResult(req);
   if (!err.isEmpty()) {
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
   }
 
   req.body.date = dayjs(req.body.date).format('YYYY-MM-DD');
