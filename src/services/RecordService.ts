@@ -149,11 +149,43 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     
     var emotion = parseInt(filter);
 
-    
+    switch( emotion ) {
+      case 2131165404 :
+        emotion = 0;
+        break;
+      case 2131165409 :
+        emotion = 1;
+        break;
+      case 2131165410 :
+        emotion = 2;
+        break;
+      case 2131165406 :
+        emotion = 3;
+        break;
+      case 2131165408 :
+        emotion = 4;
+        break;
+      case 2131165407 :
+        emotion = 5;
+        break;
+      case 2131165405 :
+        emotion = 6;
+        break;
+      case 2131165411 :
+        emotion = 7;
+        break;
+      default :
+        emotion = 8;
+        break;
+    }
 
+    if(emotion == 8) {
+      return null;
+    }
+    
     var recordList = await Record.find({ $and: [{ "writer": userObjectId}, { "emotion": emotion }]} ).sort({ "date": -1, "_id": -1 });
 
-    if(parseInt(filter)==0) {
+    if(emotion == 0) {
       recordList = await Record.find( { writer: userObjectId } ).sort( { "date": -1, "_id": -1 } );
     }
 
@@ -180,7 +212,6 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     }
 
     return data;
-
   } catch (err) {
     console.log(err);
     throw err;

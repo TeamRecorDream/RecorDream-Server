@@ -16,7 +16,7 @@ import { RecordUpdateDto } from '../interfaces/record/RecordUpdateDto';
 const createRecord = async (req: Request, res: Response) => {
   const err = validationResult(req);
   if (!err.isEmpty()) {
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_TITLE_FAIL));
   }
 
   req.body.date = dayjs(req.body.date).format('YYYY-MM-DD');
@@ -59,10 +59,9 @@ const getRecord = async (req: Request, res: Response) => {
  */
 const getRecordList = async(req: Request, res: Response) => {
   const userId = req.header('userId');
-
   try {
     if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
     const data = await RecordService.getRecordList(userId as string);
@@ -129,14 +128,12 @@ const deleteRecord = async (req: Request, res: Response) => {
  const getRecordStorage = async(req: Request, res: Response) => {
   const { filter } = req.query;
   const userId = req.header('userId');
-
   try {
     if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
     const data = await RecordService.getRecordStorage(userId as string, filter as string);
-    
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
