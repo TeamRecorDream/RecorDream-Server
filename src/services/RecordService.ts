@@ -237,9 +237,9 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
     };
 
     return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
 
