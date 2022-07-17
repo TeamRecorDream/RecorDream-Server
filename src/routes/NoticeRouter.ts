@@ -4,7 +4,7 @@ import NoticeController from "../controllers/NoticeController";
 
 const router: Router = Router();
 
-router.post("/", [body("time").notEmpty().trim()], NoticeController.postNotice);
-router.put("/:noticeId", [body("time").notEmpty().trim()], NoticeController.updateNotice);
+router.post("/", [body("time").trim().notEmpty()], NoticeController.postNotice);
+router.put("/:noticeId", [body("time").trim().notEmpty()], NoticeController.updateNotice);
 
 export default router;
