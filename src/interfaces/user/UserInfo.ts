@@ -5,6 +5,6 @@ export interface UserInfo {
   emotion_arr: number[];
   is_deleted: boolean;
   is_notified: boolean;
-  time: Date | null;
+  time: string | null;
   fcm_token: string[];
 }
