@@ -12,7 +12,7 @@
 
 ## Collection 설계
 
-> ![10](https://user-images.githubusercontent.com/64405757/178687084-c2b0c3a8-6692-49b8-b4dd-79009b597136.PNG)<br> > <br />
+> ![10](https://user-images.githubusercontent.com/64405757/178687084-c2b0c3a8-6692-49b8-b4dd-79009b597136.PNG)<br> <br />
 
 ## 팀원 소개 및 역할 분담
 
