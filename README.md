@@ -49,8 +49,8 @@
 | [Fix]      | 버그, 오류 수정                                                      |
 | [Hotfix]   | issue나 QA에서 급한 버그 수정                                        |
 | [Docs]     | 문서 수정                                                            |
-| [Test]     | 코드 수정, 내부 파일 수정                                            |
-| [Chore]    | issue나                                                              |
+| [Test]     | 테스트 코드 추가 및 업데이트                                         |
+| [Chore]    | 코드 수정, 내부 파일 수정                                            |
 | [Del]      | 불필요한 코드 삭제                                                   |
 | [Refactor] | 전면 수정                                                            |
 | [Merge]    | 다른 브랜치를 merge 할 때 사용                                       |
