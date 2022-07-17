@@ -146,6 +146,32 @@ const getRecordStorage = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @route GET /record/search?keyword=
+ *  @desc Get record by search
+ *  @access Public
+ */
+const getRecordsBySearch = async (req: Request, res: Response) => {
+  const { keyword } = req.query;
+  const userId = req.header("userId");
+
+  try {
+    if (!userId) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+
+    const data = await RecordService.getRecordsBySearch(userId as string, keyword as string);
+    if (!data) {
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   createRecord,
   getRecord,
@@ -153,4 +179,5 @@ export default {
   updateRecord,
   deleteRecord,
   getRecordStorage,
+  getRecordsBySearch,
 };
