@@ -32,7 +32,7 @@ const updateNickname = async (req: Request, res: Response): Promise<void> => {
 };
 
 /**
- * @route GET /user/toggle
+ * @route GET /user
  * @desc Get User
  * @access Public
  */
