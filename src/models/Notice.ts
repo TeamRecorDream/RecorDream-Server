@@ -17,6 +17,10 @@ const NoticeSchema = new mongoose.Schema({
     type: String,
     default: dayjs().format("YYYY-MM-DD HH:mm"),
   },
+  is_changed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model<NoticeInfo & mongoose.Document>("Notice", NoticeSchema);

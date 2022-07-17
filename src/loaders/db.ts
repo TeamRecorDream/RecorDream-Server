@@ -10,8 +10,10 @@ const connectDB = async () => {
       firebase = admin.initializeApp({
         credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
       });
+      console.log("SDK 초기화 완료!");
     } else {
       firebase = admin.app();
+      console.log("FCM 준비 완료!");
     }
 
     await mongoose.connect(config.mongoURI);
@@ -19,8 +21,8 @@ const connectDB = async () => {
     mongoose.set("autoCreate", true);
 
     console.log("Mongoose Connected ...");
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(err);
     process.exit(1);
   }
 };

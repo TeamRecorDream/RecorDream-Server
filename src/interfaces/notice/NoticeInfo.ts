@@ -4,4 +4,5 @@ export interface NoticeInfo {
   user_id: UserInfo;
   time: string;
   createdAt: string;
+  is_changed: boolean;
 }
