@@ -14,6 +14,7 @@ import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
+import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
 
 dayjs.locale("ko");
 
@@ -149,7 +150,6 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
 
     switch (filter) {
       case "0":
-        // eslint-disable-next-line no-var
         var recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
         break;
       case "1":
