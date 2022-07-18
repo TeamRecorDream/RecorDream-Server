@@ -26,7 +26,7 @@ const RecordSchema = new mongoose.Schema(
     },
     emotion: {
       type: Number,
-      default: 0,
+      default: 7,
     },
     dream_color: {
       type: Number,
@@ -34,6 +34,7 @@ const RecordSchema = new mongoose.Schema(
     },
     genre: {
       type: Array,
+      default: [10],
     },
     note: {
       type: String,

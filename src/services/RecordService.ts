@@ -14,13 +14,28 @@ import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
-import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
 
 dayjs.locale("ko");
 
-const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto> => {
+const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto | null> => {
   try {
     const record = new Record(recordCreateDto);
+
+    if (record.emotion < 0 || record.emotion > 7 || record.dream_color < 0 || record.dream_color > 6) {
+      return null;
+    }
+
+    var genre_error;
+
+    record.genre.map((genre) => {
+      if (genre < 0 || genre > 10) {
+        genre_error = true;
+      }
+    });
+
+    if (genre_error) {
+      return null;
+    }
 
     await record.save();
 
@@ -159,7 +174,6 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
       case "4":
       case "5":
       case "6":
-      case "7":
         recordList = await Record.find({ $and: [{ writer: userObjectId }, { emotion: parseInt(filter) }] }).sort({
           date: -1,
           _id: -1,
