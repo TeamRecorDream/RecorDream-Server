@@ -25,7 +25,7 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       return null;
     }
 
-    var genre_error;
+    let genre_error;
 
     record.genre.map((genre) => {
       if (genre < 0 || genre > 10) {
