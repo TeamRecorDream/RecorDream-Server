@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   fcm_token: {
-    type: Array,
+    type: [String],
   },
 });
 
