@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import mongoose from "mongoose";
 import { NoticeInfo } from "../interfaces/notice/NoticeInfo";
-import userMocking from "./UserMocking";
 
 const NoticeSchema = new mongoose.Schema({
   time: {
@@ -12,9 +11,12 @@ const NoticeSchema = new mongoose.Schema({
     type: String,
     default: dayjs().format("YYYY-MM-DD HH:mm"),
   },
+  fcm_token: {
+    type: String,
+    unique: true,
+  },
   is_changed: {
     type: Boolean,
-    default: false,
   },
 });
 
