@@ -1,18 +1,38 @@
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { NoticeBaseDto } from "../interfaces/notice/NoticeBaseDto";
 import Notice from "../models/Notice";
+import User from "../models/User";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
+import mongoose from "mongoose";
+import userMocking from "../models/UserMocking";
+import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import { NoticeInfo } from "../interfaces/notice/NoticeInfo";
 
-const postNotice = async (noticeBaseDto: NoticeBaseDto): Promise<PostBaseResponseDto> => {
+const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise<PostBaseResponseDto | null> => {
   try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (!user) {
+      return null;
+    }
+
     const notice = new Notice(noticeBaseDto);
 
     await notice.save();
 
+    const updatedTime = {
+      time: noticeBaseDto.time,
+    };
+
+    await User.findByIdAndUpdate(userObjectId, updatedTime).exec();
+
     const data = {
       _id: notice._id,
     };
+
+    /*
 
     const push_time = notice.time;
     let is_day = true; // AM, PM 판별
@@ -80,6 +100,7 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto): Promise<PostBaseRespons
       .catch(function (err) {
         console.log("Error Sending message!!! : ", err);
       });
+      */
 
     return data;
   } catch (err) {
@@ -88,13 +109,22 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto): Promise<PostBaseRespons
   }
 };
 
-const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto) => {
+const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto, userId: string): Promise<NoticeInfo | null> => {
   try {
+    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+    const user: UserResponseDto | null = await User.findById(userObjectId);
+
+    if (!user) {
+      return null;
+    }
+
     const updatedTime = {
       time: noticeBaseDto.time,
     };
 
-    const notice: NoticeBaseDto | null = await Notice.findByIdAndUpdate(noticeId, updatedTime).exec();
+    const notice = await Notice.findByIdAndUpdate(noticeId, updatedTime).exec();
+
+    await User.findByIdAndUpdate(userObjectId, updatedTime).exec();
 
     if (notice !== null) {
       notice.is_changed = true;
@@ -131,6 +161,8 @@ const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto) => {
     schedule.scheduleJob({ hour: hour, minute: min }, function () {
       console.log("방금 꾼 꿈, 잊어버리기 전에 기록해볼까요?");
     });
+
+    return notice;
   } catch (err) {
     console.log(err);
     throw err;

@@ -14,6 +14,7 @@ import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
+import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
 
 dayjs.locale("ko");
 
