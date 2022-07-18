@@ -24,6 +24,9 @@ const createRecord = async (req: Request, res: Response) => {
 
   try {
     const data = await RecordService.createRecord(recordCreateDto);
+    if (!data) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_FAIL));
+    }
 
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_RECORD_SUCCESS, data));
   } catch (err) {
