@@ -150,6 +150,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
 
     switch (filter) {
       case "0":
+        // eslint-disable-next-line no-var
         var recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
         break;
       case "1":
