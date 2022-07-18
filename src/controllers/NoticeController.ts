@@ -13,12 +13,13 @@ import NoticeService from "../services/NoticeService";
  */
 const postNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
+  const noticeBaseDto: NoticeBaseDto = req.body;
+  const userId = req.header("userId");
+
   if (!err.isEmpty()) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_FAIL));
   }
 
-  const noticeBaseDto: NoticeBaseDto = req.body;
-  const userId = req.header("userId");
   if (!userId) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
   }
@@ -43,19 +44,21 @@ const postNotice = async (req: Request, res: Response) => {
  */
 const updateNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
+  const noticeBaseDto: NoticeBaseDto = req.body;
+  const { noticeId } = req.params;
+  const userId = req.header("userId");
+
   if (!err.isEmpty()) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
   }
 
-  const noticeBaseDto: NoticeBaseDto = req.body;
-  const { noticeId } = req.params;
-  const userId = req.header("userId");
   if (!noticeId || !userId) {
-    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
   }
 
   try {
     const data = await NoticeService.updateNotice(noticeId, noticeBaseDto, userId as string);
+
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
