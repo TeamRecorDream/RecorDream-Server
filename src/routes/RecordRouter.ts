@@ -1,7 +1,6 @@
 import { Router } from "express";
 import RecordController from "../controllers/RecordController";
-import { body } from "express-validator/check";
-import { check } from "express-validator/check";
+import { body, check } from "express-validator";
 
 const router: Router = Router();
 
