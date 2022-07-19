@@ -5,7 +5,7 @@ import recordRequestBody from "./data.json";
 
 describe("[GET] /record/:recordId", () => {
   const req = request(app);
-  it("녹음 조회 테스트", async () => {
+  it("꿈 기록 조회 테스트", async () => {
     const res = await req.get("/record/62d16e7fe8b4508dbca5ead6").set("Content-Type", "application/json");
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({
