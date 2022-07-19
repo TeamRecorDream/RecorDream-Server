@@ -1,8 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
-import mongoose from "mongoose";
-import connectDB from "../loaders/db";
 import recordRequestBody from "./data.json";
 
 describe("[GET] /record/:recordId", () => {
