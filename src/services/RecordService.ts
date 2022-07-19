@@ -76,11 +76,11 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
       note: null,
     };
 
-    if (typeof (record.content != "undefined")) {
+    if (typeof record.content != "undefined") {
       data.content = record.content;
     }
 
-    if (typeof (record.note != "undefined")) {
+    if (typeof record.note != "undefined") {
       data.note = record.note;
     }
     return data;
