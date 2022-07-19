@@ -15,9 +15,6 @@ const NoticeSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  is_changed: {
-    type: Boolean,
-  },
 });
 
 export default mongoose.model<NoticeInfo & mongoose.Document>("Notice", NoticeSchema);
