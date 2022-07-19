@@ -33,6 +33,7 @@ const message = {
   POST_NOTICE_FAIL: "푸시알림 시간 설정 실패",
   UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
   UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
+  NOT_FOUND_FCM: "존재하지 않는 유저 또는 FCM 토큰",
 };
 
 export default message;
