@@ -1,8 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
-import mongoose from "mongoose";
-import connectDB from "../loaders/db";
 import recordRequestBody from "./data.json";
 
 describe("[GET] /record/:recordId", () => {
@@ -31,11 +29,12 @@ describe("[POST] /record", () => {
       dream_color: 3,
       genre: [1, 2, 5],
       content: "테스트 내용",
-      title: "테스트 제목",
+      title: "테스트 제목 이걸로",
       emotion: 5,
     };
 
-    const res = await req.post("/record").send(recordRequestBody).set("Content-Type", "application/json");
+    const res = await req.post("/record").send(recordData).set("Content-Type", "application/json");
     expect(res.status).toBe(201);
+    console.log(res.body.data);
   });
 });
