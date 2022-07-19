@@ -21,15 +21,7 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
   try {
     const record = new Record(recordCreateDto);
 
-    if (
-      record.emotion == null ||
-      record.emotion < 0 ||
-      record.emotion > 7 ||
-      record.dream_color == null ||
-      record.dream_color < 0 ||
-      record.dream_color > 6 ||
-      record.genre.length == 0
-    ) {
+    if (record.emotion < 0 || record.emotion > 7 || record.dream_color < 0 || record.dream_color > 6) {
       return null;
     }
 
@@ -44,6 +36,18 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
 
     if (genre_error || genre_count > 3) {
       return null;
+    }
+
+    if (record.emotion === null) {
+      record.emotion = 7;
+    }
+
+    if (record.genre === null) {
+      record.genre = [10];
+    }
+
+    if (record.dream_color === null) {
+      record.dream_color = 0;
     }
 
     await record.save();

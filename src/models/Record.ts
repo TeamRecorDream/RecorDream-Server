@@ -26,15 +26,12 @@ const RecordSchema = new mongoose.Schema(
     },
     emotion: {
       type: Number,
-      default: 7,
     },
     dream_color: {
       type: Number,
-      default: 0,
     },
     genre: {
       type: Array,
-      default: [10],
     },
     note: {
       type: String,
