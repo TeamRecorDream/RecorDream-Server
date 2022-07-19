@@ -22,18 +22,18 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
 
     await notice.save();
 
-    const updatedTime = {
-      time: noticeBaseDto.time,
-    };
-
-    await User.findByIdAndUpdate(userObjectId, updatedTime).exec();
-
     const data = {
       _id: notice._id,
     };
 
-    /*
+    // User time도 변경
+    const updatedUserTime = {
+      time: noticeBaseDto.time,
+    };
 
+    await User.findByIdAndUpdate(userObjectId, updatedUserTime).exec();
+
+    // 유저가 입력한 시간 확인
     const push_time = notice.time;
     let is_day = true; // AM, PM 판별
 
@@ -50,19 +50,19 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     let hour = split_time[0];
     const min = split_time[1];
 
-    if (daynight[0] == "AM" || daynight[0] == "am") {
+    if (daynight[0] === "AM" || daynight[0] === "am") {
       is_day = true;
-      console.log("낮이에요!");
+      console.log("오전!");
     }
-    if (daynight[0] == "PM" || daynight[0] == "pm") {
+    if (daynight[0] === "PM" || daynight[0] === "pm") {
       is_day = false;
-      console.log("밤이에요!");
+      console.log("오후!");
     }
 
-    if ((is_day === false && hour !== 12) || (is_day === true && hour == 12)) hour += 12; // 오후
+    if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
 
-    // 푸시알림 보내기
-    const tokens = "";
+    // 푸시알림 설정
+    const tokens = noticeBaseDto.fcm_token;
 
     const alarms = {
       android: {
@@ -85,22 +85,19 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
       token: tokens,
     };
 
-    console.log(tokens);
-
-    // 메시지 보내기
+    // 푸시알림 보내기
     admin
       .messaging()
       .send(alarms)
       .then(function (response: any) {
         schedule.scheduleJob({ hour: hour, minute: min }, function () {
-          console.log("방금 꾼 꿈, 잊어버리기 전에 기록해볼까요?");
+          console.log("스케줄러 성공!");
         });
         console.log("Successfully sent message: ", response);
       })
       .catch(function (err) {
         console.log("Error Sending message!!! : ", err);
       });
-      */
 
     return data;
   } catch (err) {
@@ -118,20 +115,19 @@ const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto, user
       return null;
     }
 
-    const updatedTime = {
+    const updatedUserTime = {
       time: noticeBaseDto.time,
+      is_changed: noticeBaseDto.is_changed,
     };
 
-    const notice = await Notice.findByIdAndUpdate(noticeId, updatedTime).exec();
+    updatedUserTime.is_changed = true;
 
-    await User.findByIdAndUpdate(userObjectId, updatedTime).exec();
+    const notice = await Notice.findByIdAndUpdate(noticeId, updatedUserTime).exec();
 
-    if (notice !== null) {
-      notice.is_changed = true;
-      console.log(notice.is_changed);
-    }
+    // User time도 변경
+    await User.findByIdAndUpdate(userObjectId, updatedUserTime).exec();
 
-    const push_time = updatedTime.time;
+    const push_time = updatedUserTime.time;
     let is_day = true; // AM, PM 판별
 
     const parts = push_time.split(/:| /);
@@ -147,19 +143,19 @@ const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto, user
     let hour = split_time[0];
     const min = split_time[1];
 
-    if (daynight[0] == "AM" || daynight[0] == "am") {
+    if (daynight[0] === "AM" || daynight[0] === "am") {
       is_day = true;
-      console.log("낮이에요!");
+      console.log("오전!");
     }
-    if (daynight[0] == "PM" || daynight[0] == "pm") {
+    if (daynight[0] === "PM" || daynight[0] === "pm") {
       is_day = false;
-      console.log("밤이에요!");
+      console.log("오후!");
     }
 
-    if ((is_day === false && hour !== 12) || (is_day === true && hour == 12)) hour += 12; // 오후라는 소리
+    if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후라는 소리
 
     schedule.scheduleJob({ hour: hour, minute: min }, function () {
-      console.log("방금 꾼 꿈, 잊어버리기 전에 기록해볼까요?");
+      console.log("스케줄러 성공!");
     });
 
     return notice;
