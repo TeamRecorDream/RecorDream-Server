@@ -6,6 +6,7 @@ import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
+import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 
 /**
  * @route PUT /user/nickname
@@ -60,6 +61,7 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
 const changeToggle = async (req: Request, res: Response): Promise<void> => {
   const userId = req.header("userId");
   const toggle: string = req.params.toggle;
+  const userAlarmDto: UserAlarmDto = req.body;
 
   try {
     if (!userId) {
@@ -69,7 +71,7 @@ const changeToggle = async (req: Request, res: Response): Promise<void> => {
       // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    await UserService.changeToggle(userId as string, toggle);
+    await UserService.changeToggle(userId as string, toggle, userAlarmDto);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {
@@ -91,7 +93,7 @@ const updateFcmToken = async (req: Request, res: Response) => {
     const updatedToken = await UserService.updateFcmToken(userId, fcmTokenUpdateDto);
 
     if (!updatedToken) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_FCM_TOKEN_SUCCESS));
