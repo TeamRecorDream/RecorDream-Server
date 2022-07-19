@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
   },
   fcm_token: {
     type: [String],
+    unique: true,
   },
 });
 
