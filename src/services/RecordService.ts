@@ -63,19 +63,26 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
       };
     }
 
-    const data = {
+    let data: RecordResponseDto = {
       _id: record._id,
       writer: record.writer.nickname,
       date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
       title: record.title,
       voice: voiceResponse,
-      content: record.content,
+      content: null,
       emotion: record.emotion,
       dream_color: record.dream_color,
       genre: record.genre,
-      note: record.note,
+      note: null,
     };
 
+    if (typeof (record.content != "undefined")) {
+      data.content = record.content;
+    }
+
+    if (typeof (record.note != "undefined")) {
+      data.note = record.note;
+    }
     return data;
   } catch (err) {
     console.log(err);
