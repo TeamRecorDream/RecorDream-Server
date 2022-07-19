@@ -21,7 +21,15 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
   try {
     const record = new Record(recordCreateDto);
 
-    if (record.emotion < 0 || record.emotion > 7 || record.dream_color < 0 || record.dream_color > 6) {
+    if (
+      record.emotion == null ||
+      record.emotion < 0 ||
+      record.emotion > 7 ||
+      record.dream_color == null ||
+      record.dream_color < 0 ||
+      record.dream_color > 6 ||
+      record.genre.length == 0
+    ) {
       return null;
     }
 
