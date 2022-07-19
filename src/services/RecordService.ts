@@ -25,15 +25,16 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       return null;
     }
 
-    let genre_error;
-
+    let genre_error = false;
+    let genre_count = 0;
     record.genre.map((genre) => {
+      genre_count++;
       if (genre < 0 || genre > 10) {
         genre_error = true;
       }
     });
 
-    if (genre_error) {
+    if (genre_error || genre_count > 3) {
       return null;
     }
 
@@ -163,10 +164,12 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
       return null;
     }
 
+    let recordList;
+
     switch (filter) {
       case "0":
         // eslint-disable-next-line no-var
-        var recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
+        recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
         break;
       case "1":
       case "2":
