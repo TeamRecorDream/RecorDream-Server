@@ -1,10 +1,9 @@
 import request from "supertest";
 import app from "../app";
-import router from "../routes";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
-import Record from "../models/Record";
-import requestBody from "./data.json";
 import mongoose from "mongoose";
+import connectDB from "../loaders/db";
+import recordRequestBody from "./data.json";
 
 describe("[GET] /record/:recordId", () => {
   const req = request(app);
@@ -36,7 +35,7 @@ describe("[POST] /record", () => {
       emotion: 5,
     };
 
-    const res = await req.post("/record").send(requestBody).set("Content-Type", "application/json");
+    const res = await req.post("/record").send(recordRequestBody).set("Content-Type", "application/json");
     expect(res.status).toBe(201);
   });
 });

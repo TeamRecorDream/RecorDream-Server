@@ -1,7 +1,1 @@
-{
-  "dream_color": 3,
-  "genre": [1, 2, 5],
-  "content": "테스트 내용",
-  "title": "테스트 제목",
-  "emotion": 5
-}
+{ "dream_color": 3, "genre": [1, 2, 5], "content": "테스트 내용", "title": "테스트 제목", "emotion": 5 }
