@@ -1,3 +1,3 @@
-export interface FcmTokenUpdateDto {
-  fcm_token: string;
-}
+import { UserAlarmDto } from "./UserAlarmDto";
+
+export type FcmTokenUpdateDto = UserAlarmDto;

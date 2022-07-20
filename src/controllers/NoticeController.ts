@@ -27,7 +27,7 @@ const postNotice = async (req: Request, res: Response) => {
   try {
     const data = await NoticeService.postNotice(noticeBaseDto, userId as string);
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
 
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS, data));
@@ -53,14 +53,13 @@ const updateNotice = async (req: Request, res: Response) => {
   }
 
   if (!noticeId || !userId) {
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
   }
 
   try {
     const data = await NoticeService.updateNotice(noticeId, noticeBaseDto, userId as string);
-
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NOTICE_SUCCESS));
