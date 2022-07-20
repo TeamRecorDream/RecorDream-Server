@@ -25,10 +25,10 @@ const createRecord = async (req: Request, res: Response) => {
   try {
     const data = await RecordService.createRecord(recordCreateDto);
     if (!data) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_FAIL));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_NUMBER_FAIL));
     }
 
-    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_RECORD_SUCCESS, data));
+    return res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -45,10 +45,10 @@ const getRecord = async (req: Request, res: Response) => {
   try {
     const data = await RecordService.getRecord(recordId);
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -88,17 +88,20 @@ const getRecordList = async (req: Request, res: Response) => {
 const updateRecord = async (req: Request, res: Response) => {
   const error = validationResult(req); //title empty 확인?
   if (!error.isEmpty()) {
-    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FAIL));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FORM_FAIL));
   }
 
   const recordUpdateDto: RecordUpdateDto = req.body;
   const { recordId } = req.params;
   try {
     const data = await RecordService.updateRecord(recordId, recordUpdateDto);
-    if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    if (!data || data === 1) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
+    if (data === 2) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_NUMBER_FAIL));
+    }
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -115,9 +118,9 @@ const deleteRecord = async (req: Request, res: Response) => {
   try {
     const data = await RecordService.deleteRecord(recordId);
     if (data === false) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    res.status(statusCode.NO_CONTENT).send(util.success(statusCode.NO_CONTENT, message.DELETE_RECORD_SUCCESS));
+    return res.status(statusCode.NO_CONTENT).send(util.success(statusCode.NO_CONTENT, message.DELETE_RECORD_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
