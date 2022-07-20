@@ -25,6 +25,10 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       return null;
     }
 
+    if (record.genre === null) {
+      record.genre = [10];
+    }
+
     let genre_error = false;
     let genre_count = 0;
     record.genre.map((genre) => {
@@ -37,13 +41,12 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
     if (genre_error || genre_count > 3) {
       return null;
     }
+    if (genre_count === 0) {
+      record.genre = [10];
+    }
 
     if (record.emotion === null) {
       record.emotion = 7;
-    }
-
-    if (record.genre === null) {
-      record.genre = [10];
     }
 
     if (record.dream_color === null) {
