@@ -365,3 +365,7 @@ describe("[POST] /record", () => {
     expect(res.body.message).toEqual("감정, 색깔, 장르 범위 오류입니다");
   });
 });
+
+/*
+[PATCH] /record/:recordId
+*/

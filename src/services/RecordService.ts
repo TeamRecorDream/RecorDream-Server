@@ -140,7 +140,38 @@ const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto):
   try {
     const record = await Record.findById(recordId);
     if (!record) return null;
+
     const update = recordUpdateDto;
+    if (update.emotion < 0 || update.emotion > 6 || update.dream_color < 0 || update.dream_color > 6) {
+      return null;
+    }
+
+    let genre_error = false;
+    let genre_count = 0;
+
+    if (update.genre === null) {
+      update.genre = [10];
+      genre_count = 1;
+    } else {
+      update.genre.map((genre) => {
+        genre_count++;
+        if (genre < 0 || genre > 9) {
+          genre_error = true;
+        }
+      });
+    }
+
+    if (genre_error || genre_count > 3 || genre_count === 0) {
+      return null;
+    }
+
+    if (update.emotion === null) {
+      update.emotion = 7;
+    }
+
+    if (update.dream_color === null) {
+      update.dream_color = 0;
+    }
 
     const data = await Record.findOneAndUpdate(
       { _id: recordId }, //filter
