@@ -1,10 +1,9 @@
 import request from "supertest";
 import app from "../app";
 
-//예시로 해둔 거 - 서연이 이어서 하면 됨
 describe("[POST] /record", () => {
   const req = request(app);
-  it("녹음 없는 꿈 기록 생성 테스트", async () => {
+  it("녹음 없는 꿈 기록 생성 테스트(음성x)", async () => {
     const recordData = {
       title: "오늘은 7월 20일",
       date: "2022-07-19T10:00:49.196",
