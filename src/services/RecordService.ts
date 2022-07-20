@@ -136,14 +136,20 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
   }
 };
 
-const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null> => {
+const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null | number> => {
   try {
+    let exitCode = 0;
     const record = await Record.findById(recordId);
-    if (!record) return null;
+    if (!record) {
+      exitCode = 1;
+    }
 
     const update = recordUpdateDto;
+    if (update.date === null) {
+      exitCode = 2;
+    }
     if (update.emotion < 0 || update.emotion > 6 || update.dream_color < 0 || update.dream_color > 6) {
-      return null;
+      exitCode = 2;
     }
 
     let genre_error = false;
@@ -162,7 +168,7 @@ const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto):
     }
 
     if (genre_error || genre_count > 3 || genre_count === 0) {
-      return null;
+      exitCode = 2;
     }
 
     if (update.emotion === null) {
@@ -171,6 +177,10 @@ const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto):
 
     if (update.dream_color === null) {
       update.dream_color = 0;
+    }
+
+    if (exitCode != 0) {
+      return exitCode;
     }
 
     const data = await Record.findOneAndUpdate(
