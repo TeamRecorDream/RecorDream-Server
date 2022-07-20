@@ -39,6 +39,7 @@ describe("[GET] /record/:recordId", () => {
 */
 describe("[DELETE] baseurl/record/:recordId", () => {
   const req = request(app);
+
   //204 No Content - 정상적으로 삭제 (만들어서 확인하고 지우고 확인하고)
   it("꿈 기록 삭제 테스트(정상)", async () => {
     const recordData = {
@@ -365,7 +366,3 @@ describe("[POST] /record", () => {
     expect(res.body.message).toEqual("감정, 색깔, 장르 범위 오류입니다");
   });
 });
-
-/*
-[PATCH] /record/:recordId
-*/
