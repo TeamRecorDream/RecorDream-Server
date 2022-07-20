@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 export interface RecordCreateDto {
   date?: Date; //required
   title: string; //required
-  content?: string;
-  emotion?: number; //default
-  dream_color?: number; //default
-  genre?: number[]; //default
-  note?: string;
+  content?: string | null;
+  emotion?: number | null; //default
+  dream_color?: number | null; //default
+  genre?: number[] | null; //default
+  note?: string | null;
   writer?: mongoose.Types.ObjectId; //required
-  voice?: mongoose.Types.ObjectId;
+  voice?: mongoose.Types.ObjectId | null;
 }
