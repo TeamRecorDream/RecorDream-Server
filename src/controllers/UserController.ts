@@ -63,15 +63,19 @@ const changeToggle = async (req: Request, res: Response): Promise<void> => {
   const toggle: string = req.params.toggle;
   const userAlarmDto: UserAlarmDto = req.body;
 
+  if (!userId) {
+    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+  }
+  if (toggle !== "1" && toggle !== "0") {
+    // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
+    res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+  }
+
   try {
-    if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    const result = await UserService.changeToggle(userId as string, toggle, userAlarmDto);
+    if (result === null) {
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
-    if (toggle !== "1" && toggle !== "0") {
-      // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-    }
-    await UserService.changeToggle(userId as string, toggle, userAlarmDto);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {

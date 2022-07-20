@@ -7,6 +7,8 @@ import userMocking from "../models/UserMocking";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
 import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
+import Notice from "../models/Notice";
+import pushMessage from "../modules/pushMessage";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -63,8 +65,22 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     if (toggle == "1") {
       user.is_notified = true;
 
-      // 유저가 입력한 시간 확인
-      const push_time = user.time as string;
+      const tokens = userAlarmDto.fcm_token;
+
+      let fcm_error = true;
+      if (user.fcm_token[0] === tokens || user.fcm_token[1] === tokens) {
+        fcm_error = false;
+      }
+      if (fcm_error === true) {
+        console.log("에러 캐치");
+        return null;
+      }
+
+      // 기기별 입력한 푸시알림 시간 확인
+      const times = await Notice.find({ fcm_token: tokens }).select("time -_id");
+
+      const push_time = times[0].time as string;
+      console.log(push_time);
       let is_day = true; // AM, PM 판별
 
       const parts = push_time.split(/:| /);
@@ -91,25 +107,15 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
       if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
 
+      console.log(pushMessage.title);
+      console.log(pushMessage.body);
+
       // 푸시알림 설정
-      const tokens = userAlarmDto.fcm_token;
-      console.log(tokens);
-
-      let fcm_error = true;
-
-      if (user.fcm_token[0] === tokens || user.fcm_token[1] === tokens) {
-        fcm_error = false;
-      }
-
-      if (fcm_error === true) {
-        return null;
-      }
-
       const alarms = {
         android: {
           data: {
-            title: "Recordream",
-            body: "방금 꾼 꿈, 잊어버리기 전에 기록해볼까요?",
+            title: pushMessage.title,
+            body: pushMessage.body,
           },
         },
         apns: {
@@ -117,8 +123,8 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
             aps: {
               contentAvailable: true,
               alert: {
-                title: "Recordream",
-                body: "방금 꾼 꿈, 잊어버리기 전에 기록해볼까요?",
+                title: pushMessage.title,
+                body: pushMessage.body,
               },
             },
           },
@@ -132,9 +138,8 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
         .send(alarms)
         .then(function (response: any) {
           schedule.scheduleJob({ hour: hour, minute: min }, function () {
-            console.log("스케줄러 성공!");
+            console.log("Successfully sent message: ", response);
           });
-          console.log("Successfully sent message: ", response);
         })
         .catch(function (err) {
           console.log("Error Sending message!!! : ", err);
