@@ -38,11 +38,8 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       }
     });
 
-    if (genre_error || genre_count > 3) {
+    if (genre_error || genre_count > 3 || genre_count === 0) {
       return null;
-    }
-    if (genre_count === 0) {
-      record.genre = [10];
     }
 
     if (record.emotion === null) {
