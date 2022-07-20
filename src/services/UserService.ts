@@ -107,9 +107,6 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
       if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
 
-      console.log(pushMessage.title);
-      console.log(pushMessage.body);
-
       // 푸시알림 설정
       const alarms = {
         android: {
