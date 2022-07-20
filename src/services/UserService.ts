@@ -4,6 +4,11 @@ import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto"
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import User from "../models/User";
 import userMocking from "../models/UserMocking";
+import * as admin from "firebase-admin";
+import schedule from "node-schedule";
+import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
+import Notice from "../models/Notice";
+import pushMessage from "../modules/pushMessage";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -47,7 +52,7 @@ const getUser = async (userId: string) => {
   }
 };
 
-const changeToggle = async (userId: string, toggle: string) => {
+const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAlarmDto) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
@@ -59,8 +64,89 @@ const changeToggle = async (userId: string, toggle: string) => {
     // toggle parameter 값이 1이면 푸시알림 설정 O
     if (toggle == "1") {
       user.is_notified = true;
-      // toggle parameter 값이 0이면 푸시알림 설정 X
-    } else if (toggle == "0") {
+
+      const tokens = userAlarmDto.fcm_token;
+
+      let fcm_error = true;
+      if (user.fcm_token[0] === tokens || user.fcm_token[1] === tokens) {
+        fcm_error = false;
+      }
+      if (fcm_error === true) {
+        console.log("에러 캐치");
+        return null;
+      }
+
+      // 기기별 입력한 푸시알림 시간 확인
+      const times = await Notice.find({ fcm_token: tokens }).select("time -_id");
+
+      const push_time = times[0].time as string;
+      console.log(push_time);
+      let is_day = true; // AM, PM 판별
+
+      const parts = push_time.split(/:| /);
+
+      const daynight: string[] = []; // for AM, PM
+      const split_time: number[] = []; // for 시간, 분
+
+      daynight.push(parts[0]);
+
+      for (let i = 0; i < 2; i++) {
+        split_time.push(parseInt(parts[i + 1]));
+      }
+      let hour = split_time[0];
+      const min = split_time[1];
+
+      if (daynight[0] === "AM" || daynight[0] === "am") {
+        is_day = true;
+        console.log("오전!");
+      }
+      if (daynight[0] === "PM" || daynight[0] === "pm") {
+        is_day = false;
+        console.log("오후!");
+      }
+
+      if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
+
+      console.log(pushMessage.title);
+      console.log(pushMessage.body);
+
+      // 푸시알림 설정
+      const alarms = {
+        android: {
+          data: {
+            title: pushMessage.title,
+            body: pushMessage.body,
+          },
+        },
+        apns: {
+          payload: {
+            aps: {
+              contentAvailable: true,
+              alert: {
+                title: pushMessage.title,
+                body: pushMessage.body,
+              },
+            },
+          },
+        },
+        token: tokens,
+      };
+
+      // 푸시알림 보내기
+      admin
+        .messaging()
+        .send(alarms)
+        .then(function (response: any) {
+          schedule.scheduleJob({ hour: hour, minute: min }, function () {
+            console.log("Successfully sent message: ", response);
+          });
+        })
+        .catch(function (err) {
+          console.log("Error Sending message!!! : ", err);
+        });
+    }
+    // toggle parameter 값이 0이면 푸시알림 설정 X
+    if (toggle == "0") {
       user.is_notified = false;
     }
 
@@ -71,7 +157,7 @@ const changeToggle = async (userId: string, toggle: string) => {
   }
 };
 
-// userId: parmas, fcmToken: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
+// userId: params, fcm_token: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
   const { fcm_token } = fcmTokenUpdateDto;
 
@@ -79,7 +165,7 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
     const user = await User.findById(userId);
 
     if (!user) {
-      return undefined;
+      return null;
     }
 
     const filter = {
