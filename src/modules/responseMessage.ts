@@ -13,7 +13,7 @@ const message = {
 
   // 레코드
   CREATE_RECORD_SUCCESS: "꿈 기록 작성 성공",
-  CREATE_RECORD_FAIL: "꿈 기록 작성 실패",
+  CREATE_RECORD_NUMBER_FAIL: "감정, 색깔, 장르 범위 오류입니다",
   CREATE_RECORD_TITLE_FAIL: "제목이 없거나 길이를 초과하였습니다",
   UPDATE_RECORD_FAIL: "제목 오류 또는 음성/작성자 수정 시도",
   READ_RECORD_SUCCESS: "꿈 기록 조회 성공",
