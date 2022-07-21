@@ -32,4 +32,9 @@ export default {
    * firebase admin
    */
   firebaseAdmin: process.env.FIREBASE_ADMIN as string,
+
+  /**
+   * slack webhook url
+   */
+  webhookURL: process.env.SLACK_WEBHOOK_URL as string,
 };
