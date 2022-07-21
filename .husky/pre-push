@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
 FORBIDDEN_HTTPS_URL="https://github.com/TeamRecorDream/RecorDream-Server.git" # insert your remote url (https)
 FORBIDDEN_SSH_URL="git@github.com:TeamRecorDream/RecorDream-Server.git" # insert your remote url (ssh)
