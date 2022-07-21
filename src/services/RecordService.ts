@@ -21,22 +21,24 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
   try {
     const record = new Record(recordCreateDto);
 
-    if (record.emotion < 0 || record.emotion > 7 || record.dream_color < 0 || record.dream_color > 6) {
+    if (record.emotion < 0 || record.emotion > 6 || record.dream_color < 0 || record.dream_color > 6) {
       return null;
-    }
-
-    if (record.genre === null) {
-      record.genre = [10];
     }
 
     let genre_error = false;
     let genre_count = 0;
-    record.genre.map((genre) => {
-      genre_count++;
-      if (genre < 0 || genre > 10) {
-        genre_error = true;
-      }
-    });
+
+    if (record.genre === null) {
+      record.genre = [10];
+      genre_count = 1;
+    } else {
+      record.genre.map((genre) => {
+        genre_count++;
+        if (genre < 0 || genre > 9) {
+          genre_error = true;
+        }
+      });
+    }
 
     if (genre_error || genre_count > 3 || genre_count === 0) {
       return null;
@@ -134,11 +136,52 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
   }
 };
 
-const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null> => {
+const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null | number> => {
   try {
+    let exitCode = 0;
     const record = await Record.findById(recordId);
-    if (!record) return null;
+    if (!record) {
+      exitCode = 1;
+    }
+
     const update = recordUpdateDto;
+    if (update.date === null) {
+      exitCode = 2;
+    }
+    if (update.emotion < 0 || update.emotion > 6 || update.dream_color < 0 || update.dream_color > 6) {
+      exitCode = 2;
+    }
+
+    let genre_error = false;
+    let genre_count = 0;
+
+    if (update.genre === null) {
+      update.genre = [10];
+      genre_count = 1;
+    } else {
+      update.genre.map((genre) => {
+        genre_count++;
+        if (genre < 0 || genre > 9) {
+          genre_error = true;
+        }
+      });
+    }
+
+    if (genre_error || genre_count > 3 || genre_count === 0) {
+      exitCode = 2;
+    }
+
+    if (update.emotion === null) {
+      update.emotion = 7;
+    }
+
+    if (update.dream_color === null) {
+      update.dream_color = 0;
+    }
+
+    if (exitCode != 0) {
+      return exitCode;
+    }
 
     const data = await Record.findOneAndUpdate(
       { _id: recordId }, //filter
@@ -149,9 +192,9 @@ const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto):
     );
 
     return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
 
