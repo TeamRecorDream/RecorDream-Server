@@ -51,6 +51,6 @@
     "node-schedule": "^2.1.0"
   },
   "hooks": {
-    "pre-push": "./huskyhooks/pre-push"
+    "pre-push": "./.husky/pre-push"
   }
 }
