@@ -70,7 +70,7 @@ const changeToggle = async (req: Request, res: Response): Promise<void> => {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
     await UserService.changeToggle(userId as string, toggle);
-
+    console.log(process.memoryUsage().rss / 1024 / 1024 + "MB");
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {
     console.log(err);

@@ -40,3 +40,11 @@ app
     console.error(err);
     process.exit(1);
   });
+
+var heapdump = require("heapdump");
+
+app.use("/heapdump", function (req, res, next) {
+  var filename = "C:/Users/choo0/Desktop/" + Date.now() + ".heapsnapshot";
+  heapdump.writeSnapshot(filename);
+  res.send("Heapdump has been generated in " + filename);
+});

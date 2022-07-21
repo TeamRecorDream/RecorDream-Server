@@ -72,7 +72,6 @@ const getRecordList = async (req: Request, res: Response) => {
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
   } catch (err) {
     console.log(err);
@@ -98,6 +97,7 @@ const updateRecord = async (req: Request, res: Response) => {
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
+    console.log(process.memoryUsage().rss / 1024 / 1024 + "MB");
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
   } catch (err) {
     console.log(err);
@@ -168,6 +168,7 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
+    console.log(process.memoryUsage().rss / 1024 / 1024 + "MB");
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
