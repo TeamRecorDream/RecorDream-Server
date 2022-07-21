@@ -35,6 +35,7 @@ const message = {
   UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
   UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
   NOT_FOUND_FCM: "존재하지 않는 유저 또는 FCM 토큰",
+  POST_NOTICE_ALREADY: "해당 토큰으로 이미 시간 설정됨",
 };
 
 export default message;
