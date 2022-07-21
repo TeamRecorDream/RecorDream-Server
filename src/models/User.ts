@@ -20,12 +20,6 @@ const UserSchema = new mongoose.Schema({
   is_deleted: {
     type: Boolean,
   },
-  is_notified: {
-    type: Boolean,
-  },
-  time: {
-    type: String,
-  },
   fcm_token: {
     type: [String],
     unique: true,

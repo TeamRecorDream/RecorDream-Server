@@ -14,7 +14,6 @@ import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
  * @access Public
  */
 const updateNickname = async (req: Request, res: Response) => {
-  console.log("안녕");
   const err = validationResult(req);
   const userUpdateDto: UserNicknameUpdateDto = req.body;
   const userId = req.header("userId");
@@ -39,13 +38,15 @@ const updateNickname = async (req: Request, res: Response) => {
  * @access Public
  */
 const getUser = async (req: Request, res: Response) => {
+  const err = validationResult(req);
   const userId = req.header("userId");
+  const userAlarmDto: UserAlarmDto = req.body;
 
   try {
-    if (!userId) {
+    const data = await UserService.getUser(userId as string, userAlarmDto);
+    if (!userId || !err.isEmpty()) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
-    const data = await UserService.getUser(userId as string);
 
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
   } catch (err) {
