@@ -14,7 +14,6 @@ import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
  * @access Public
  */
 const updateNickname = async (req: Request, res: Response) => {
-  console.log("안녕");
   const err = validationResult(req);
   const userUpdateDto: UserNicknameUpdateDto = req.body;
   const userId = req.header("userId");
@@ -26,7 +25,7 @@ const updateNickname = async (req: Request, res: Response) => {
 
     await UserService.updateNickname(userId as string, userUpdateDto);
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
   } catch (err) {
     console.log(err);
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
