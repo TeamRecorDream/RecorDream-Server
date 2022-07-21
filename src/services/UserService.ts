@@ -65,10 +65,10 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     if (toggle == "1") {
       user.is_notified = true;
 
-      const tokens = userAlarmDto.fcm_token;
+      const token = userAlarmDto.fcm_token;
 
       let fcm_error = true;
-      if (user.fcm_token[0] === tokens || user.fcm_token[1] === tokens) {
+      if (user.fcm_token[0] === token || user.fcm_token[1] === token) {
         fcm_error = false;
       }
       if (fcm_error === true) {
@@ -77,7 +77,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
       }
 
       // 기기별 입력한 푸시알림 시간 확인
-      const times = await Notice.find({ fcm_token: tokens }).select("time -_id");
+      const times = await Notice.find({ fcm_token: token }).select("time -_id");
 
       const push_time = times[0].time as string;
       console.log(push_time);
@@ -98,17 +98,12 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
       if (daynight[0] === "AM" || daynight[0] === "am") {
         is_day = true;
-        console.log("오전!");
       }
       if (daynight[0] === "PM" || daynight[0] === "pm") {
         is_day = false;
-        console.log("오후!");
       }
 
       if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
-
-      console.log(pushMessage.title);
-      console.log(pushMessage.body);
 
       // 푸시알림 설정
       const alarms = {
@@ -129,21 +124,21 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
             },
           },
         },
-        token: tokens,
+        token: token,
       };
 
-      // 푸시알림 보내기
-      admin
-        .messaging()
-        .send(alarms)
-        .then(function (response: any) {
-          schedule.scheduleJob({ hour: hour, minute: min }, function () {
+      schedule.scheduleJob({ hour: hour, minute: min }, function () {
+        // 푸시알림 보내기
+        admin
+          .messaging()
+          .send(alarms)
+          .then(function (response: any) {
             console.log("Successfully sent message: ", response);
+          })
+          .catch(function (err) {
+            console.log("Error Sending message!!! : ", err);
           });
-        })
-        .catch(function (err) {
-          console.log("Error Sending message!!! : ", err);
-        });
+      });
     }
     // toggle parameter 값이 0이면 푸시알림 설정 X
     if (toggle == "0") {
@@ -157,27 +152,39 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
   }
 };
 
-// userId: params, fcm_token: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
+// fcm_token: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
+  const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
+
   const { fcm_token } = fcmTokenUpdateDto;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userObjectId);
+    console.log(user);
 
     if (!user) {
       return null;
     }
 
+    /*
+    const tokens = {
+      fcm_token: fcmTokenUpdateDto.fcm_token,
+      //new_token: fcmTokenUpdateDto.new_token,
+    };
+    */
+
     const filter = {
-      _id: userId,
+      _id: userObjectId,
     };
 
     const update = { fcm_token };
-    const updatedUser = await User.findOneAndUpdate(filter, update, {
+
+    //const updatedUser = await User.where({ fcm_token: tokens.fcm_token }).update({ fcm_token: tokens.fcm_token }).exec();
+    const updatedFcm = await User.findOneAndUpdate(filter, update, {
       new: true,
     });
 
-    return updatedUser;
+    return updatedFcm;
   } catch (err) {
     console.log(err);
     throw err;
