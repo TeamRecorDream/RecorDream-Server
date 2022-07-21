@@ -5,9 +5,8 @@ import User from "../models/User";
 import mongoose from "mongoose";
 import userMocking from "../models/UserMocking";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
-import { NoticeInfo } from "../interfaces/notice/NoticeInfo";
 
-const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise<PostBaseResponseDto | null> => {
+const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise<PostBaseResponseDto | null | undefined> => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
@@ -24,9 +23,10 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
 
     const device = await Notice.find({});
 
+    // 이미 시간 설정한 fcm 인지 확인
     for (let i = 0; i < device.length; i++) {
       if (device[i].fcm_token === notice.fcm_token) {
-        return null;
+        return undefined;
       }
     }
 
@@ -43,7 +43,7 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
   }
 };
 
-const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto, userId: string): Promise<NoticeInfo | null> => {
+const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
@@ -56,20 +56,11 @@ const updateNotice = async (noticeId: string, noticeBaseDto: NoticeBaseDto, user
       time: noticeBaseDto.time,
     };
 
-    let fcm_error = true;
-    if (user.fcm_token[0] === noticeBaseDto.fcm_token || user.fcm_token[1] === noticeBaseDto.fcm_token) {
-      fcm_error = false;
-    }
-    if (fcm_error === true) {
+    if (user.fcm_token[0] !== noticeBaseDto.fcm_token && user.fcm_token[1] !== noticeBaseDto.fcm_token) {
       return null;
     }
 
-    const notice = await Notice.findByIdAndUpdate(noticeId, updatedUserTime).exec();
-
-    // User time도 변경
-    await User.findByIdAndUpdate(userObjectId, updatedUserTime).exec();
-
-    return notice;
+    await Notice.updateOne({ fcm_token: noticeBaseDto.fcm_token }, { time: updatedUserTime.time }).exec();
   } catch (err) {
     console.log(err);
     throw err;
