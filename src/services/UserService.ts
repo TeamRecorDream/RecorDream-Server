@@ -24,25 +24,28 @@ const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateD
   }
 };
 
-const getUser = async (userId: string) => {
+const getUser = async (userId: string, userAlarmDto: UserAlarmDto) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
-    if (!user) {
+    const token = userAlarmDto.fcm_token;
+    const device = await Notice.find({ fcm_token: token });
+
+    if (!user || !device[0]) {
       return null;
     }
 
     // 조회할 회원정보가 있고
-    // is_notified가 false 일 때
-    if (user.is_notified == false) {
-      user.time = null;
+    // is_active가 false 일 때
+    if (device[0].is_active == false) {
+      device[0].time = null;
     }
     const result = {
       nickname: user.nickname,
       email: user.email,
-      is_notified: user.is_notified,
-      time: user.time,
+      is_active: device[0].is_active,
+      time: device[0].time,
       is_deleted: user.is_deleted,
     };
     return result;
@@ -61,26 +64,23 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
       return null;
     }
 
+    const token = userAlarmDto.fcm_token;
+    const device = await Notice.find({ fcm_token: token });
+
+    if (!device) {
+      console.log("에러 캐치");
+      return null;
+    }
+
     // toggle parameter 값이 1이면 푸시알림 설정 O
     if (toggle == "1") {
-      user.is_notified = true;
-
-      const token = userAlarmDto.fcm_token;
-
-      let fcm_error = true;
-      if (user.fcm_token[0] === token || user.fcm_token[1] === token) {
-        fcm_error = false;
-      }
-      if (fcm_error === true) {
-        console.log("에러 캐치");
-        return null;
-      }
+      device[0].is_active = true;
 
       // 기기별 입력한 푸시알림 시간 확인
-      const times = await Notice.find({ fcm_token: token }).select("time -_id");
+      const times = device[0].time;
+      console.log(times);
 
-      const push_time = times[0].time as string;
-      console.log(push_time);
+      const push_time = times as string;
       let is_day = true; // AM, PM 판별
 
       const parts = push_time.split(/:| /);
@@ -97,13 +97,16 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
       const min = split_time[1];
 
       if (daynight[0] === "AM" || daynight[0] === "am") {
+        console.log("오전");
         is_day = true;
       }
       if (daynight[0] === "PM" || daynight[0] === "pm") {
         is_day = false;
       }
 
-      if ((is_day === false && hour !== 12) || (is_day === true && hour === 12)) hour += 12; // 오후
+      if (is_day === false && hour !== 12) hour += 12; // 오후
+      if (is_day === true && hour === 12) hour = 0;
+      console.log(hour);
 
       // 푸시알림 설정
       const alarms = {
@@ -142,10 +145,10 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     }
     // toggle parameter 값이 0이면 푸시알림 설정 X
     if (toggle == "0") {
-      user.is_notified = false;
+      device[0].is_active = false;
     }
 
-    await User.findByIdAndUpdate(userObjectId, user).exec();
+    await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active }).exec();
   } catch (err) {
     console.log(err);
     throw err;
@@ -156,7 +159,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
   const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
 
-  const { fcm_token } = fcmTokenUpdateDto;
+  //const { fcm_token, new_token } = fcmTokenUpdateDto;
 
   try {
     const user = await User.findById(userObjectId);
@@ -166,25 +169,36 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
       return null;
     }
 
-    /*
     const tokens = {
       fcm_token: fcmTokenUpdateDto.fcm_token,
-      //new_token: fcmTokenUpdateDto.new_token,
+      new_token: fcmTokenUpdateDto.new_token,
     };
+
+    const fcm1 = user.fcm_token[0];
+    const fcm2 = user.fcm_token[1];
+
+    if (user.fcm_token[0] !== tokens.fcm_token && user.fcm_token[1] !== tokens.fcm_token) {
+      return null;
+    }
+    const updat = await User.find({ fcm_token: fcm1 });
+    console.log(updat);
+
+    /*
+    if (fcm1 === tokens.fcm_token) {
+      const updatedFcm = await User.where({ "fcm_token.$.0": fcm1 }).update({ fcm_token: tokens.new_token }).exec();
+      return updatedFcm;
+    }
+    if (fcm2 === tokens.fcm_token) {
+      const updatedFcm = await User.where({ ["fcm_token"]: fcm2 })
+        .update({ fcm_token: tokens.new_token })
+        .exec();
+      return updatedFcm;
+    }
     */
 
-    const filter = {
-      _id: userObjectId,
-    };
-
-    const update = { fcm_token };
-
-    //const updatedUser = await User.where({ fcm_token: tokens.fcm_token }).update({ fcm_token: tokens.fcm_token }).exec();
-    const updatedFcm = await User.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-
-    return updatedFcm;
+    //const updatedFcm = await User.findOneAndUpdate(filter, update, {
+    //  new: true,
+    //});
   } catch (err) {
     console.log(err);
     throw err;

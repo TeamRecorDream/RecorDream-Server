@@ -22,21 +22,19 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
       _id: notice._id,
     };
 
-    // User time도 변경
-    const updatedUserTime = {
-      time: noticeBaseDto.time,
-    };
+    const device = await Notice.find({});
 
-    let fcm_error = true;
-    if (user.fcm_token[0] === notice.fcm_token || user.fcm_token[1] === notice.fcm_token) {
-      fcm_error = false;
+    for (let i = 0; i < device.length; i++) {
+      if (device[i].fcm_token === notice.fcm_token) {
+        return null;
+      }
     }
-    if (fcm_error === true) {
+
+    if (user.fcm_token[0] !== notice.fcm_token && user.fcm_token[1] !== notice.fcm_token) {
       return null;
     }
 
     await notice.save();
-    await User.findByIdAndUpdate(userObjectId, updatedUserTime).exec();
 
     return data;
   } catch (err) {
