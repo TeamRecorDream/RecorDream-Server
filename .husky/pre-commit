@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "it's me recordrem"
+yarn test
