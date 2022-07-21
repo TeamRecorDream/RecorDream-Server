@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "it's me recordrem"
-yarn test voice
+# yarn test voice
