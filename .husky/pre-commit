@@ -3,5 +3,3 @@
 
 echo "it's me recordrem"
 yarn test voice
-
-exit 0
