@@ -7,6 +7,8 @@ import util from "../modules/util";
 import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
+import { sendMessageToSlack } from "../modules/slackAPI";
+import { slackMessage } from "../modules/returnToSlackMessage";
 
 /**
  * @route PUT /user/nickname
@@ -28,6 +30,9 @@ const updateNickname = async (req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -51,6 +56,9 @@ const getUser = async (req: Request, res: Response) => {
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -82,6 +90,9 @@ const changeToggle = async (req: Request, res: Response) => {
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -104,6 +115,9 @@ const updateFcmToken = async (req: Request, res: Response) => {
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_FCM_TOKEN_SUCCESS));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };

@@ -7,6 +7,8 @@ import util from "../modules/util";
 import RecordService from "../services/RecordService";
 import dayjs from "dayjs";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
+import { sendMessageToSlack } from "../modules/slackAPI";
+import { slackMessage } from "../modules/returnToSlackMessage";
 
 /**
  * @route POST /record
@@ -31,6 +33,9 @@ const createRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -51,6 +56,9 @@ const getRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -76,6 +84,9 @@ const getRecordList = async (req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -104,6 +115,9 @@ const updateRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -123,6 +137,9 @@ const deleteRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.NO_CONTENT).send(util.success(statusCode.NO_CONTENT, message.DELETE_RECORD_SUCCESS));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -148,6 +165,9 @@ const getRecordStorage = async (req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_STORAGE_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -174,6 +194,9 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };

@@ -3,6 +3,8 @@ import statusCode from "../modules/statusCode";
 import message from "../modules/responseMessage";
 import util from "../modules/util";
 import { VoiceService } from "../services";
+import { sendMessageToSlack } from "../modules/slackAPI";
+import { slackMessage } from "../modules/returnToSlackMessage";
 
 /**
  *  @route POST /voice
@@ -15,6 +17,9 @@ const uploadVoiceFileToS3 = async (req: Request, res: Response) => {
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.UPLOAD_VOICE_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
@@ -34,6 +39,9 @@ const getVoice = async (req: Request, res: Response) => {
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.PLAY_VOICE_SUCCESS, data));
   } catch (err) {
     console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
     res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
