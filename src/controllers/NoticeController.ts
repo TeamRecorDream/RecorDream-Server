@@ -53,8 +53,8 @@ const postNotice = async (req: Request, res: Response) => {
 const updateNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
   const noticeBaseDto: NoticeBaseDto = req.body;
-
   const userId = req.header("userId");
+  const { noticeId } = req.params;
 
   if (!err.isEmpty()) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
@@ -65,7 +65,7 @@ const updateNotice = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await NoticeService.updateNotice(noticeBaseDto, userId as string);
+    const data = await NoticeService.updateNotice(noticeBaseDto, userId as string, noticeId);
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
