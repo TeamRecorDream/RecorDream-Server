@@ -20,8 +20,6 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     }
 
     // 새로운 notice 객체 생성
-    //const notice = new Notice(noticeBaseDto);
-
     const notice = new Notice({
       fcm_token: noticeBaseDto.fcm_token,
       time: noticeBaseDto.time,
@@ -40,7 +38,7 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
       return null;
     }
 
-    // 시간 설정 시에 토큰 넣는데, 그 값이 유저 토큰에 없을 경우 (제대로 안 만들어짐)
+    // 시간 설정 시에 토큰 넣는데, 그 값이 유저 토큰에 없을 경우 (=제대로 안 만들어짐)
     if (user.fcm_token[0] !== notice.fcm_token && user.fcm_token[1] !== notice.fcm_token) {
       return null;
     }
