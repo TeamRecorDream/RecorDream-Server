@@ -162,7 +162,31 @@
 ---------📄UserService.ts
 ---------📄VoiceService.ts
 ```
+<br>
+<br />
 
+## Dependencies
+
+```
+"dependencies": {
+    "@types/agenda": "^4.1.0",
+    "aws-sdk": "^2.1171.0",
+    "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.3",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "firebase-admin": "^11.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.3",
+    "multer": "^1.4.5-lts.1",
+    "multer-s3": "^2.10.0",
+    "node-schedule": "^2.1.0",
+    "slack-node": "^0.1.8"
+  }
+```
 <br>
 <br />
 
@@ -180,9 +204,16 @@
 - [x] [PATCH] 꿈 기록 일부 수정
 - [x] [DELETE]꿈 기록 삭제
 - [x] [GET] 꿈 검색
-- [ ] [POST] 푸시알림 시간 설정
-- [ ] [PUT] 푸시알림 시간 수정
+- [x] [POST] 푸시알림 시간 설정
+- [x] [PUT] 푸시알림 시간 수정
 - [x] [PUT] 푸시알림 토큰 refresh
+
+<br>
+<br />
+
+## Architecture
+
+![architecture](https://user-images.githubusercontent.com/83302344/180429375-876019f7-651d-4e45-9a3d-fb7f23f98e3e.jpg)
 
 <br>
 <br />

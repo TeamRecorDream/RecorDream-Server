@@ -68,9 +68,9 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
     const token = userAlarmDto.fcm_token;
     const device = await Notice.find({ fcm_token: token });
+    console.log(device);
 
-    if (!device) {
-      console.log("에러 캐치");
+    if (device.length == 0) {
       return null;
     }
 
@@ -100,14 +100,12 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
         split_time.push(parseInt(parts[i + 1]));
       }
       let hour = split_time[0];
-      //console.log(hour);
       const min = split_time[1];
 
-      if (daynight[0] === "AM" || daynight[0] === "am" || daynight[0] === "오전") {
-        console.log("오전");
+      if (daynight[0] === "AM" || daynight[0] === "am") {
         is_day = true;
       }
-      if (daynight[0] === "PM" || daynight[0] === "pm" || daynight[0] === "오후") {
+      if (daynight[0] === "PM" || daynight[0] === "pm") {
         is_day = false;
       }
 
