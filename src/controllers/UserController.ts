@@ -45,10 +45,11 @@ const updateNickname = async (req: Request, res: Response) => {
 const getUser = async (req: Request, res: Response) => {
   const err = validationResult(req);
   const userId = req.header("userId");
-  const userAlarmDto: UserAlarmDto = req.body;
+  const fcm_token: string = req.params.token;
+  //const userAlarmDto: UserAlarmDto = req.body;
 
   try {
-    const data = await UserService.getUser(userId as string, userAlarmDto);
+    const data = await UserService.getUser(userId as string, fcm_token);
     if (!userId || !err.isEmpty()) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
@@ -108,7 +109,7 @@ const updateFcmToken = async (req: Request, res: Response) => {
   try {
     const updatedToken = await UserService.updateFcmToken(userId as string, fcmTokenUpdateDto);
 
-    if (!updatedToken) {
+    if (updatedToken === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
     }
 
