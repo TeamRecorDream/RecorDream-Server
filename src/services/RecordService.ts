@@ -43,10 +43,6 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       });
     }
 
-    if (record.date == null) {
-      record.date = new Date();
-    }
-
     if (genre_error || genre_count > 3 || genre_count === 0) {
       return null;
     }
