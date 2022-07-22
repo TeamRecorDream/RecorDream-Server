@@ -8,7 +8,7 @@ describe("[GET] /record/storage/search?keyword=", () => {
   const req = request(app);
 
   //200 OK
-  it("꿈 기록 검색 테스트", async () => {
+  it("꿈 기록 검색 테스트(검색 결과 o)", async () => {
     const res = await req
       .get("/record/storage/search?keyword=" + encodeURI("레코드림"))
       .set("Content-Type", "application/json")
@@ -45,6 +45,19 @@ describe("[GET] /record/storage/search?keyword=", () => {
     });
   });
 
+  //200 OK
+  it("꿈 기록 검색 테스트(검색 결과 x)", async () => {
+    const res = await req
+      .get("/record/storage/search?keyword=" + encodeURI("냥냥냥"))
+      .set("Content-Type", "application/json")
+      .set("userId", "1");
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual({
+      records_count: 0,
+      records: [],
+    });
+  });
+
   //404 Not Found -
   it("꿈 기록 검색 테스트(올바르지 않은 userId)", async () => {
     const res = await req
@@ -53,5 +66,12 @@ describe("[GET] /record/storage/search?keyword=", () => {
       .set("userId", "2");
     expect(res.status).toBe(404);
     expect(res.body.message).toEqual("존재하지 않는 자원");
+  });
+
+  //400 Null Value
+  it("꿈 기록 검색 테스트(userId 없음)", async () => {
+    const res = await req.get("/record/storage/search?keyword=" + encodeURI("레코드림")).set("Content-Type", "application/json");
+    expect(res.status).toBe(400);
+    expect(res.body.message).toEqual("필요한 값이 없습니다.");
   });
 });
