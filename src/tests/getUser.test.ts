@@ -20,8 +20,7 @@ describe("[GET] /user", () => {
     expect(res.body.data).toEqual({
       nickname: "레코드림",
       email: "seokyeong@naver.com",
-      is_active: true,
-      time: "PM 08:56",
+      time: "PM 05:55",
       is_deleted: false,
     });
   });

@@ -68,7 +68,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
     const token = userAlarmDto.fcm_token;
     const device = await Notice.find({ fcm_token: token });
-    console.log(device);
+    //console.log(device);
 
     if (device.length == 0) {
       return null;
