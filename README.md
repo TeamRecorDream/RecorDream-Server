@@ -7,7 +7,7 @@
 ## About
 
 ![178281860-743ffefc-f92d-4b20-84ee-58904794afce](https://user-images.githubusercontent.com/64405757/178695039-2c1f3ccf-8a8e-4b1e-a9f4-00be52287367.png)
-<img src="https://user-images.githubusercontent.com/76062959/178496454-6556d901-884d-4e7b-a090-1427d34d427c.png" width = "60%"><br>
+<img src="https://user-images.githubusercontent.com/76062959/178496454-6556d901-884d-4e7b-a090-1427d34d427c.png"><br>
 
 <br />
 <br>
