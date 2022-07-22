@@ -8,6 +8,16 @@
 
 ![178281860-743ffefc-f92d-4b20-84ee-58904794afce](https://user-images.githubusercontent.com/64405757/178695039-2c1f3ccf-8a8e-4b1e-a9f4-00be52287367.png)
 <img src="https://user-images.githubusercontent.com/76062959/178496454-6556d901-884d-4e7b-a090-1427d34d427c.png" width = "60%"><br>
+
+<br />
+<br>
+
+## 서비스 핵심 기능 소개
+
+![소개](https://user-images.githubusercontent.com/83302344/180443850-9efb48e1-6d65-4f0b-ad00-10bd511bf840.jpg)
+
+
+<br>
 <br />
 
 ## Collection 설계
