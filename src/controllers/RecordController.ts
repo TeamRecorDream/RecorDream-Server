@@ -102,6 +102,7 @@ const updateRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FORM_FAIL));
   }
 
+  req.body.date = dayjs(req.body.date).format("YYYY-MM-DD");
   const recordUpdateDto: RecordUpdateDto = req.body;
   const { recordId } = req.params;
   try {
