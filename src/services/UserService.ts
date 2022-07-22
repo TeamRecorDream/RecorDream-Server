@@ -30,8 +30,7 @@ const getUser = async (userId: string, fcm_token: string) => {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
-    const token = fcm_token;
-    const device = await Notice.find({ fcm_token: token });
+    const device = await Notice.find({ fcm_token: fcm_token });
 
     if (!user || !device[0]) {
       return null;
@@ -39,9 +38,9 @@ const getUser = async (userId: string, fcm_token: string) => {
 
     // 조회할 회원정보가 있고
     // is_active가 false 일 때
-    if (device[0].is_active == false) {
-      device[0].time = null;
-    }
+    //if (device[0].is_active == false) {
+    //device[0].time = null;
+    //}
     const result = {
       nickname: user.nickname,
       email: user.email,
@@ -81,7 +80,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
       if (device[0].time === null) {
         device[0].time = dayjs().format("A hh:mm");
       }
-
+      /*
       // 기기별 입력한 푸시알림 시간 확인
       const times = device[0].time;
       console.log(times);
@@ -111,6 +110,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
       if (is_day === false && hour !== 12) hour += 12; // 오후
       if (is_day === true && hour === 12) hour = 0;
+      console.log(hour);
 
       // 푸시알림 설정
       const alarms = {
@@ -145,12 +145,13 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
           .catch(function (err) {
             console.log("Error Sending message!!! : ", err);
           });
-      });
+      }); */
     }
     // toggle parameter 값이 0이면 푸시알림 설정 X
     if (toggle == "0") {
       device[0].is_active = false;
       device[0].time = null;
+      await Notice.deleteOne({ fcm_token: device[0].fcm_token });
     }
 
     await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active, time: device[0].time }).exec();
