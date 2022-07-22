@@ -139,6 +139,7 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
 
     // 시간 수정 ㄱㄱ
     await Notice.updateOne({ _id: noticeId }, { time: updatedUserTime.time }).exec();
+
     // 수정된 토큰을 가진 notice를 찾음
     const notice = await Notice.find({ fcm_token: noticeBaseDto.fcm_token });
 
