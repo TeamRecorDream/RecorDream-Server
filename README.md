@@ -14,7 +14,7 @@
 
 ## 서비스 핵심 기능 소개
 
-![소개](https://user-images.githubusercontent.com/83302344/180443850-9efb48e1-6d65-4f0b-ad00-10bd511bf840.jpg)
+![KakaoTalk_20220722_230635123_03](https://user-images.githubusercontent.com/64405757/180468525-4602d496-1fd1-429c-9679-ca770ba68f04.jpg)
 
 
 <br>
