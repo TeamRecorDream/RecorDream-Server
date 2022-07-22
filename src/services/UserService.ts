@@ -85,7 +85,7 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     if (toggle == "0") {
       device[0].is_active = false;
       device[0].time = null;
-      await Notice.deleteOne({ fcm_token: device[0].fcm_token });
+      //await Notice.deleteOne({ fcm_token: device[0].fcm_token });
     }
 
     await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active, time: device[0].time }).exec();

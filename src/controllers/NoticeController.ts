@@ -31,9 +31,9 @@ const postNotice = async (req: Request, res: Response) => {
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
-    if (data === undefined) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_ALREADY));
-    }
+    //if (data === undefined) {
+    //  return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_ALREADY));
+    // }
 
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS, data));
   } catch (err) {
