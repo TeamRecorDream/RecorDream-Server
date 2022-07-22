@@ -21,13 +21,16 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
       _id: notice._id,
     };
 
-    const device = await Notice.find({});
+    const device = await Notice.find({ fcm_token: notice.fcm_token });
+    console.log(device);
 
     // 이미 시간 설정한 fcm 인지 확인
-    for (let i = 0; i < device.length; i++) {
-      if (device[i].fcm_token === notice.fcm_token) {
-        return undefined;
-      }
+
+    if (device[0].time === null) {
+      await Notice.deleteOne({ fcm_token: notice.fcm_token });
+    }
+    if (device[0].time !== null) {
+      return undefined;
     }
 
     if (user.fcm_token[0] !== notice.fcm_token && user.fcm_token[1] !== notice.fcm_token) {

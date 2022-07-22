@@ -9,6 +9,8 @@ import schedule from "node-schedule";
 import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
+import dayjs from "dayjs";
+dayjs.locale("en");
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -24,12 +26,12 @@ const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateD
   }
 };
 
-const getUser = async (userId: string, userAlarmDto: UserAlarmDto) => {
+const getUser = async (userId: string, fcm_token: string) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
-    const token = userAlarmDto.fcm_token;
+    const token = fcm_token;
     const device = await Notice.find({ fcm_token: token });
 
     if (!user || !device[0]) {
@@ -76,6 +78,11 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     if (toggle == "1") {
       device[0].is_active = true;
 
+      if (device[0].time === null) {
+        device[0].time = dayjs().format("A hh:mm");
+        console.log(device[0].time);
+      }
+
       // 기기별 입력한 푸시알림 시간 확인
       const times = device[0].time;
       console.log(times);
@@ -96,11 +103,11 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
       let hour = split_time[0];
       const min = split_time[1];
 
-      if (daynight[0] === "AM" || daynight[0] === "am") {
+      if (daynight[0] === "AM" || daynight[0] === "am" || daynight[0] === "오전") {
         console.log("오전");
         is_day = true;
       }
-      if (daynight[0] === "PM" || daynight[0] === "pm") {
+      if (daynight[0] === "PM" || daynight[0] === "pm" || daynight[0] === "오후") {
         is_day = false;
       }
 
@@ -146,9 +153,10 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
     // toggle parameter 값이 0이면 푸시알림 설정 X
     if (toggle == "0") {
       device[0].is_active = false;
+      device[0].time = null;
     }
 
-    await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active }).exec();
+    await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;
