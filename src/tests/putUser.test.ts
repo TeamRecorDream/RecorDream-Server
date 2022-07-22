@@ -110,11 +110,12 @@ describe("[PUT] /user/:toggle", () => {
     expect(res.body.message).toEqual("필요한 값이 없습니다.");
   });
 
-  //400 Bad Request - fcm_token 없는 경우
+  //404 Not Found - fcm_token 없는 경우
   it("푸시알림 여부 수정 테스트(fcm_token 없는 경우)", async () => {
-    const res = await req.put("/user/1").set("Content-Type", "application/json").set("userId", "1");
-    expect(res.status).toBe(400);
-    expect(res.body.message).toEqual("필요한 값이 없습니다.");
+    const nullTokenBody = { fcm_token: null };
+    const res = await req.put("/user/1").send(nullTokenBody).set("Content-Type", "application/json").set("userId", "1");
+    expect(res.status).toBe(404);
+    expect(res.body.message).toEqual("존재하지 않는 유저 또는 FCM 토큰");
   });
 
   //404 Not Found - 헤더에 1 이외의 userId가 들어간 경우
@@ -135,9 +136,9 @@ describe("[PUT] /user/:toggle", () => {
   });
 
   //404 Not Found (parameter 에 1 이나 0 이외의 값이 들어온 경우)
-  it("푸시알림 여부 수정 테스트(헤더에 1 이외의 userId가 들어간 경우)", async () => {
-    const res = await req.put("/user/1").send(tokenBody).set("Content-Type", "application/json").set("userId", "1");
+  it("푸시알림 여부 수정 테스트(parameter 에 1 이나 0 이외의 값이 들어온 경우)", async () => {
+    const res = await req.put("/user/2").send(tokenBody).set("Content-Type", "application/json").set("userId", "1");
     expect(res.status).toBe(404);
-    expect(res.body.message).toEqual("존재하지 않는 자원입니다.");
+    expect(res.body.message).toEqual("존재하지 않는 자원");
   });
 });
