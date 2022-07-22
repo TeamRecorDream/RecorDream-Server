@@ -15,14 +15,6 @@ describe("[GET] /record", () => {
       nickname: "레코드림",
       records: [
         {
-          _id: "62d82d0cbb7aaf28837aa30a",
-          dream_color: 1,
-          emotion: 4,
-          date: "2022/07/22 (금)",
-          title: "지민 언니를 위한삭제용 content~~~",
-          genre: [1],
-        },
-        {
           _id: "62d7bd8c9669f53b6c72a8e7",
           dream_color: 6,
           emotion: 5,
@@ -93,6 +85,14 @@ describe("[GET] /record", () => {
           date: "2022/07/17 (일)",
           title: "바닥이 무너져도 어떻게든 살아남는 럭키걸",
           genre: [2, 5],
+        },
+        {
+          _id: "62d7bb239669f53b6c72a8c3",
+          dream_color: 2,
+          emotion: 6,
+          date: "2022/07/16 (토)",
+          title: "제주도에 여행간 사고뭉치 금쪽드림팀",
+          genre: [8],
         },
       ],
     });

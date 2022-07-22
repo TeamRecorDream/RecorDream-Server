@@ -47,40 +47,8 @@ describe("[GET] /record/storage/list?filter=", () => {
     const res = await req.get("/record/storage/list?filter=0").set("Content-Type", "application/json").set("userId", "1");
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({
-      records_count: 27,
+      records_count: 19,
       records: [
-        {
-          _id: "62d82d0cbb7aaf28837aa30a",
-          dream_color: 1,
-          emotion: 4,
-          date: "2022/07/22 (금)",
-          title: "지민 언니를 위한삭제용 content~~~",
-          genre: [1],
-        },
-        {
-          _id: "62da7604922301b8af34a3d0",
-          dream_color: 3,
-          emotion: 3,
-          date: "2022/07/22 (금)",
-          title: "나는 이소진이다",
-          genre: [1, 2, 5],
-        },
-        {
-          _id: "62da743c922301b8af34a3ba",
-          dream_color: 3,
-          emotion: 3,
-          date: "2022/07/22 (금)",
-          title: "나는 이소진이다",
-          genre: [1, 2, 5],
-        },
-        {
-          _id: "62da72d27f16410492db96a0",
-          dream_color: 3,
-          emotion: 1,
-          date: "2022/07/22 (금)",
-          title: "오늘은 7월 20일",
-          genre: [1, 2, 5],
-        },
         {
           _id: "62d7bd8c9669f53b6c72a8e7",
           dream_color: 6,
@@ -232,38 +200,6 @@ describe("[GET] /record/storage/list?filter=", () => {
           date: "2022/07/04 (월)",
           title: "병원에서 죽을 뻔 했음 ㄷㄷ",
           genre: [4, 5],
-        },
-        {
-          _id: "62da780f922301b8af34a404",
-          dream_color: 4,
-          emotion: 4,
-          date: "1970/01/09 (금)",
-          title: "Ggg",
-          genre: [2, 3],
-        },
-        {
-          _id: "62da751d922301b8af34a3be",
-          dream_color: 5,
-          emotion: 2,
-          date: "1970/01/09 (금)",
-          title: "Gg",
-          genre: [7, 2, 3],
-        },
-        {
-          _id: "62da7405922301b8af34a3b8",
-          dream_color: 3,
-          emotion: 2,
-          date: "1970/01/09 (금)",
-          title: "Hhh",
-          genre: [1, 7],
-        },
-        {
-          _id: "62da72ca922301b8af34a3a8",
-          dream_color: 4,
-          emotion: 3,
-          date: "1970/01/09 (금)",
-          title: "ㅎㅎ기록하기 작성중",
-          genre: [1, 7, 3],
         },
       ],
     });
