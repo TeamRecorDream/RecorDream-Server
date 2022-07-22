@@ -13,7 +13,6 @@ const NoticeSchema = new mongoose.Schema({
   },
   fcm_token: {
     type: String,
-    unique: true,
   },
   is_active: {
     type: Boolean,
