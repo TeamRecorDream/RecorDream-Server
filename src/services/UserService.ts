@@ -80,141 +80,74 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 
       if (device[0].time === null) {
         device[0].time = dayjs().format("A hh:mm");
+      }
 
-        // 기기별 입력한 푸시알림 시간 확인
-        const times = device[0].time;
-        console.log(times);
+      // 기기별 입력한 푸시알림 시간 확인
+      const times = device[0].time;
+      console.log(times);
 
-        const push_time = times as string;
-        let is_day = true; // AM, PM 판별
+      const push_time = times as string;
+      let is_day = true; // AM, PM 판별
 
-        const parts = push_time.split(/:| /);
+      const parts = push_time.split(/:| /);
 
-        const daynight: string[] = []; // for AM, PM
-        const split_time: number[] = []; // for 시간, 분
+      const daynight: string[] = []; // for AM, PM
+      const split_time: number[] = []; // for 시간, 분
 
-        daynight.push(parts[0]);
+      daynight.push(parts[0]);
 
-        for (let i = 0; i < 2; i++) {
-          split_time.push(parseInt(parts[i + 1]));
-        }
-        let hour = split_time[0] + 9;
-        const min = split_time[1];
+      for (let i = 0; i < 2; i++) {
+        split_time.push(parseInt(parts[i + 1]));
+      }
+      let hour = split_time[0];
+      //console.log(hour);
+      const min = split_time[1];
 
-        if (daynight[0] === "AM" || daynight[0] === "am") {
-          console.log("오전");
-          is_day = true;
-        }
-        if (daynight[0] === "PM" || daynight[0] === "pm") {
-          is_day = false;
-        }
+      if (daynight[0] === "AM" || daynight[0] === "am" || daynight[0] === "오전") {
+        console.log("오전");
+        is_day = true;
+      }
+      if (daynight[0] === "PM" || daynight[0] === "pm" || daynight[0] === "오후") {
+        is_day = false;
+      }
 
-        if (is_day === false && hour !== 12) hour += 12; // 오후
-        if (is_day === true && hour === 12) hour = 0;
+      if (is_day === false && hour !== 12) hour += 12; // 오후
+      if (is_day === true && hour === 12) hour = 0;
 
-        // 푸시알림 설정
-        const alarms = {
-          android: {
-            data: {
-              title: pushMessage.title,
-              body: pushMessage.body,
-            },
+      // 푸시알림 설정
+      const alarms = {
+        android: {
+          data: {
+            title: pushMessage.title,
+            body: pushMessage.body,
           },
-          apns: {
-            payload: {
-              aps: {
-                contentAvailable: true,
-                alert: {
-                  title: pushMessage.title,
-                  body: pushMessage.body,
-                },
+        },
+        apns: {
+          payload: {
+            aps: {
+              contentAvailable: true,
+              alert: {
+                title: pushMessage.title,
+                body: pushMessage.body,
               },
             },
           },
-          token: token,
-        };
+        },
+        token: token,
+      };
 
-        schedule.scheduleJob({ hour: hour, minute: min }, function () {
-          // 푸시알림 보내기
-          admin
-            .messaging()
-            .send(alarms)
-            .then(function (response: any) {
-              console.log("Successfully sent message: ", response);
-            })
-            .catch(function (err) {
-              console.log("Error Sending message!!! : ", err);
-            });
-        });
-      }
-      // time이 이미 설정되어 있을 때
-      else {
-        // 기기별 입력한 푸시알림 시간 확인
-        const times = device[0].time;
-        console.log(times);
-
-        const push_time = times as string;
-        let is_day = true; // AM, PM 판별
-
-        const parts = push_time.split(/:| /);
-
-        const daynight: string[] = []; // for AM, PM
-        const split_time: number[] = []; // for 시간, 분
-
-        daynight.push(parts[0]);
-
-        for (let i = 0; i < 2; i++) {
-          split_time.push(parseInt(parts[i + 1]));
-        }
-        let hour = split_time[0];
-        const min = split_time[1];
-
-        if (daynight[0] === "AM" || daynight[0] === "am" || daynight[0] === "오전") {
-          console.log("오전");
-          is_day = true;
-        }
-        if (daynight[0] === "PM" || daynight[0] === "pm" || daynight[0] === "오후") {
-          is_day = false;
-        }
-
-        if (is_day === false && hour !== 12) hour += 12; // 오후
-        if (is_day === true && hour === 12) hour = 0;
-
-        // 푸시알림 설정
-        const alarms = {
-          android: {
-            data: {
-              title: pushMessage.title,
-              body: pushMessage.body,
-            },
-          },
-          apns: {
-            payload: {
-              aps: {
-                contentAvailable: true,
-                alert: {
-                  title: pushMessage.title,
-                  body: pushMessage.body,
-                },
-              },
-            },
-          },
-          token: token,
-        };
-
-        schedule.scheduleJob({ hour: hour, minute: min }, function () {
-          // 푸시알림 보내기
-          admin
-            .messaging()
-            .send(alarms)
-            .then(function (response: any) {
-              console.log("Successfully sent message: ", response);
-            })
-            .catch(function (err) {
-              console.log("Error Sending message!!! : ", err);
-            });
-        });
-      }
+      schedule.scheduleJob({ hour: hour, minute: min }, function () {
+        // 푸시알림 보내기
+        admin
+          .messaging()
+          .send(alarms)
+          .then(function (response: any) {
+            console.log("Successfully sent message: ", response);
+          })
+          .catch(function (err) {
+            console.log("Error Sending message!!! : ", err);
+          });
+      });
     }
     // toggle parameter 값이 0이면 푸시알림 설정 X
     if (toggle == "0") {
@@ -233,8 +166,6 @@ const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAl
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
   const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
 
-  //const { fcm_token, new_token } = fcmTokenUpdateDto;
-
   try {
     const user = await User.findById(userObjectId);
 
@@ -247,18 +178,14 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
       new_token: fcmTokenUpdateDto.new_token,
     };
 
-    const fcm1 = user.fcm_token[0];
-    const fcm2 = user.fcm_token[1];
-
     if (user.fcm_token[0] !== tokens.fcm_token && user.fcm_token[1] !== tokens.fcm_token) {
-      console.log("걸렸다");
       return null;
     }
 
     if (user.fcm_token[0] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
-    if (fcm2 === tokens.fcm_token) {
+    if (user.fcm_token[1] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
   } catch (err) {
