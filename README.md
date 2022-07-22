@@ -181,10 +181,46 @@
 <br>
 <br />
 
-## Dependencies
+## Dependency Module
 
 ```
-"dependencies": {
+{
+  "name": "recordream-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --setupFiles dotenv/config --forceExit",
+    "prepare": "husky install"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.6",
+    "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^2.7.12",
+    "@types/node": "^17.0.25",
+    "@types/node-schedule": "^2.1.0",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.0",
+    "jest": "^28.1.3",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.7.1",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.7",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
     "@types/agenda": "^4.1.0",
     "aws-sdk": "^2.1171.0",
     "axios": "^0.27.2",
@@ -202,6 +238,8 @@
     "node-schedule": "^2.1.0",
     "slack-node": "^0.1.8"
   }
+}
+
 ```
 <br>
 <br />
