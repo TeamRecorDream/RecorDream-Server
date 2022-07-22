@@ -22,10 +22,12 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     };
 
     const device = await Notice.find({ fcm_token: notice.fcm_token });
-    console.log(device);
+
+    if (device.length == 0) {
+      return null;
+    }
 
     // 이미 시간 설정한 fcm 인지 확인
-
     if (device[0].time === null) {
       await Notice.deleteOne({ fcm_token: notice.fcm_token });
     }
