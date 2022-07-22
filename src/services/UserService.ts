@@ -163,7 +163,6 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
 
   try {
     const user = await User.findById(userObjectId);
-    console.log(user);
 
     if (!user) {
       return null;
@@ -178,27 +177,16 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
     const fcm2 = user.fcm_token[1];
 
     if (user.fcm_token[0] !== tokens.fcm_token && user.fcm_token[1] !== tokens.fcm_token) {
+      console.log("걸렸다");
       return null;
     }
-    const updat = await User.find({ fcm_token: fcm1 });
-    console.log(updat);
 
-    /*
-    if (fcm1 === tokens.fcm_token) {
-      const updatedFcm = await User.where({ "fcm_token.$.0": fcm1 }).update({ fcm_token: tokens.new_token }).exec();
-      return updatedFcm;
+    if (user.fcm_token[0] === tokens.fcm_token) {
+      await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
     if (fcm2 === tokens.fcm_token) {
-      const updatedFcm = await User.where({ ["fcm_token"]: fcm2 })
-        .update({ fcm_token: tokens.new_token })
-        .exec();
-      return updatedFcm;
+      await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
-    */
-
-    //const updatedFcm = await User.findOneAndUpdate(filter, update, {
-    //  new: true,
-    //});
   } catch (err) {
     console.log(err);
     throw err;
