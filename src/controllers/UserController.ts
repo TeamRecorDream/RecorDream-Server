@@ -97,7 +97,7 @@ const updateFcmToken = async (req: Request, res: Response) => {
   try {
     const updatedToken = await UserService.updateFcmToken(userId as string, fcmTokenUpdateDto);
 
-    if (!updatedToken) {
+    if (updatedToken === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
     }
 
