@@ -22,7 +22,10 @@
 
 ## Collection 설계
 
-> ![10](https://user-images.githubusercontent.com/64405757/178687084-c2b0c3a8-6692-49b8-b4dd-79009b597136.PNG)<br> <br />
+![디비설계](https://user-images.githubusercontent.com/83302344/180460021-c0a08d5c-eb28-4f51-8de1-e565c015554b.png)
+
+<br> 
+<br />
 
 ## 팀원 소개 및 역할 분담
 
@@ -129,17 +132,6 @@
 ------📄index.ts
 ------📄app.ts
 ------📁tests
----------📄deleteRecord.test.ts
----------📄getRecord.test.ts
----------📄getRecordList.test.ts
----------📄getRecordsBySearch.test.ts
----------📄getRecordStorage.test.ts
----------📄getUser.test.ts
----------📄getVoice.test.ts
----------📄patchRecord.test.ts
----------📄postRecord.test.ts
----------📄postVoice.test.ts
----------📄putUser.test.ts
 ------📁config
 ---------📄index.ts
 ---------📄multer.ts
