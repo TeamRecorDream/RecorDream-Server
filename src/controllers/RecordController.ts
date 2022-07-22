@@ -73,15 +73,15 @@ const getRecordList = async (req: Request, res: Response) => {
 
   try {
     if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
     const data = await RecordService.getRecordList(userId as string);
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -154,15 +154,15 @@ const getRecordStorage = async (req: Request, res: Response) => {
   const userId = req.header("userId");
   try {
     if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
     const data = await RecordService.getRecordStorage(userId as string, filter as string);
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_STORAGE_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_STORAGE_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -183,21 +183,23 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
 
   try {
     if (!userId) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
     const data = await RecordService.getRecordsBySearch(userId as string, keyword as string);
     if (!data) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
     sendMessageToSlack(errorMessage);
 
-    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+    return res
+      .status(statusCode.INTERNAL_SERVER_ERROR)
+      .send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
   }
 };
 
