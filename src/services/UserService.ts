@@ -10,7 +10,6 @@ import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 import dayjs from "dayjs";
-dayjs.locale("en");
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -58,6 +57,7 @@ const getUser = async (userId: string, fcm_token: string) => {
 };
 
 const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAlarmDto) => {
+  dayjs.locale("en");
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
