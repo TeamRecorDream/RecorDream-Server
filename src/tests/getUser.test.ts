@@ -21,7 +21,7 @@ describe("[GET] /user", () => {
       nickname: "레코드림",
       email: "seokyeong@naver.com",
       is_active: true,
-      time: "PM 05:55",
+      time: "PM 08:56",
       is_deleted: false,
     });
   });
