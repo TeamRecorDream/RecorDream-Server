@@ -1,6 +1,0 @@
-{
-  "hooks": {
-    "pre-commit": "echo '실험용'",
-    "pre-push": "./.husky/pre-push"
-  }
-}
