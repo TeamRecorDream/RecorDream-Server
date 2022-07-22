@@ -165,6 +165,7 @@
 <br>
 <br />
 ## Dependencies
+
 ```
 "dependencies": {
     "@types/agenda": "^4.1.0",
