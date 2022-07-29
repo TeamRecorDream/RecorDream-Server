@@ -30,14 +30,6 @@ jobs:
       - name: Check Npm -v
         run: npm -v
 
-      - name: create firebase-admin.json # 디렉토리 접속 -> 파일 생성 -> 화면 출력
-        working-directory: ./src/config
-        run: |
-          pwd 
-          touch firebase-admin.json 
-          echo FIREBASE_ADMIN=${{ secrets.FIREBASE_ADMIN }} >> firebase-admin.json
-          cat firebase-admin.json
-
       - name: create env file # 깃헙에 등록한 환경변수들로 .env 생성.
         working-directory: ./
         run: |
@@ -45,12 +37,15 @@ jobs:
           touch .env
           echo PORT=${{ secrets.PORT }} >> .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
-          echo FCM_SERVER_KEY=${{ secrets.FCM_SERVER_KEY }} >> .env
-          echo FCM_SENDER_ID=${{ secrets.FCM_SENDER_ID }} >> .env
           cat .env
 
       - name: build server files # yarn으로 필요한 디펜던시 설치 후 빌드
         working-directory: ./
+        env:
+          FIREBASE_ADMIN: ${{ secrets.FCM_ACCOUNT_KEY }}
         run: |
+          touch firebase-admin.json
+          echo $FIREBASE_ADMIN >> firebase-admin.json
+
           yarn
           yarn run build
