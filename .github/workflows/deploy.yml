@@ -30,6 +30,14 @@ jobs:
       - name: Check Npm -v
         run: npm -v
 
+      - name: create firebase-admin.json # 디렉토리 접속 -> 파일 생성 -> 화면 출력
+        working-directory: ./src/config
+        run: |
+          pwd 
+          touch firebase-admin.json 
+          echo FIREBASE_ADMIN=${{ secrets.FIREBASE_ADMIN }} >> firebase-admin.json
+          cat firebase-admin.json
+
       - name: create env file # 깃헙에 등록한 환경변수들로 .env 생성.
         working-directory: ./
         run: |
