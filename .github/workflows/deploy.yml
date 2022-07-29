@@ -39,13 +39,13 @@ jobs:
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
           cat .env
 
-      - name: create firebase-admin.json #디렉토리 접속 -> 파일 생성 -> 화면 출력
+      - name: create json file # firebase-admin.json 생성.
         working-directory: ./src/config
+        env:
+          FIREBASE_ADMIN: ${{ secrets.FCM_ACCOUNT_KEY }}
         run: |
-          pwd 
-          touch firebase-admin.json 
-          echo FIREBASE_ADMIN=${{ secrets.FIREBASE_ADMIN }} >> firebase-admin.json
-          cat firebase-admin.json
+          touch firebase-admin.json
+          echo $FIREBASE_ADMIN >> firebase-admin.json
 
       - name: build server files # yarn으로 필요한 디펜던시 설치 후 빌드
         working-directory: ./
