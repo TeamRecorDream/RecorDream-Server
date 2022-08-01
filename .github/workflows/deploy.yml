@@ -19,7 +19,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Checkout source code. # 레포의 코드를 CI 서버로 내려받은 후 특정 브랜치고 전환
+      - name: Checkout source code. # 레포의 코드를 CI 서버로 내려받은 후 특정 브랜치로 전환
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }} # 노드 설치
