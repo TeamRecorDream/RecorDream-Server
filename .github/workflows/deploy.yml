@@ -54,7 +54,9 @@ jobs:
           yarn run build
 
       - name: zip file
-        run: zip -r recordream.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+        run: |
+          mv ./.env ./dist
+          zip -r recordream.zip ./dist ./scripts ./appspec.yml ./package.json
 
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
