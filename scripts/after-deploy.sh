@@ -1,5 +1,5 @@
 #!/bin/bash
-REPOSITORY=/home/ubuntu/build/Recordream-Server
+REPOSITORY=/home/ubuntu/build/RecorDream-Server
 
 cd $REPOSITORY
 
