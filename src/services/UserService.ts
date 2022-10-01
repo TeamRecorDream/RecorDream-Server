@@ -111,14 +111,14 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
       new_token: fcmTokenUpdateDto.new_token,
     };
 
-    if (user.fcm_token[0] !== tokens.fcm_token && user.fcm_token[1] !== tokens.fcm_token) {
+    if (user.fcmToken[0] !== tokens.fcm_token && user.fcmToken[1] !== tokens.fcm_token) {
       return null;
     }
 
-    if (user.fcm_token[0] === tokens.fcm_token) {
+    if (user.fcmToken[0] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
-    if (user.fcm_token[1] === tokens.fcm_token) {
+    if (user.fcmToken[1] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
   } catch (err) {
