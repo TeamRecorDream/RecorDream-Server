@@ -42,4 +42,14 @@ export default {
    * FCM_TOKEN_IOS
    */
   fcm_token_ios: process.env.FCM_TOKEN_IOS as string,
+
+  /**
+   * jwt Secret
+   */
+  jwtSecret: process.env.JWT_SECRET as string,
+
+  /**
+   * jwt Algorithm
+   */
+  jwtAlgo: process.env.JWT_ALGO as string,
 };
