@@ -10,13 +10,29 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  gender: {
+    type: String,
+  },
+  age_range: {
+    type: String,
+  },
   emotion_arr: {
     type: Array,
   },
-  is_deleted: {
+  isAlreadyUser: {
     type: Boolean,
   },
-  fcm_token: {
+  accessToken: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  refreshToken: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  fcmToken: {
     type: [String],
     unique: true,
   },
