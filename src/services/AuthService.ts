@@ -20,11 +20,6 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     }
 
     const userEmail = response.data.kakao_account.email;
-
-    if (response.data.code == 401) {
-      return null;
-    }
-
     const userName = response.data.kakao_account.profile.nickname;
     const gender = response.data.kakao_account.gender;
     const age_range = response.data.kakao_account.age_range;
@@ -37,7 +32,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     if (!existUser) {
       const user = new User({
         isAlreadyUser: false,
-        nickname: userName as string,
+        nickname: userName,
         email: userEmail,
         gender: gender || null,
         age_range: age_range || null,
@@ -65,6 +60,8 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     // 유저가 있으면 로그인 처리
     const accessToken = jwtHandler.getAccessToken(existUser._id);
     const refreshToken = jwtHandler.getRefreshToken();
+
+    existUser.isAlreadyUser = true;
 
     await User.findByIdAndUpdate(existUser._id, existUser);
 
