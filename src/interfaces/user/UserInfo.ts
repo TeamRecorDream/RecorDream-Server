@@ -1,10 +1,14 @@
 export interface UserInfo {
   nickname: string;
   email: string;
-  password: string;
+  gender: string;
+  age_range: string;
   emotion_arr: number[];
-  is_deleted: boolean;
+  isAlreadyUser: boolean;
+
+  fcmToken: string[];
+  accessToken: string;
+  refreshToken: string;
   is_notified: boolean;
   time: string | null;
-  fcm_token: string[];
 }

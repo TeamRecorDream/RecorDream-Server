@@ -39,6 +39,12 @@ const message = {
 
   // 소셜 로그인
   NULL_VALUE_TOKEN: "토큰이 없습니다.",
+  INVALID_TOKEN: "유효하지 않은 토큰입니다.",
+  SIGNIN_SUCCESS: "로그인 성공",
+  SIGNUP_SUCCESS: "회원가입 성공",
+  LOGIN_SUCCESS: "로그인 성공",
+  LOGIN_FAIL: "로그인 실패",
+  ONE_TOKEN: "토큰 값은 하나이어야 합니다.",
 };
 
 export default message;
