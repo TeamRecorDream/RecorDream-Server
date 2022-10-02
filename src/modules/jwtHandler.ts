@@ -10,14 +10,14 @@ const getAccessToken = (userId: mongoose.Schema.Types.ObjectId): string => {
     },
   };
 
-  const accessToken: string = jwt.sign(payload, config.jwtSecret, { expiresIn: "1h" });
+  const accessToken: string = jwt.sign(payload, config.jwtSecret, { expiresIn: process.env.ACEESSTOKEN_EXPIRE });
 
   return accessToken;
 };
 
 // Refresh Token 발급 (payload 없음)
 const getRefreshToken = (): string => {
-  const refreshToken: string = jwt.sign({}, config.jwtSecret, { expiresIn: "14d" });
+  const refreshToken: string = jwt.sign({}, config.jwtSecret, { expiresIn: process.env.REFRESHTOKEN_EXPIRE });
 
   return refreshToken;
 };
