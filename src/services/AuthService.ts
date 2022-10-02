@@ -19,21 +19,23 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
       return null;
     }
 
-    const userEmail = response.data.kakao_account.email;
-    const userName = response.data.kakao_account.profile.nickname;
-    const gender = response.data.kakao_account.gender;
-    const age_range = response.data.kakao_account.age_range;
+    const userData = response.data.kakao_account;
+
+    const email = userData.email;
+    const nickname = userData.nickname;
+    const gender = userData.gender;
+    const age_range = userData.age_range;
 
     const existUser = await User.findOne({
-      email: userEmail,
+      email: email,
     });
 
     // db에 유저가 없으면 회원 가입
     if (!existUser) {
       const user = new User({
         isAlreadyUser: false,
-        nickname: userName,
-        email: userEmail,
+        nickname: nickname,
+        email: email,
         gender: gender || null,
         age_range: age_range || null,
         fcmToken: fcmToken,
@@ -51,7 +53,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
         isAlreadyUser: false,
         accessToken: user.accessToken,
         refreshToken: refreshToken,
-        nickname: userName,
+        nickname: nickname,
       };
 
       return data;
@@ -63,13 +65,18 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
 
     existUser.isAlreadyUser = true;
 
+    // 한 유저가 여러 기기로 로그한 경우
+    if (!existUser.fcmToken.includes(fcmToken)) {
+      existUser.fcmToken.push(fcmToken);
+    }
+
     await User.findByIdAndUpdate(existUser._id, existUser);
 
     const data: AuthResponseDto = {
       isAlreadyUser: true,
       accessToken: accessToken,
       refreshToken: refreshToken,
-      nickname: userName,
+      nickname: nickname,
     };
 
     return data;
