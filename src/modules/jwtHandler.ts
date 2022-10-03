@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import config from "../config";
 import { JwtPayloadInfo } from "../interfaces/common/JwtPayloadInfo";
+import exceptionMessage from "../modules/exceptionMessage";
 
 const getAccessToken = (userId: mongoose.Schema.Types.ObjectId): string => {
   const payload: JwtPayloadInfo = {
@@ -22,7 +23,25 @@ const getRefreshToken = (): string => {
   return refreshToken;
 };
 
+// JWT 토큰 인증
+const verifyToken = (token: string) => {
+  let decoded;
+  try {
+    decoded = jwt.verify(token, config.jwtSecret);
+  } catch (err: any) {
+    console.log(err);
+
+    if (err.message === "jwt expired") {
+      return exceptionMessage.EXPIRED_TOKEN;
+    } else {
+      return exceptionMessage.INVALID_TOKEN;
+    }
+  }
+  return decoded;
+};
+
 export default {
   getAccessToken,
   getRefreshToken,
+  verifyToken,
 };

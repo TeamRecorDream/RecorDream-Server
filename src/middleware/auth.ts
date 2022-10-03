@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import config from "../config";
+import { JwtPayload } from "jsonwebtoken";
 import statusCode from "../modules/statusCode";
 import message from "../modules/responseMessage";
 import util from "../modules/util";
+import User from "../models/User";
+import jwtHandler from "../modules/jwtHandler";
+import exceptionMessage from "../modules/exceptionMessage";
 
 export default (req: Request, res: Response, next: NextFunction) => {
   // request-header 에서 토큰 받아오기
@@ -16,9 +18,27 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   // 토큰 검증
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwtHandler.verifyToken(token);
 
-    req.body.user = (decoded as any).user;
+    if (decoded === exceptionMessage.EXPIRED_TOKEN) {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.EXPIRED_TOKEN));
+    }
+
+    if (decoded === exceptionMessage.INVALID_TOKEN) {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.INVALID_TOKEN));
+    }
+
+    const userId = (decoded as JwtPayload).id;
+    if (!userId) {
+      return res.status(statusCode.FORBIDDEN).send(util.fail(statusCode.FORBIDDEN, message.INVALID_TOKEN));
+    }
+
+    const user = User.findById(userId);
+    if (!user) {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.NO_USER));
+    }
+
+    req.body.user = user;
 
     next();
   } catch (err: any) {
