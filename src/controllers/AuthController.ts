@@ -53,6 +53,46 @@ const socailLogin = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route POST /auth/token
+ * @desc access token refresh
+ * @access private
+ */
+const reissueToken = async (req: Request, res: Response) => {
+  const accessToken = req.headers.access as string;
+  const refreshToken = req.headers.refresh as string;
+
+  if (!accessToken || !refreshToken) {
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE_TOKEN));
+  }
+
+  try {
+    const data = await AuthService.reissueToken(accessToken, refreshToken);
+
+    if (data === "invalid_token") {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.INVALID_TOKEN));
+    }
+
+    if (data === "all_expired_token") {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.ALL_EXPIRED_TOKEN));
+    }
+
+    if (data === "valid_token") {
+      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.VALID_TOKEN));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.REISSUE_TOKEN_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   socailLogin,
+  reissueToken,
 };

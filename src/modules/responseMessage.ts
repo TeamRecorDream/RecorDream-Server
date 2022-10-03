@@ -37,14 +37,19 @@ const message = {
   NOT_FOUND_FCM: "존재하지 않는 유저 또는 FCM 토큰",
   POST_NOTICE_ALREADY: "해당 토큰으로 이미 시간 설정됨",
 
-  // 소셜 로그인
+  // 유저 인증
   NULL_VALUE_TOKEN: "토큰이 없습니다.",
   INVALID_TOKEN: "유효하지 않은 토큰입니다.",
+  EXPIRED_TOKEN: "만료된 토큰입니다.",
+  ONE_TOKEN: "토큰 값은 하나이어야 합니다.",
+  ALL_EXPIRED_TOKEN: "Access, Refresh Token 모두 만료되었습니다. 재로그인이 필요합니다.",
+  VALID_TOKEN: "아직 유효한 토큰입니다.",
+  REISSUE_TOKEN_SUCCESS: "Access Token 재발급 성공",
+  NO_USER: "존재하지 않는 유저",
   SIGNIN_SUCCESS: "로그인 성공",
   SIGNUP_SUCCESS: "회원가입 성공",
   LOGIN_SUCCESS: "로그인 성공",
   LOGIN_FAIL: "로그인 실패",
-  ONE_TOKEN: "토큰 값은 하나이어야 합니다.",
 };
 
 export default message;
