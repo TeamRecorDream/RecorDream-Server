@@ -1,0 +1,11 @@
+openapi: "3.0.0"
+info:
+  version: 0.4.0
+  title: Recordream API docs
+  description: 드리미들의 API 문서입니다
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8000/ #http://13.125.138.47:8000/
+paths:
+components:
