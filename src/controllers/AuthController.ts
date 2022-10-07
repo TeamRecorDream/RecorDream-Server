@@ -22,7 +22,7 @@ const socailLogin = async (req: Request, res: Response) => {
     }
     // 애플로그인
     if (!kakaoToken) {
-      //user = await AuthService.appleLogin(appleToken, fcmToken);
+      user = await AuthService.appleLogin(appleToken, fcmToken);
     }
 
     if (user === null) {
@@ -39,7 +39,7 @@ const socailLogin = async (req: Request, res: Response) => {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.ONE_TOKEN));
     }
 
-    if (user?.isAlreadyUser === false) {
+    if (user?.isAlreadyUser == false) {
       return res.status(statusCode.OK).send(util.success(statusCode.OK, message.SIGNUP_SUCCESS, user));
     }
 

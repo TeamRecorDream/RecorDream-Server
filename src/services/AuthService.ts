@@ -5,7 +5,7 @@ import jwtHandler from "../modules/jwtHandler";
 import { AuthResponseDto } from "../interfaces/auth/AuthResponseDto";
 import exceptionMessage from "../modules/exceptionMessage";
 
-const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null> => {
+const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
   try {
     // 카카오 서버와 연결
     const response = await axios({
@@ -39,6 +39,93 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
         email: email,
         gender: gender || null,
         age_range: age_range || null,
+        fcmToken: fcmToken,
+      });
+
+      const jwtToken = jwtHandler.getAccessToken(user.id);
+      user.accessToken = jwtToken;
+
+      const refreshToken = jwtHandler.getRefreshToken();
+      user.refreshToken = refreshToken;
+
+      await user.save();
+
+      const data: AuthResponseDto = {
+        isAlreadyUser: false,
+        accessToken: user.accessToken,
+        refreshToken: refreshToken,
+        nickname: nickname,
+      };
+
+      return data;
+    }
+
+    // 유저가 있으면 로그인 처리
+    const accessToken = jwtHandler.getAccessToken(existUser._id);
+    const refreshToken = jwtHandler.getRefreshToken();
+
+    // 한 유저가 여러 기기로 로그한 경우
+    if (!existUser.fcmToken.includes(fcmToken)) {
+      existUser.fcmToken.push(fcmToken);
+    }
+
+    const data: AuthResponseDto = {
+      isAlreadyUser: true,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      nickname: nickname,
+    };
+
+    await User.findByIdAndUpdate(existUser._id, data);
+
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
+  try {
+    if (!appleToken || !fcmToken) {
+      return null;
+    }
+
+    // id_token 해독
+    const appleUser = jwt.decode(appleToken);
+
+    if (appleUser === null) {
+      return null;
+    }
+
+    // appleUser.sub
+    if (!(appleUser as jwt.JwtPayload).sub) {
+      return null;
+    }
+
+    // 존재하는 유저인지 확인
+    const existUser = await User.findOne({
+      appleId: (appleUser as jwt.JwtPayload).sub,
+    });
+
+    // 출력해서 확인해 볼 것!
+    let email = "";
+    if ((appleUser as jwt.JwtPayload).email) {
+      email = (appleUser as jwt.JwtPayload).email;
+    }
+
+    let nickname = "";
+    if ((appleUser as jwt.JwtPayload).nickname) {
+      nickname = (appleUser as jwt.JwtPayload).nickname;
+    }
+
+    // db에 유저가 없으면 회원 가입
+    if (!existUser) {
+      const user = new User({
+        isAlreadyUser: false,
+        appleId: (appleUser as jwt.JwtPayload).sub,
+        email: email,
+        nickname: nickname,
         fcmToken: fcmToken,
       });
 
@@ -125,5 +212,6 @@ const reissueToken = async (accessToken: string, refreshToken: string) => {
 
 export default {
   kakaoLogin,
+  appleLogin,
   reissueToken,
 };
