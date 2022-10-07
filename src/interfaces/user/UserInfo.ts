@@ -1,4 +1,5 @@
 export interface UserInfo {
+  appleId: string;
   nickname: string;
   email: string;
   gender: string;
