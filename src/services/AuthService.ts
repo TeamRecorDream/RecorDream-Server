@@ -49,7 +49,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
       await user.save();
 
       const data: AuthResponseDto = {
-        isAlreadyUser: false,
+        isAlreadyUser: user.isAlreadyUser,
         accessToken: user.accessToken,
         refreshToken: user.refreshToken,
         nickname: nickname,
@@ -137,7 +137,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
       await user.save();
 
       const data: AuthResponseDto = {
-        isAlreadyUser: false,
+        isAlreadyUser: user.isAlreadyUser,
         accessToken: user.accessToken,
         refreshToken: refreshToken,
         nickname: nickname,
