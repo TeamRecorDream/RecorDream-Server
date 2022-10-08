@@ -149,6 +149,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     // 유저가 있으면 로그인 처리
     const accessToken = jwtHandler.getAccessToken(existUser._id);
     const refreshToken = jwtHandler.getRefreshToken();
+    existUser.isAlreadyUser = true;
 
     // 한 유저가 여러 기기로 로그한 경우
     if (!existUser.fcmToken.includes(fcmToken)) {
@@ -156,7 +157,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     }
 
     const data: AuthResponseDto = {
-      isAlreadyUser: true,
+      isAlreadyUser: existUser.isAlreadyUser,
       accessToken: accessToken,
       refreshToken: refreshToken,
       nickname: nickname,
