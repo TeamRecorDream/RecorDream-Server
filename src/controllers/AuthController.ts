@@ -106,12 +106,11 @@ const socialLogout = async (req: Request, res: Response) => {
     const data = await AuthService.socialLogout(authLogoutDto);
 
     if (data === null) {
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
     if (data === exceptionMessage.NOT_FOUND_FCM) {
-      console.log("여기?");
-      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.INVALID_TOKEN));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NO_FCM));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.LOGOUT_SUCCESS));

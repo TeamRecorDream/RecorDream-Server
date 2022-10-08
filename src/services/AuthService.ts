@@ -230,18 +230,11 @@ const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
       return exceptionMessage.NOT_FOUND_FCM;
     }
 
-    for (let i = 0; i < user.fcmToken.length; i++) {
-      if (user.fcmToken[i] === fcmToken) {
-        user.fcmToken.splice(i, 1);
-        i--;
-      }
-    }
+    const remainedfcmToken = user.fcmToken.filter((element) => element !== fcmToken);
 
-    const updatedfcmToken = user.fcmToken;
+    await user.updateOne({ fcmToken: remainedfcmToken });
 
-    await user.updateOne({ fcmToken: updatedfcmToken });
-
-    return updatedfcmToken;
+    return remainedfcmToken;
   } catch (err) {
     console.log(err);
     throw err;

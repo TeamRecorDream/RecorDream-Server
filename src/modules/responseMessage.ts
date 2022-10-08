@@ -50,6 +50,9 @@ const message = {
   SIGNUP_SUCCESS: "회원가입 성공",
   LOGIN_FAIL: "로그인 실패",
   LOGOUT_SUCCESS: "로그아웃 성공",
+
+  // 로그아웃
+  NO_FCM: "존재하지 않는 fcm Token 입니다.",
 };
 
 export default message;
