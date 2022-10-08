@@ -2,6 +2,9 @@ import express, { Request, Response, NextFunction } from "express";
 const app = express();
 import connectDB from "./loaders/db";
 import routes from "./routes";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+import path from "path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -12,6 +15,8 @@ app.use(express.json());
 
 app.use(routes); //라우터
 // error handler
+const swaggerSpec = YAML.load(path.join(__dirname, "../build/swagger.yaml"));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 interface ErrorType {
   message: string;
