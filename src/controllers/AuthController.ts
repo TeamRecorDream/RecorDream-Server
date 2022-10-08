@@ -5,6 +5,8 @@ import util from "../modules/util";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
 import AuthService from "../services/AuthService";
+import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
+import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route POST /auth/login
@@ -56,7 +58,7 @@ const socailLogin = async (req: Request, res: Response) => {
 /**
  * @route POST /auth/token
  * @desc access token refresh
- * @access private
+ * @access Private
  */
 const reissueToken = async (req: Request, res: Response) => {
   const accessToken = req.headers.access as string;
@@ -92,7 +94,39 @@ const reissueToken = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @Route PATCH /auth/logout
+ * @desc social logout
+ * @access Private
+ */
+const socialLogout = async (req: Request, res: Response) => {
+  const authLogoutDto: AuthLogoutDto = req.body;
+
+  try {
+    const data = await AuthService.socialLogout(authLogoutDto);
+
+    if (data === null) {
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    if (data === exceptionMessage.NOT_FOUND_FCM) {
+      console.log("여기?");
+      res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.INVALID_TOKEN));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.LOGOUT_SUCCESS));
+  } catch (err) {
+    console.log(err);
+
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   socailLogin,
   reissueToken,
+  socialLogout,
 };
