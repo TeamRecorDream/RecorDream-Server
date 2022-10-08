@@ -22,7 +22,7 @@ const socailLogin = async (req: Request, res: Response) => {
     }
     // 애플로그인
     if (!kakaoToken) {
-      //user = await AuthService.appleLogin(appleToken, fcmToken);
+      user = await AuthService.appleLogin(appleToken, fcmToken);
     }
 
     if (user === null) {

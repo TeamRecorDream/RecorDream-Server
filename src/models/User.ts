@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import { UserInfo } from "../interfaces/user/UserInfo";
 
 const UserSchema = new mongoose.Schema({
+  appleId: {
+    type: String,
+  },
   nickname: {
     type: String,
   },
