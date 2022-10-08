@@ -1,0 +1,9 @@
+description: 서버 내부 오류
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 500
+      success: false
+      message: 서버 내부 오류

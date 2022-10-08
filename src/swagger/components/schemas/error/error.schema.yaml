@@ -1,0 +1,8 @@
+type: object
+properties:
+  status:
+    type: number
+  success:
+    type: boolean
+  message:
+    type: string
