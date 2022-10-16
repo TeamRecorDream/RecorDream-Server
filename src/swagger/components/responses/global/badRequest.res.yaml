@@ -1,0 +1,9 @@
+description: 잘못된 요청
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 400
+      success: false
+      message: 잘못된 요청

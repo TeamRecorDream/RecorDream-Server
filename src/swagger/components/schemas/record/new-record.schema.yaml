@@ -1,0 +1,40 @@
+type: object
+required:
+  - title
+  - date
+  - writer
+properties:
+  date:
+    type: string
+    format: date-time
+  title:
+    type: string
+  content:
+    type: string
+  emotion:
+    type: number
+  dream_color:
+    type: number
+  genre:
+    type: array
+    items:
+      type: number
+  note:
+    type: string
+  writer:
+    type: string
+  voice:
+    type: string
+example:
+  data:
+    {
+      "title": "오늘은 7월 20일",
+      "date": "2022-07-22T11:14:49.196",
+      "content": "귀엽다",
+      "emotion": 2,
+      "dream_color": 3,
+      "genre": [1, 2, 5],
+      "note": null,
+      "voice": "62cdb868c3032f2b7af76531",
+      "writer": "62c9cf068094605c781a2fb9",
+    }

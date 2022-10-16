@@ -1,0 +1,56 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/records/record-by-id.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# GET /record/{recordId}
+get:
+  tags:
+    - Records
+  summary: Returns record
+  description: >
+    Return a single instance of a record.
+  parameters:
+    - $ref: "../../components/parameters/recordId.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/records/readRecordSuccess.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
+
+# PATCH /record/{recordId}
+patch:
+  tags:
+    - Records
+  summary: Update record
+  description: >
+    Update a record.
+  parameters:
+    - $ref: "../../components/parameters/recordId.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/records/updateRecordSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/records/updateRecordFail.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
+
+# Delete /record/{recordId}
+delete:
+  tags:
+    - Records
+  summary: Delete record
+  description: >
+    Delete a record.
+  parameters:
+    - $ref: "../../components/parameters/recordId.param.yaml"
+  responses:
+    "204":
+      $ref: "../../components/responses/global/noContent.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

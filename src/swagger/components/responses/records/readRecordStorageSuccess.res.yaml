@@ -1,0 +1,34 @@
+description: 꿈 기록 목록(보관함) 조회 성공
+content:
+  application/json:
+    schema:
+      properties:
+        record:
+          $ref: "../../schemas/record/record.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: 꿈 기록 목록(보관함) 조회 성공
+      data:
+        {
+          "records_count": 2,
+          "records":
+            [
+              {
+                "_id": "62d16f41e8b4508dbca5eaf4",
+                "dream_color": 2,
+                "emotion": 2,
+                "date": "2023/07/15 (토)",
+                "title": "우리 유저14",
+                "genre": [1, 2, 5],
+              },
+              {
+                "_id": "62d16f3ee8b4508dbca5eaf2",
+                "dream_color": 2,
+                "emotion": 2,
+                "date": "2023/07/15 (토)",
+                "title": "우리 유저13",
+                "genre": [10],
+              },
+            ],
+        }

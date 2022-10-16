@@ -1,0 +1,20 @@
+type: object
+required:
+  - _id
+  - date
+  - title
+  - writer
+properties:
+  _id:
+    type: string
+  writer:
+    type: string
+  date:
+    type: string
+    format: date
+  title:
+    type: string
+  voice:
+    type: object
+  content:
+    type: string

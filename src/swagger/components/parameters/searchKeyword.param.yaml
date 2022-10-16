@@ -1,0 +1,9 @@
+name: keyword
+description: 검색 키워드
+in: query
+required: true
+style: simple
+explode: false
+schema:
+  type: string
+  example: "화이팅"

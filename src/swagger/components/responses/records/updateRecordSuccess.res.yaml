@@ -1,0 +1,9 @@
+description: 꿈 기록 수정 성공
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/success/success.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: 꿈 기록 수정 성공

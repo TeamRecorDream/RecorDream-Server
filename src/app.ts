@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 const app = express();
 import connectDB from "./loaders/db";
 import routes from "./routes";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -9,7 +10,6 @@ connectDB();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(routes); //라우터
 
 // error handler

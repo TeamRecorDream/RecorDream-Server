@@ -1,0 +1,12 @@
+description: 꿈 기록 작성 성공
+content:
+  application/json:
+    schema:
+      properties:
+        record_id:
+          $ref: "../../schemas/success/id.schema.yaml"
+    example:
+      status: 201
+      success: true
+      message: 꿈 기록 작성 성공
+      data: { "_id": "62cfc9f8e9ce27c134401f70" }

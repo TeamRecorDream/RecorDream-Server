@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  version: 0.4.0
+  title: Recordream API docs
+  description: 드리미들의 API 문서입니다
+  license:
+    name: MIT
+servers:
+  - url: "http://localhost:8000"
+  - url: "http://13.125.138.47:8000"
+tags:
+  - name: Records
+    description: Record resource APIs
+  - name: Voices
+    description: Voice resource APIs
+  - name: Notice
+    description: Push Notification APIs
+  - name: Auth
+    description: Authorization APIs
+  - name: User
+    description: User resource APIs
+
+paths:
+  /record/{recordId}: #example(GET, PATCH, Delete)
+    $ref: "./paths/records/record-by-id.openapi.yaml"
+  /record:
+    $ref: "./paths/records/record.openapi.yaml"
+  /record/storage/list?filter=:
+    $ref: "./paths/records/record-storage-list.openapi.yaml"
+  /record/storage/search?keyword=:
+    $ref: "./paths/records/record-storage-search.openapi.yaml"
+
+components:

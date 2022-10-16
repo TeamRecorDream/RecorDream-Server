@@ -1,0 +1,9 @@
+description: 제목이 없거나 길이를 초과하였습니다 or 감정, 색깔, 장르 범위 오류입니다
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 400
+      success: false
+      message: 제목이 없거나 길이를 초과하였습니다 or 감정, 색깔, 장르 범위 오류입니다

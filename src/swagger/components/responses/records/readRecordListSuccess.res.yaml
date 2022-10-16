@@ -1,0 +1,43 @@
+description: 꿈 기록 목록(홈) 조회 성공
+content:
+  application/json:
+    schema:
+      properties:
+        record:
+          $ref: "../../schemas/record/record.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: 꿈 기록 목록(홈) 조회 성공
+      data:
+        {
+          "nickname": "세정",
+          "records":
+            [
+              {
+                "_id": "628bbf176322800b0f33a69b",
+                "dream_color": 3,
+                "emotion": 4,
+                "date": "2022/06/26 (일)",
+                "title": "감자튀김이랑 놀이동산에 갔다",
+                "genre": [1, 2, 5],
+              },
+              {
+                "_id": "628bbf183924jfb0f33a69b",
+                "dream_color": 1,
+                "emotion": 6,
+                "date": "2022/06/27 (월)",
+                "title": "아이패드 잃어버렸다",
+                "genre": [1, 2, 5],
+              },
+              ...,
+              {
+                "_id": "345abf176322800b0f33a69b",
+                "dream_color": 7,
+                "emotion": 1,
+                "date": "2022/06/28 (화)",
+                "title": "황치즈쿠키를 먹었다",
+                "genre": [10],
+              },
+            ],
+        }

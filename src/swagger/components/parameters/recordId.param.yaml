@@ -1,0 +1,10 @@
+name: recordId
+description: 꿈 기록 고유 ID
+in: path
+required: true
+style: simple
+explode: false
+schema:
+  type: string
+  format: objectId
+  example: 62d7b6f19669f53b6c72a89f
