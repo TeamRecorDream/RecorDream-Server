@@ -28,7 +28,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
       return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.INVALID_TOKEN));
     }
 
-    const userId = (decoded as JwtPayload).id;
+    const userId = (decoded as JwtPayload).user.id;
     if (!userId) {
       return res.status(statusCode.FORBIDDEN).send(util.fail(statusCode.FORBIDDEN, message.INVALID_TOKEN));
     }
