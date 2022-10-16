@@ -1,0 +1,39 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/records/record.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# GET /record
+get:
+  tags:
+    - Records
+  summary: Home(list)
+  description: >
+    Home
+  responses:
+    "200":
+      $ref: "../../components/responses/records/readRecordListSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/global/nullValue.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
+
+# POST /record
+post:
+  tags:
+    - Records
+  summary: Create a record
+  description: Create a record
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/record/new-record.schema.yaml"
+  responses:
+    "201":
+      $ref: "../../components/responses/records/createRecordSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/records/createRecordFail.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

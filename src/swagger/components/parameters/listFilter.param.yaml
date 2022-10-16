@@ -1,0 +1,9 @@
+name: filter
+description: 조회할 감정
+in: query
+required: true
+style: simple
+explode: false
+schema:
+  type: int
+  example: 2

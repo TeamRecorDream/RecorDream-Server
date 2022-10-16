@@ -1,0 +1,22 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/records/record-storage-list.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# GET /record/storage/search?keyword=
+get:
+  tags:
+    - Records
+  summary: Search Keyword
+  description: >
+    Search Keyword
+  parameters:
+    - $ref: "../../components/parameters/searchKeyword.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/records/readRecordStorageSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/global/nullValue.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
