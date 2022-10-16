@@ -7,6 +7,7 @@ info:
     name: MIT
 servers:
   - url: 'http://localhost:8000'
+  - url: 'http://13.125.138.47:8000'
 tags:
   - name: Records
     description: Record resource APIs
@@ -317,8 +318,8 @@ paths:
       description: |
         Storage(list)
       parameters:
-        - name: listFilter
-          description: 감정별 조회
+        - name: filter
+          description: 조회할 감정
           in: query
           required: true
           style: simple
@@ -372,7 +373,7 @@ paths:
       description: |
         Search Keyword
       parameters:
-        - name: searchKeyword
+        - name: keyword
           description: 검색 키워드
           in: query
           required: true
