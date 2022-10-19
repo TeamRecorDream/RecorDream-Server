@@ -106,6 +106,7 @@ const changeToggle = async (req: Request, res: Response) => {
 const updateFcmToken = async (req: Request, res: Response) => {
   const fcmTokenUpdateDto: FcmTokenUpdateDto = req.body;
   const userId = req.header("userId");
+
   try {
     const updatedToken = await UserService.updateFcmToken(userId as string, fcmTokenUpdateDto);
 
@@ -123,9 +124,29 @@ const updateFcmToken = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @router DELETE /user
+ * @desc Delete User
+ * @access Private
+ */
+const deleteUser = async (req: Request, res: Response) => {
+  const userId = req.header("userId");
+
+  try {
+    await UserService.deleteUser(userId as string);
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.DELETE_USER_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   changeToggle,
   updateFcmToken,
+  deleteUser,
 };
