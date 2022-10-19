@@ -53,6 +53,9 @@ const message = {
 
   // 로그아웃
   NO_FCM: "존재하지 않는 fcm Token 입니다.",
+
+  // 회원탈퇴
+  DELETE_USER_SUCCESS: "회원탈퇴 성공",
 };
 
 export default message;
