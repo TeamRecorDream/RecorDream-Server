@@ -55,16 +55,9 @@ const getUser = async (userId: string, fcm_token: string) => {
   }
 };
 
-const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAlarmDto) => {
+const changeToggle = async (toggle: string, userAlarmDto: UserAlarmDto) => {
   dayjs.locale("en");
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
-
-    if (!user) {
-      return null;
-    }
-
     const token = userAlarmDto.fcm_token;
     const device = await Notice.find({ fcm_token: token });
     //console.log(device);
