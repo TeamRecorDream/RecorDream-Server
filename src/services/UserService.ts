@@ -8,7 +8,6 @@ import * as admin from "firebase-admin";
 import schedule from "node-schedule";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
-import dayjs from "dayjs";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {

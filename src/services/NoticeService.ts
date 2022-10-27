@@ -21,15 +21,15 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     }
 
     // Notice에 있는 fcm_token 찾기 (등록된 기기인지)
-    const d = await Notice.find({ fcm_token: noticeBaseDto.fcmToken });
+    const d = await Notice.find({ fcmToken: noticeBaseDto.fcmToken });
 
     // 등록되지 않은 기기일 경우
     if (d.length == 0) {
       // 새로운 notice 객체 생성
       const notice = new Notice({
-        fcm_token: noticeBaseDto.fcmToken,
+        fcmToken: noticeBaseDto.fcmToken,
         time: noticeBaseDto.time,
-        is_active: true,
+        isActive: true,
       });
 
       const data = {
@@ -296,17 +296,17 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
 // 푸시알림 끄기
 const toggleOff = async (noticeOffDto: NoticeOffDto) => {
   try {
-    const fcm_token = noticeOffDto.fcmToken;
-    const device = await Notice.find({ fcmToken: fcm_token });
+    const fcmToken = noticeOffDto.fcmToken;
+    const device = await Notice.find({ fcmToken: fcmToken });
 
     if (device.length === 0) {
       return null;
     }
 
-    device[0].isActive = false;
     device[0].time = null;
+    device[0].isActive = false;
 
-    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].isActive, time: device[0].time }).exec();
+    await Notice.updateOne({ fcmToken: fcmToken }, { isActive: device[0].isActive, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;
