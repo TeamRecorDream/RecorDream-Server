@@ -58,9 +58,8 @@ const getUser = async (userId: string, fcm_token: string) => {
 const changeToggle = async (toggle: string, userAlarmDto: UserAlarmDto) => {
   dayjs.locale("en");
   try {
-    const token = userAlarmDto.fcm_token;
-    const device = await Notice.find({ fcm_token: token });
-    //console.log(device);
+    const fcm_token = userAlarmDto.fcmToken;
+    const device = await Notice.find({ fcmToken: fcm_token });
 
     if (device.length == 0) {
       return null;
@@ -81,7 +80,7 @@ const changeToggle = async (toggle: string, userAlarmDto: UserAlarmDto) => {
       //await Notice.deleteOne({ fcm_token: device[0].fcm_token });
     }
 
-    await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active, time: device[0].time }).exec();
+    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].is_active, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;

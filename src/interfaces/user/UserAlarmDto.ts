@@ -1,3 +1,3 @@
 export interface UserAlarmDto {
-  fcm_token: string;
+  fcmToken: string;
 }
