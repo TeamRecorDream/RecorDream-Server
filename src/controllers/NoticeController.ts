@@ -7,7 +7,7 @@ import util from "../modules/util";
 import NoticeService from "../services/NoticeService";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
-import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
+import { NoticeOffDto } from "../interfaces/notice/NoticeOffDto";
 
 /**
  * @route /notice
@@ -87,12 +87,12 @@ const updateNotice = async (req: Request, res: Response) => {
  * @access Public
  */
 const toggleOff = async (req: Request, res: Response) => {
-  const userAlarmDto: UserAlarmDto = req.body;
+  const noticeOffDto: NoticeOffDto = req.body;
 
   try {
-    const result = await NoticeService.toggleOff(userAlarmDto);
+    const result = await NoticeService.toggleOff(noticeOffDto);
     if (result === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NO_FCM));
     }
 
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));

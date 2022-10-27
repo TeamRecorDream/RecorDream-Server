@@ -6,7 +6,6 @@ import statusCode from "../modules/statusCode";
 import util from "../modules/util";
 import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
-import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
 

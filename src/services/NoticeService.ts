@@ -8,8 +8,7 @@ import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
-import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
-import dayjs from "dayjs";
+import { NoticeOffDto } from "../interfaces/notice/NoticeOffDto";
 
 const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise<PostBaseResponseDto | null | undefined> => {
   try {
@@ -295,13 +294,12 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
 };
 
 // 푸시알림 끄기
-const toggleOff = async (userAlarmDto: UserAlarmDto) => {
-  dayjs.locale("en");
+const toggleOff = async (noticeOffDto: NoticeOffDto) => {
   try {
-    const fcm_token = userAlarmDto.fcmToken;
+    const fcm_token = noticeOffDto.fcmToken;
     const device = await Notice.find({ fcmToken: fcm_token });
 
-    if (device.length == 0) {
+    if (device.length === 0) {
       return null;
     }
 

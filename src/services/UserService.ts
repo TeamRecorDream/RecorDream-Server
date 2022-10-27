@@ -6,7 +6,6 @@ import User from "../models/User";
 import userMocking from "../models/UserMocking";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
-import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 import dayjs from "dayjs";
