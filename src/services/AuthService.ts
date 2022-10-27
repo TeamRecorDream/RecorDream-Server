@@ -40,7 +40,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
         email: email,
         gender: gender || null,
         age_range: age_range || null,
-        fcmToken: fcmToken,
+        fcmTokens: fcmToken,
       });
 
       user.accessToken = jwtHandler.getAccessToken(user.id);
@@ -64,8 +64,8 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     existUser.isAlreadyUser = true;
 
     // 한 유저가 여러 기기로 로그한 경우
-    if (!existUser.fcmToken.includes(fcmToken)) {
-      existUser.fcmToken.push(fcmToken);
+    if (!existUser.fcmTokens.includes(fcmToken)) {
+      existUser.fcmTokens.push(fcmToken);
     }
 
     const data: AuthResponseDto = {
@@ -152,8 +152,8 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     existUser.isAlreadyUser = true;
 
     // 한 유저가 여러 기기로 로그한 경우
-    if (!existUser.fcmToken.includes(fcmToken)) {
-      existUser.fcmToken.push(fcmToken);
+    if (!existUser.fcmTokens.includes(fcmToken)) {
+      existUser.fcmTokens.push(fcmToken);
     }
 
     const data: AuthResponseDto = {
@@ -226,11 +226,11 @@ const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
     }
 
     // 존재하지 않는 fcmToken일 경우
-    if (!user.fcmToken.includes(fcmToken)) {
+    if (!user.fcmTokens.includes(fcmToken)) {
       return exceptionMessage.NOT_FOUND_FCM;
     }
 
-    const remainedfcmToken = user.fcmToken.filter((element) => element !== fcmToken);
+    const remainedfcmToken = user.fcmTokens.filter((element) => element !== fcmToken);
 
     await user.updateOne({ fcmToken: remainedfcmToken });
 

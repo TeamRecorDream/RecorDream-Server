@@ -55,38 +55,6 @@ const getUser = async (userId: string, fcm_token: string) => {
   }
 };
 
-const changeToggle = async (toggle: string, userAlarmDto: UserAlarmDto) => {
-  dayjs.locale("en");
-  try {
-    const fcm_token = userAlarmDto.fcmToken;
-    const device = await Notice.find({ fcmToken: fcm_token });
-
-    if (device.length == 0) {
-      return null;
-    }
-
-    // toggle parameter 값이 1이면 푸시알림 설정 O
-    if (toggle == "1") {
-      device[0].is_active = true;
-
-      if (device[0].time === null) {
-        device[0].time = dayjs().format("A hh:mm");
-      }
-    }
-    // toggle parameter 값이 0이면 푸시알림 설정 X
-    if (toggle == "0") {
-      device[0].is_active = false;
-      device[0].time = null;
-      //await Notice.deleteOne({ fcm_token: device[0].fcm_token });
-    }
-
-    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].is_active, time: device[0].time }).exec();
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
 // fcm_token: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
   const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
@@ -103,14 +71,14 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
       new_token: fcmTokenUpdateDto.new_token,
     };
 
-    if (user.fcmToken[0] !== tokens.fcm_token && user.fcmToken[1] !== tokens.fcm_token) {
+    if (user.fcmTokens[0] !== tokens.fcm_token && user.fcmTokens[1] !== tokens.fcm_token) {
       return null;
     }
 
-    if (user.fcmToken[0] === tokens.fcm_token) {
+    if (user.fcmTokens[0] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
-    if (user.fcmToken[1] === tokens.fcm_token) {
+    if (user.fcmTokens[1] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
   } catch (err) {
@@ -137,7 +105,6 @@ const deleteUser = async (userId: string) => {
 export default {
   updateNickname,
   getUser,
-  changeToggle,
   updateFcmToken,
   deleteUser,
 };

@@ -8,6 +8,8 @@ import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
+import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
+import dayjs from "dayjs";
 
 const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise<PostBaseResponseDto | null | undefined> => {
   try {
@@ -85,7 +87,7 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
             },
           },
         },
-        token: notice.fcm_token,
+        token: notice.fcmToken,
       };
 
       schedule.scheduleJob({ hour: hour, minute: min }, function () {
@@ -161,7 +163,7 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
             },
           },
         },
-        token: notice[0].fcm_token,
+        token: notice[0].fcmToken,
       };
 
       schedule.scheduleJob({ hour: hour, minute: min }, function () {
@@ -271,7 +273,7 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
           },
         },
       },
-      token: notice[0].fcm_token,
+      token: notice[0].fcmToken,
     };
 
     schedule.scheduleJob({ hour: hour, minute: min }, function () {
@@ -292,7 +294,29 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
   }
 };
 
+// 푸시알림 끄기
+const toggleOff = async (userAlarmDto: UserAlarmDto) => {
+  dayjs.locale("en");
+  try {
+    const fcm_token = userAlarmDto.fcmToken;
+    const device = await Notice.find({ fcmToken: fcm_token });
+
+    if (device.length == 0) {
+      return null;
+    }
+
+    device[0].is_active = false;
+    device[0].time = null;
+
+    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].is_active, time: device[0].time }).exec();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   postNotice,
   updateNotice,
+  toggleOff,
 };

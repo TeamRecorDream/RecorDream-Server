@@ -7,6 +7,7 @@ import util from "../modules/util";
 import NoticeService from "../services/NoticeService";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
+import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 
 /**
  * @route /notice
@@ -80,7 +81,40 @@ const updateNotice = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route PUT /notice
+ * @desc Push Alarm Toggle OFF
+ * @access Public
+ */
+const toggleOff = async (req: Request, res: Response) => {
+  //const toggle: string = req.params.toggle;
+  const userAlarmDto: UserAlarmDto = req.body;
+
+  /*
+  if (toggle !== "1" && toggle !== "0") {
+    // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
+    return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+  }
+  */
+
+  try {
+    const result = await NoticeService.toggleOff(userAlarmDto);
+    if (result === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
+    }
+
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   postNotice,
   updateNotice,
+  toggleOff,
 };

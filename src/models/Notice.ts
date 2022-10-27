@@ -11,7 +11,7 @@ const NoticeSchema = new mongoose.Schema({
     type: String,
     default: dayjs().format("YYYY-MM-DD HH:mm"),
   },
-  fcm_token: {
+  fcmToken: {
     type: String,
   },
   is_active: {

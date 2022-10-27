@@ -7,8 +7,7 @@ const router: Router = Router();
 
 router.get("/:token", UserController.getUser);
 router.put("/nickname", [body("nickname").notEmpty().isLength({ min: 1, max: 8 })], UserController.updateNickname);
-router.put("/fcm-token", UserController.updateFcmToken);
-router.put("/:toggle", UserController.changeToggle);
+router.put("/fcm-token", auth, UserController.updateFcmToken);
 router.delete("/", auth, UserController.deleteUser);
 
 export default router;
