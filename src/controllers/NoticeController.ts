@@ -87,15 +87,7 @@ const updateNotice = async (req: Request, res: Response) => {
  * @access Public
  */
 const toggleOff = async (req: Request, res: Response) => {
-  //const toggle: string = req.params.toggle;
   const userAlarmDto: UserAlarmDto = req.body;
-
-  /*
-  if (toggle !== "1" && toggle !== "0") {
-    // toggle parameter 값은 1이나 0만 받음, 다른게 들어오면 404 처리
-    return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-  }
-  */
 
   try {
     const result = await NoticeService.toggleOff(userAlarmDto);
@@ -103,7 +95,7 @@ const toggleOff = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.CHANGE_TOGGLE_SUCCESS));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
