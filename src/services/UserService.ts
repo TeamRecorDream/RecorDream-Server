@@ -43,7 +43,7 @@ const getUser = async (userId: string, fcm_token: string) => {
     const result = {
       nickname: user.nickname,
       email: user.email,
-      is_active: device[0].is_active,
+      is_active: device[0].isActive,
       time: device[0].time,
       is_deleted: user.is_deleted,
     };

@@ -21,13 +21,13 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     }
 
     // Notice에 있는 fcm_token 찾기 (등록된 기기인지)
-    const d = await Notice.find({ fcm_token: noticeBaseDto.fcm_token });
+    const d = await Notice.find({ fcm_token: noticeBaseDto.fcmToken });
 
     // 등록되지 않은 기기일 경우
     if (d.length == 0) {
       // 새로운 notice 객체 생성
       const notice = new Notice({
-        fcm_token: noticeBaseDto.fcm_token,
+        fcm_token: noticeBaseDto.fcmToken,
         time: noticeBaseDto.time,
         is_active: true,
       });
@@ -108,9 +108,9 @@ const postNotice = async (noticeBaseDto: NoticeBaseDto, userId: string): Promise
     }
     // 이미 등록된 기기일 경우
     else {
-      await Notice.updateOne({ fcm_token: noticeBaseDto.fcm_token }, { time: noticeBaseDto.time }).exec();
+      await Notice.updateOne({ fcm_token: noticeBaseDto.fcmToken }, { time: noticeBaseDto.time }).exec();
 
-      const notice = await Notice.find({ fcm_token: noticeBaseDto.fcm_token });
+      const notice = await Notice.find({ fcm_token: noticeBaseDto.fcmToken });
 
       // 기기별 입력한 푸시알림 시간 확인
       const times = notice[0].time;
@@ -212,7 +212,7 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
     };
 
     // 시간 수정 시에 토큰 넣는데, 그 값이 유저 토큰에 없을 경우
-    if (user.fcm_token[0] !== noticeBaseDto.fcm_token && user.fcm_token[1] !== noticeBaseDto.fcm_token) {
+    if (user.fcm_token[0] !== noticeBaseDto.fcmToken && user.fcm_token[1] !== noticeBaseDto.fcmToken) {
       return null;
     }
 
@@ -220,7 +220,7 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
     await Notice.updateOne({ _id: noticeId }, { time: updatedUserTime.time }).exec();
 
     // 수정된 토큰을 가진 notice를 찾음
-    const notice = await Notice.find({ fcm_token: noticeBaseDto.fcm_token });
+    const notice = await Notice.find({ fcm_token: noticeBaseDto.fcmToken });
 
     // 기기별 입력한 푸시알림 시간 확인
     const times = notice[0].time;
@@ -303,10 +303,10 @@ const toggleOff = async (noticeOffDto: NoticeOffDto) => {
       return null;
     }
 
-    device[0].is_active = false;
+    device[0].isActive = false;
     device[0].time = null;
 
-    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].is_active, time: device[0].time }).exec();
+    await Notice.updateOne({ fcmToken: fcm_token }, { is_active: device[0].isActive, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;

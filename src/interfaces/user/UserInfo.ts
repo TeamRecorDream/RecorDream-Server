@@ -9,6 +9,5 @@ export interface UserInfo {
   fcmTokens: string[];
   accessToken: string;
   refreshToken: string;
-  is_active: boolean;
   time: string | null;
 }

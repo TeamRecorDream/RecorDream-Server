@@ -39,9 +39,6 @@ const UserSchema = new mongoose.Schema({
     type: [String],
     unique: true,
   },
-  is_active: {
-    type: Boolean,
-  },
 });
 
 export default mongoose.model<UserInfo & mongoose.Document>("User", UserSchema);

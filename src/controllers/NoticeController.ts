@@ -30,7 +30,7 @@ const postNotice = async (req: Request, res: Response) => {
   try {
     const data = await NoticeService.postNotice(noticeBaseDto, userId as string);
     if (data === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NO_FCM));
     }
     //if (data === undefined) {
     //  return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_ALREADY));
@@ -68,7 +68,7 @@ const updateNotice = async (req: Request, res: Response) => {
   try {
     const data = await NoticeService.updateNotice(noticeBaseDto, userId as string, noticeId);
     if (data === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NO_FCM));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NOTICE_SUCCESS));
@@ -82,7 +82,7 @@ const updateNotice = async (req: Request, res: Response) => {
 };
 
 /**
- * @route PUT /notice
+ * @route PATCH /notice
  * @desc Push Alarm Toggle OFF
  * @access Public
  */

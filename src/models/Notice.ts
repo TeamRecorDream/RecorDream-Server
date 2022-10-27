@@ -14,7 +14,7 @@ const NoticeSchema = new mongoose.Schema({
   fcmToken: {
     type: String,
   },
-  is_active: {
+  isActive: {
     type: Boolean,
   },
 });
