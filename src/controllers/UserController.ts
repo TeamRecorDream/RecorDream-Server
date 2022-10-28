@@ -17,14 +17,13 @@ import { slackMessage } from "../modules/returnToSlackMessage";
 const updateNickname = async (req: Request, res: Response) => {
   const err = validationResult(req);
   const userUpdateDto: UserNicknameUpdateDto = req.body;
-  const userId = req.header("userId");
 
   try {
-    if (!userId || !err.isEmpty()) {
+    if (!err.isEmpty()) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NICKNAME_FAIL));
     }
 
-    await UserService.updateNickname(userId as string, userUpdateDto);
+    await UserService.updateNickname(userUpdateDto);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NICKNAME_SUCCESS));
   } catch (err) {
