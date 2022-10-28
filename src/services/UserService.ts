@@ -9,13 +9,17 @@ import schedule from "node-schedule";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 
-const updateNickname = async (userUpdateDto: UserNicknameUpdateDto) => {
+const updateNickname = async (userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
     const updatedNickname = {
-      nickname: userUpdateDto.nickname,
+      nickname: userNicknameUpdateDto.nickname,
     };
 
-    await User.findByIdAndUpdate(userUpdateDto.userId, updatedNickname);
+    const user = await User.findByIdAndUpdate(userNicknameUpdateDto.userId, updatedNickname);
+
+    if (!user) {
+      return null;
+    }
   } catch (err) {
     console.log(err);
     throw err;
