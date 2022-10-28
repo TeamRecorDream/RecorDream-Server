@@ -1,6 +1,6 @@
 export interface NoticeInfo {
   time: string | null;
-  fcm_token: string;
+  fcmToken: string;
   createdAt: string;
-  is_active: boolean;
+  isActive: boolean;
 }

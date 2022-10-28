@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  fcmToken: {
+  fcmTokens: {
     type: [String],
     unique: true,
   },

@@ -6,10 +6,8 @@ import User from "../models/User";
 import userMocking from "../models/UserMocking";
 import * as admin from "firebase-admin";
 import schedule from "node-schedule";
-import { UserAlarmDto } from "../interfaces/user/UserAlarmDto";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
-import dayjs from "dayjs";
 
 const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -44,51 +42,11 @@ const getUser = async (userId: string, fcm_token: string) => {
     const result = {
       nickname: user.nickname,
       email: user.email,
-      is_active: device[0].is_active,
+      is_active: device[0].isActive,
       time: device[0].time,
       is_deleted: user.is_deleted,
     };
     return result;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-const changeToggle = async (userId: string, toggle: string, userAlarmDto: UserAlarmDto) => {
-  dayjs.locale("en");
-  try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
-
-    if (!user) {
-      return null;
-    }
-
-    const token = userAlarmDto.fcm_token;
-    const device = await Notice.find({ fcm_token: token });
-    //console.log(device);
-
-    if (device.length == 0) {
-      return null;
-    }
-
-    // toggle parameter 값이 1이면 푸시알림 설정 O
-    if (toggle == "1") {
-      device[0].is_active = true;
-
-      if (device[0].time === null) {
-        device[0].time = dayjs().format("A hh:mm");
-      }
-    }
-    // toggle parameter 값이 0이면 푸시알림 설정 X
-    if (toggle == "0") {
-      device[0].is_active = false;
-      device[0].time = null;
-      //await Notice.deleteOne({ fcm_token: device[0].fcm_token });
-    }
-
-    await Notice.updateOne({ fcm_token: token }, { is_active: device[0].is_active, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;
@@ -111,14 +69,14 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
       new_token: fcmTokenUpdateDto.new_token,
     };
 
-    if (user.fcmToken[0] !== tokens.fcm_token && user.fcmToken[1] !== tokens.fcm_token) {
+    if (user.fcmTokens[0] !== tokens.fcm_token && user.fcmTokens[1] !== tokens.fcm_token) {
       return null;
     }
 
-    if (user.fcmToken[0] === tokens.fcm_token) {
+    if (user.fcmTokens[0] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
-    if (user.fcmToken[1] === tokens.fcm_token) {
+    if (user.fcmTokens[1] === tokens.fcm_token) {
       await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
     }
   } catch (err) {
@@ -145,7 +103,6 @@ const deleteUser = async (userId: string) => {
 export default {
   updateNickname,
   getUser,
-  changeToggle,
   updateFcmToken,
   deleteUser,
 };
