@@ -23,6 +23,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
 
     const userData = response.data.kakao_account;
     const email = userData.email;
+    const nickname = userData.profile.nickname;
 
     const existUser = await User.findOne({
       email: email,
@@ -30,7 +31,6 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
 
     // db에 유저가 없으면 회원 가입
     if (!existUser) {
-      const nickname = userData.nickname;
       const gender = userData.gender;
       const age_range = userData.age_range;
 
@@ -72,7 +72,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
       isAlreadyUser: existUser.isAlreadyUser,
       accessToken: existUser.accessToken,
       refreshToken: existUser.refreshToken,
-      nickname: existUser.nickname,
+      nickname: nickname,
     };
 
     await User.findByIdAndUpdate(existUser._id, existUser);
