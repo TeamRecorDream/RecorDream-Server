@@ -15,7 +15,7 @@ const updateNickname = async (userUpdateDto: UserNicknameUpdateDto) => {
       nickname: userUpdateDto.nickname,
     };
 
-    await User.findByIdAndUpdate(updatedNickname);
+    await User.findByIdAndUpdate(userUpdateDto.userId, updatedNickname);
   } catch (err) {
     console.log(err);
     throw err;
