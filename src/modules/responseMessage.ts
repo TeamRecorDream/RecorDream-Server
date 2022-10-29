@@ -5,6 +5,7 @@ const message = {
   INTERNAL_SERVER_ERROR: "서버 내부 오류",
 
   // 유저
+  NICKNAME_RULE_VIOLATE: "닉네임은 최소 1글자, 최대 8글자여야 합니다.",
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
   UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
   READ_USER_SUCCESS: "회원 정보 조회 성공",

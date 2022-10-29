@@ -9,14 +9,17 @@ import schedule from "node-schedule";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 
-const updateNickname = async (userId: string, userUpdateDto: UserNicknameUpdateDto) => {
+const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const updatedNickname = {
-      nickname: userUpdateDto.nickname,
+      nickname: userNicknameUpdateDto.nickname,
     };
 
-    await User.findByIdAndUpdate(userObjectId, updatedNickname);
+    const user = await User.findByIdAndUpdate(userId, updatedNickname);
+
+    if (!user) {
+      return null;
+    }
   } catch (err) {
     console.log(err);
     throw err;
