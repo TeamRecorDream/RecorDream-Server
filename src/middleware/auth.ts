@@ -28,17 +28,17 @@ export default (req: Request, res: Response, next: NextFunction) => {
       return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.INVALID_TOKEN));
     }
 
-    const userId = (decoded as JwtPayload).user.id;
+    const userId = (decoded as JwtPayload).user;
     if (!userId) {
       return res.status(statusCode.FORBIDDEN).send(util.fail(statusCode.FORBIDDEN, message.INVALID_TOKEN));
     }
 
-    const user = User.findById(userId);
+    const user = User.findById(userId.id);
     if (!user) {
       return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.NO_USER));
     }
 
-    req.body.user = user;
+    req.body.user = userId;
 
     next();
   } catch (err: any) {
