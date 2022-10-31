@@ -100,7 +100,12 @@ const reissueToken = async (req: Request, res: Response) => {
  * @access Private
  */
 const socialLogout = async (req: Request, res: Response) => {
-  const authLogoutDto: AuthLogoutDto = req.body;
+  const userId = req.body.user.id;
+  const fcmToken = req.body.fcmToken;
+  const authLogoutDto: AuthLogoutDto = {
+    userId,
+    fcmToken,
+  };
 
   try {
     const data = await AuthService.socialLogout(authLogoutDto);
