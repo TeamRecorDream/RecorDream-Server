@@ -213,15 +213,10 @@ const reissueToken = async (accessToken: string, refreshToken: string) => {
 const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
   try {
     const user = await User.findById(authLogoutDto.userId);
-
-    if (!user) {
-      return null;
-    }
-
     const fcmToken = authLogoutDto.fcmToken;
 
-    // fcmToken 안 넣었을 경우
-    if (!fcmToken) {
+    // 존재하지 않는 유저이거나 fcmToken 안 넣었을 경우
+    if (!user || !fcmToken) {
       return null;
     }
 
@@ -232,7 +227,7 @@ const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
 
     const remainedfcmToken = user.fcmTokens.filter((element) => element !== fcmToken);
 
-    await user.updateOne({ fcmToken: remainedfcmToken });
+    await user.updateOne({ fcmTokens: remainedfcmToken });
 
     return remainedfcmToken;
   } catch (err) {
