@@ -297,7 +297,7 @@ const updateNotice = async (noticeBaseDto: NoticeBaseDto, userId: string, notice
 const toggleOff = async (noticeOffDto: NoticeOffDto) => {
   try {
     const fcmToken = noticeOffDto.fcmToken;
-    const device = await Notice.find({ fcmToken: fcmToken });
+    const device = await Notice.find({ fcmTokens: fcmToken });
 
     if (device.length === 0) {
       return null;
@@ -306,7 +306,7 @@ const toggleOff = async (noticeOffDto: NoticeOffDto) => {
     device[0].time = null;
     device[0].isActive = false;
 
-    await Notice.updateOne({ fcmToken: fcmToken }, { isActive: device[0].isActive, time: device[0].time }).exec();
+    await Notice.updateOne({ fcmTokens: fcmToken }, { isActive: device[0].isActive, time: device[0].time }).exec();
   } catch (err) {
     console.log(err);
     throw err;

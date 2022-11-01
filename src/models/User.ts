@@ -36,8 +36,8 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   fcmTokens: {
-    type: [String],
-    unique: true,
+    type: mongoose.Types.ObjectId,
+    ref: "Notice",
   },
 });
 
