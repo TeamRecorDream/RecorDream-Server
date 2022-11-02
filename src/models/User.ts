@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import mongoose from "mongoose";
 import { UserInfo } from "../interfaces/user/UserInfo";
 
@@ -28,16 +29,20 @@ const UserSchema = new mongoose.Schema({
   accessToken: {
     type: String,
     required: true,
-    unique: true,
   },
   refreshToken: {
     type: String,
     required: true,
-    unique: true,
   },
   fcmTokens: {
-    type: mongoose.Types.ObjectId,
-    ref: "Notice",
+    type: [String],
+  },
+  time: {
+    type: String,
+    default: dayjs().format("A hh:mm"),
+  },
+  isActive: {
+    type: Boolean,
   },
 });
 
