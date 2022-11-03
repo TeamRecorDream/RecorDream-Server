@@ -8,10 +8,10 @@ import userMocking from "../models/UserMocking";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
-import schedule from "node-schedule";
 import { UserNoticePostDto } from "../interfaces/user/UserNoticePostDto";
 import Agenda from "agenda";
 import config from "../config";
+import exceptionMessage from "../modules/exceptionMessage";
 
 // agenda setting
 const agenda = new Agenda({
@@ -112,12 +112,15 @@ const deleteUser = async (userId: string) => {
   }
 };
 
-const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseResponseDto | null | undefined> => {
+const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseResponseDto | null | number | undefined> => {
   try {
     const user = await User.findById(noticePostDto.userId);
 
     if (!user) {
       return null;
+    }
+    if (user.time !== null) {
+      return exceptionMessage.ALREADY_SET_TIME;
     }
 
     // 기기별 입력한 푸시알림 시간 확인
@@ -130,8 +133,8 @@ const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseRes
     const minute = timeSplit[2];
 
     let isDay = true; // AM, PM 판별
-    if (ampm === "AM" || ampm === "am") isDay = true;
-    if (ampm === "PM" || ampm === "pm") isDay = false;
+    if (ampm === "AM") isDay = true;
+    if (ampm === "PM") isDay = false;
 
     if (isDay === false && hour !== 12) hour += 12; // 오후
     if (isDay === true && hour === 12) hour = 0;
