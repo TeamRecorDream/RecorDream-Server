@@ -8,6 +8,8 @@ import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
+import { UserNoticePostDto } from "../interfaces/user/UserNoticePostDto";
+import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route PUT /user/nickname
@@ -121,9 +123,47 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route POST /user/notice
+ * @desc Post notice time
+ * @access Public
+ */
+const postNotice = async (req: Request, res: Response) => {
+  const err = validationResult(req);
+  const userId = req.body.user.id;
+  const time = req.body.time;
+  const noticePostDto: UserNoticePostDto = {
+    userId,
+    time,
+  };
+
+  try {
+    if (!err.isEmpty()) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_FAIL));
+    }
+
+    const data = await UserService.postNotice(noticePostDto);
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    if (data === exceptionMessage.ALREADY_SET_TIME) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_ALREADY));
+    }
+
+    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   updateFcmToken,
   deleteUser,
+  postNotice,
 };

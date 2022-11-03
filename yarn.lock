@@ -1264,16 +1264,16 @@
   "resolved" "https://registry.npmjs.org/acorn/-/acorn-8.7.1.tgz"
   "version" "8.7.1"
 
-"agenda@*":
-  "integrity" "sha512-hX/EfTrxWViuWlAY+vCdidwXX5QzqTi+cKMCOSOuFUHf1xNLcaHfi3FawChy/KdtSzcNSwIVQmxS+1GbWv+R2A=="
-  "resolved" "https://registry.npmjs.org/agenda/-/agenda-4.3.0.tgz"
-  "version" "4.3.0"
+"agenda@*", "agenda@^4.4.0":
+  "integrity" "sha512-7fIO4indmmrtkDmj2woOBJnhHIM7jPtkdGR4VOApB46eeBrPGUnO28RFrmjHebc3PMDnKJI0PWFyu9L9VotgJg=="
+  "resolved" "https://registry.npmjs.org/agenda/-/agenda-4.4.0.tgz"
+  "version" "4.4.0"
   dependencies:
     "cron-parser" "^3.0.0"
     "date.js" "~0.3.3"
     "debug" "~4.3.0"
     "human-interval" "~2.0.0"
-    "moment-timezone" "~0.5.27"
+    "moment-timezone" "~0.5.37"
     "mongodb" "^4.1.0"
 
 "agent-base@6":
@@ -3887,10 +3887,10 @@
   dependencies:
     "minimist" "^1.2.6"
 
-"moment-timezone@~0.5.27":
-  "integrity" "sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg=="
-  "resolved" "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.34.tgz"
-  "version" "0.5.34"
+"moment-timezone@~0.5.37":
+  "integrity" "sha512-nMIrzGah4+oYZPflDvLZUgoVUO4fvAqHstvG3xAUnMolWncuAiLDWNnJZj6EwJGMGfb1ZcuTFE6GI3hNOVWI/Q=="
+  "resolved" "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.38.tgz"
+  "version" "0.5.38"
   dependencies:
     "moment" ">= 2.9.0"
 

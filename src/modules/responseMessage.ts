@@ -32,10 +32,10 @@ const message = {
 
   // 푸시알림
   POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
-  POST_NOTICE_FAIL: "푸시알림 시간 설정 실패",
+  POST_NOTICE_FAIL: "푸시알림 시간 설정 실패 (형식을 맞춰주세요.)",
   UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
   UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
-  POST_NOTICE_ALREADY: "해당 토큰으로 이미 시간 설정됨",
+  POST_NOTICE_ALREADY: "이미 시간이 설정된 디바이스입니다.",
 
   // 유저 인증
   NULL_VALUE_TOKEN: "토큰이 없습니다.",
