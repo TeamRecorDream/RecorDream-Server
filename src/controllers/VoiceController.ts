@@ -33,8 +33,8 @@ const uploadVoiceFileToS3 = async (req: Request, res: Response) => {
 };
 
 /**
- *  @route PATCH /voice
- *  @desc Upload Voice
+ *  @route PATCH /voice/:voiceId
+ *  @desc Upload New Voice File And Update Voice object
  *  @access Public
  */
 const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
@@ -46,6 +46,8 @@ const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
 
   try {
     const voiceUploadDto: VoiceUploadDto = { url: location, fileName: originalname };
+    console.log(location);
+    console.log(originalname);
     const data = await VoiceService.updateVoice(voiceId, voiceUploadDto);
     if (!data) {
       res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
