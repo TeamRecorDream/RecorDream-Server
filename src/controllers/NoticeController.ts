@@ -15,7 +15,7 @@ import { NoticeOffDto } from "../interfaces/notice/NoticeOffDto";
  */
 const updateNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
-  const noticePostDto: NoticePostDto = req.body;
+  //const noticePostDto: NoticePostDto = req.body;
   const userId = req.header("userId");
   const { noticeId } = req.params;
 
@@ -28,7 +28,7 @@ const updateNotice = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await NoticeService.updateNotice(noticePostDto, userId as string, noticeId);
+    const data = await NoticeService.updateNotice(userId as string, noticeId);
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NO_FCM));
     }

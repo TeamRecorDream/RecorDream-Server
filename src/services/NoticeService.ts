@@ -8,7 +8,7 @@ import * as admin from "firebase-admin";
 import schedule from "node-schedule";
 import { NoticeOffDto } from "../interfaces/notice/NoticeOffDto";
 
-const updateNotice = async (noticePostDto: NoticePostDto, userId: string, noticeId: string) => {
+const updateNotice = async (userId: string, noticeId: string) => {
   try {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
@@ -18,6 +18,7 @@ const updateNotice = async (noticePostDto: NoticePostDto, userId: string, notice
       return null;
     }
 
+    /*
     const updatedUserTime = {
       time: noticePostDto.time,
     };
@@ -32,7 +33,6 @@ const updateNotice = async (noticePostDto: NoticePostDto, userId: string, notice
 
     // 수정된 토큰을 가진 notice를 찾음
     const notice = await Notice.find({ fcm_token: noticeBaseDto.fcmToken });
-
     // 기기별 입력한 푸시알림 시간 확인
     const times = notice[0].time;
     console.log(times);
@@ -83,7 +83,7 @@ const updateNotice = async (noticePostDto: NoticePostDto, userId: string, notice
           },
         },
       },
-      token: notice[0].fcmToken,
+      //token: notice[0].fcmToken,
     };
 
     schedule.scheduleJob({ hour: hour, minute: min }, function () {
@@ -97,7 +97,7 @@ const updateNotice = async (noticePostDto: NoticePostDto, userId: string, notice
         .catch(function (err) {
           console.log("Error Sending message!!! : ", err);
         });
-    });
+    });*/
   } catch (err) {
     console.log(err);
     throw err;
