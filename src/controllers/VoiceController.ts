@@ -18,12 +18,15 @@ const uploadVoiceFileToS3 = async (req: Request, res: Response) => {
   }
   const voice: Express.MulterS3.File = req.file as Express.MulterS3.File; //req.file은 기본 Express.Multer.File 타입으로 추론되어서 s3버전으로 타입 단언 필요.
   const { originalname, location } = voice;
-  const userId = req.body.user.id;
 
-  if (!userId) {
-    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
-  }
   try {
+    const userId = req.header("userId");
+    //const userId = req.body.user.id;
+    console.log(userId);
+
+    if (!userId) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
+    }
     const voiceUploadDto: VoiceUploadDto = { url: location, fileName: originalname, recorder: userId };
     const data = await VoiceService.createVoice(voiceUploadDto);
     res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.UPLOAD_VOICE_SUCCESS, data));
@@ -48,12 +51,15 @@ const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
   }
   const voice: Express.MulterS3.File = req.file as Express.MulterS3.File; //req.file은 기본 Express.Multer.File 타입으로 추론되어서 s3버전으로 타입 단언 필요.
   const { originalname, location } = voice;
-  const userId = req.body.user.id;
+
+  const userId = req.header("userId");
+  //const userId = req.body.user.id;
 
   if (!userId) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_VOICE_FAIL));
   }
   try {
+    console.log(userId);
     const voiceUploadDto: VoiceUploadDto = { url: location, fileName: originalname, recorder: userId };
     console.log(location);
     console.log(originalname);
@@ -79,9 +85,10 @@ const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
 const getVoice = async (req: Request, res: Response) => {
   const { voiceId } = req.params;
   const userId = req.body.user.id;
+  console.log(userId);
 
   if (!userId) {
-    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.PLAY_VOICE_FAIL));
   }
   try {
     const data = await VoiceService.getVoice(userId, voiceId);
