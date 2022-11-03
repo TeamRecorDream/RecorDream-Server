@@ -5,7 +5,6 @@ import jwtHandler from "../modules/jwtHandler";
 import { AuthResponseDto } from "../interfaces/auth/AuthResponseDto";
 import exceptionMessage from "../modules/exceptionMessage";
 import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
-import Notice from "../models/Notice";
 
 const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
   try {
@@ -41,21 +40,15 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
         email: email,
         gender: gender || null,
         age_range: age_range || null,
+        fcmTokens: fcmToken,
+        time: null,
+        isActive: false,
       });
 
       user.accessToken = jwtHandler.getAccessToken(user.id);
       user.refreshToken = jwtHandler.getRefreshToken();
 
       await user.save();
-
-      const notice = new Notice({
-        userId: user._id,
-        fcmTokens: fcmToken,
-        time: null,
-        isActive: false,
-      });
-
-      await notice.save();
 
       const data: AuthResponseDto = {
         isAlreadyUser: user.isAlreadyUser,
@@ -72,22 +65,9 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     existUser.refreshToken = jwtHandler.getRefreshToken();
     existUser.isAlreadyUser = true;
 
-    /*
     // 한 유저가 여러 기기로 로그한 경우
     if (!existUser.fcmTokens.includes(fcmToken)) {
       existUser.fcmTokens.push(fcmToken);
-    }*/
-
-    const notice = await Notice.findOne({
-      userId: existUser._id,
-    });
-
-    if (notice !== null) {
-      if (!notice.fcmTokens.includes(fcmToken)) {
-        notice.fcmTokens.push(fcmToken);
-
-        await Notice.findByIdAndUpdate(notice._id, notice);
-      }
     }
 
     const data: AuthResponseDto = {

@@ -2,12 +2,21 @@ import mongoose from "mongoose";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
+import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import User from "../models/User";
 import userMocking from "../models/UserMocking";
-import * as admin from "firebase-admin";
-import schedule from "node-schedule";
 import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
+import * as admin from "firebase-admin";
+import schedule from "node-schedule";
+import { UserNoticePostDto } from "../interfaces/user/UserNoticePostDto";
+import Agenda from "agenda";
+import config from "../config";
+
+// agenda setting
+const agenda = new Agenda({
+  db: { address: config.mongoURI },
+});
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -103,9 +112,83 @@ const deleteUser = async (userId: string) => {
   }
 };
 
+const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseResponseDto | null | undefined> => {
+  try {
+    const user = await User.findById(noticePostDto.userId);
+
+    if (!user) {
+      return null;
+    }
+
+    // 기기별 입력한 푸시알림 시간 확인
+    const time = noticePostDto.time;
+
+    const timeSplit = time.split(/:| /);
+    const ampm = timeSplit[0];
+
+    let hour = parseInt(timeSplit[1]);
+    const minute = timeSplit[2];
+
+    let isDay = true; // AM, PM 판별
+    if (ampm === "AM" || ampm === "am") isDay = true;
+    if (ampm === "PM" || ampm === "pm") isDay = false;
+
+    if (isDay === false && hour !== 12) hour += 12; // 오후
+    if (isDay === true && hour === 12) hour = 0;
+
+    // 푸시알림 설정
+    const alarms = {
+      android: {
+        data: {
+          title: pushMessage.title,
+          body: pushMessage.body,
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            contentAvailable: true,
+            alert: {
+              title: pushMessage.title,
+              body: pushMessage.body,
+            },
+          },
+        },
+      },
+      tokens: user.fcmTokens,
+    };
+
+    agenda.define("pushAlarm", (job, done) => {
+      admin
+        .messaging()
+        .sendMulticast(alarms)
+        .then(function (res: any) {
+          console.log("Successfully sent message: ", res);
+        })
+        .catch(function (err) {
+          console.log("Error Sending message!!! : ", err);
+        });
+      job.repeatEvery("24 hours", {
+        skipImmediate: true,
+      });
+      job.save();
+      done();
+    });
+
+    agenda.schedule("everyday at " + hour + ":" + minute + "", "pushAlarm", null);
+    agenda.start();
+
+    await User.updateOne({ _id: noticePostDto.userId }, { $set: { time: time, isActive: true } });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   updateFcmToken,
   deleteUser,
+  postNotice,
 };

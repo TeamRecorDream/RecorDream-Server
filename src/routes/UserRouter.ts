@@ -9,5 +9,6 @@ router.get("/:token", UserController.getUser);
 router.put("/nickname", auth, [body("nickname").isLength({ min: 1, max: 8 })], UserController.updateNickname);
 router.put("/fcm-token", auth, UserController.updateFcmToken);
 router.delete("/", auth, UserController.deleteUser);
+router.post("/notice", auth, UserController.postNotice);
 
 export default router;

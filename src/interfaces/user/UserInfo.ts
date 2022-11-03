@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 export interface UserInfo {
   appleId: string;
   nickname: string;
@@ -8,8 +6,9 @@ export interface UserInfo {
   age_range: string;
   emotion_arr: number[];
   isAlreadyUser: boolean;
-  fcmTokens: [mongoose.Types.ObjectId];
+  fcmTokens: string[];
   accessToken: string;
   refreshToken: string;
   time: string | null;
+  isActive: boolean;
 }

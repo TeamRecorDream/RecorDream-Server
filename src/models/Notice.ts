@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 import { NoticeInfo } from "../interfaces/notice/NoticeInfo";
 
 const NoticeSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Types.ObjectId,
-    ref: "User",
-  },
   time: {
     type: String,
     default: dayjs().format("A hh:mm"),
@@ -16,7 +12,7 @@ const NoticeSchema = new mongoose.Schema({
     default: dayjs().format("YYYY-MM-DD HH:mm"),
   },
   fcmTokens: {
-    type: [String],
+    type: String,
   },
   isActive: {
     type: Boolean,
