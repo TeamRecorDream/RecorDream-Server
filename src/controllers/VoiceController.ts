@@ -22,7 +22,6 @@ const uploadVoiceFileToS3 = async (req: Request, res: Response) => {
   try {
     const userId = req.header("userId");
     //const userId = req.body.user.id;
-    console.log(userId);
 
     if (!userId) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPLOAD_VOICE_FORM_FAIL));
@@ -59,10 +58,7 @@ const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_VOICE_FAIL));
   }
   try {
-    console.log(userId);
     const voiceUploadDto: VoiceUploadDto = { url: location, fileName: originalname, recorder: userId };
-    console.log(location);
-    console.log(originalname);
     const data = await VoiceService.updateVoice(userId, voiceId, voiceUploadDto);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
@@ -85,7 +81,6 @@ const uploadVoiceFileToS3AndUpdate = async (req: Request, res: Response) => {
 const getVoice = async (req: Request, res: Response) => {
   const { voiceId } = req.params;
   const userId = req.body.user.id;
-  console.log(userId);
 
   if (!userId) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.PLAY_VOICE_FAIL));
