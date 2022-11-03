@@ -2,14 +2,14 @@ import Voice from "../models/Voice";
 import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
 import { VoiceUploadDto } from "../interfaces/voice/VoiceUploadDto";
 
-const createVoice = async (userId: string, voiceUploadDto: VoiceUploadDto): Promise<VoiceResponseDto | null> => {
+const createVoice = async (voiceUploadDto: VoiceUploadDto): Promise<VoiceResponseDto | null> => {
   try {
     const voice = new Voice(voiceUploadDto);
     await voice.save();
 
     const data = {
       _id: voice._id,
-      recorder: userId,
+      recorder: voice.recorder,
       url: voice.url,
     };
 
@@ -22,14 +22,17 @@ const createVoice = async (userId: string, voiceUploadDto: VoiceUploadDto): Prom
 
 const updateVoice = async (userId: string, voiceId: string, voiceUploadDto: VoiceUploadDto): Promise<VoiceResponseDto | null> => {
   try {
-    if (!voiceId || !voiceUploadDto) return null;
+    const voice = await Voice.findById(voiceId);
+    if (!voice || !voiceUploadDto) return null;
+
     const update = await Voice.findOneAndUpdate(
-      { _id: voiceId }, //filter
+      { _id: voiceId, recorder: userId }, //filter
       {
         $set: voiceUploadDto, //수정 사항
       },
       { new: true } //업데이트 후 도큐먼트 반환
     );
+
     if (!update) return null;
 
     const data = {
@@ -46,7 +49,7 @@ const updateVoice = async (userId: string, voiceId: string, voiceUploadDto: Voic
 
 const getVoice = async (userId: string, voiceId: string): Promise<VoiceResponseDto | null> => {
   try {
-    const voice = await Voice.findById(voiceId); //레퍼라
+    const voice = await Voice.findById(voiceId).where("recorder").equals(userId); //레퍼라
     if (!voice) return null;
 
     const data = {
