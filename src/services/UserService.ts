@@ -178,7 +178,7 @@ const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseRes
       done();
     });
 
-    agenda.schedule("everyday at " + hour + ":" + minute + "", "pushAlarm", null);
+    agenda.schedule("today at " + hour + ":" + minute + "", "pushAlarm", null);
     agenda.start();
 
     await User.updateOne({ _id: noticePostDto.userId }, { $set: { time: time, isActive: true } });
