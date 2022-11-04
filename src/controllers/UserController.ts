@@ -170,7 +170,8 @@ const toggleOff = async (req: Request, res: Response) => {
 
   try {
     const data = await UserService.toggleOff(userId);
-    if (!data) {
+
+    if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
