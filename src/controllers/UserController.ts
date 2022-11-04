@@ -160,10 +160,36 @@ const postNotice = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route PATCH /user/toggle
+ * @desc Push Alarm Toggle OFF
+ * @access Public
+ */
+const toggleOff = async (req: Request, res: Response) => {
+  const userId = req.body.user.id;
+
+  try {
+    const data = await UserService.toggleOff(userId);
+
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   updateFcmToken,
   deleteUser,
   postNotice,
+  toggleOff,
 };
