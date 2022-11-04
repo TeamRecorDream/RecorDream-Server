@@ -10,6 +10,7 @@ router.put("/nickname", auth, [body("nickname").isLength({ min: 1, max: 8 })], U
 router.put("/fcm-token", auth, UserController.updateFcmToken);
 router.delete("/", auth, UserController.deleteUser);
 router.patch("/toggle", auth, UserController.toggleOff);
-router.post("/notice", auth, [body("time").matches(/^[A-Z]+\s[0-9][0-9]:[0-9][0-9]$/)], UserController.postNotice);
+router.post("/notice", auth, [body("time").matches(/^[A-Z][A-Z]\s[0-9][0-9]:[0-9][0-9]$/)], UserController.postNotice);
+router.put("/notice", auth, [body("time").matches(/^[A-Z][A-Z]\s[0-9][0-9]:[0-9][0-9]$/)], UserController.updateNotice);
 
 export default router;
