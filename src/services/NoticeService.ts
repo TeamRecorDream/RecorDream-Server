@@ -104,27 +104,6 @@ const updateNotice = async (userId: string, noticeId: string) => {
   }
 };
 
-// 푸시알림 끄기
-const toggleOff = async (noticeOffDto: NoticeOffDto) => {
-  try {
-    const fcmToken = noticeOffDto.fcmToken;
-    const device = await Notice.find({ fcmTokens: fcmToken });
-
-    if (device.length === 0) {
-      return null;
-    }
-
-    device[0].time = null;
-    device[0].isActive = false;
-
-    await Notice.updateOne({ fcmTokens: fcmToken }, { isActive: device[0].isActive, time: device[0].time }).exec();
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
 export default {
   updateNotice,
-  toggleOff,
 };

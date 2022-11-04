@@ -188,10 +188,30 @@ const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseRes
   }
 };
 
+// 푸시알림 끄기
+const toggleOff = async (userId: string) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return null;
+    }
+
+    user.time = null;
+    user.isActive = false;
+
+    await User.updateOne({ _id: userId }, { isActive: user.isActive, time: user.time }).exec();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   updateFcmToken,
   deleteUser,
   postNotice,
+  toggleOff,
 };
