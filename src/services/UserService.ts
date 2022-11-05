@@ -11,6 +11,7 @@ import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import Agenda from "agenda";
 import config from "../config";
 import exceptionMessage from "../modules/exceptionMessage";
+import { ToggleOffDto } from "../interfaces/user/ToggleOffDto";
 
 // agenda setting
 const agenda = new Agenda({
@@ -189,7 +190,7 @@ const updateNotice = async (
       },
       tokens: user.fcmTokens,
     };
-    console.log("현재 예약 수: ", data.updateCount);
+    console.log("예약 수: ", data.updateCount);
 
     agenda.define("pushAlarm", async (job, done) => {
       if (!job.attrs.data) return null;
@@ -214,7 +215,6 @@ const updateNotice = async (
       }
       job.repeatEvery("24 hours");
       job.save();
-      console.log("남은 예약 수: ", allJobs.length);
       done();
     });
 
@@ -235,20 +235,13 @@ const updateNotice = async (
 // 푸시알림 끄기
 const toggleOff = async (userId: string) => {
   try {
-    const user = await User.findById(userId);
+    const toggleOffDto: ToggleOffDto = {
+      time: null,
+      isActive: false,
+      updateCount: 0,
+    };
 
-    if (!user) {
-      return null;
-    }
-
-    user.time = null;
-    user.isActive = false;
-    user.updateCount = 0;
-
-    await User.updateOne(
-      { _id: userId },
-      { $set: { time: user.time, isActive: user.isActive, updateCount: user.updateCount } }
-    ).exec();
+    await User.findByIdAndUpdate(userId, toggleOffDto).exec();
   } catch (err) {
     console.log(err);
     throw err;

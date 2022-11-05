@@ -207,7 +207,7 @@ const toggleOff = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS, data));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
