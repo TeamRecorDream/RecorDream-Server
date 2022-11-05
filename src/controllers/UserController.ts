@@ -8,7 +8,8 @@ import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
-import { UserNoticePostDto } from "../interfaces/user/UserNoticePostDto";
+import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
+import db from "../loaders/db";
 import exceptionMessage from "../modules/exceptionMessage";
 
 /**
@@ -132,7 +133,7 @@ const postNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
   const userId = req.body.user.id;
   const time = req.body.time;
-  const noticePostDto: UserNoticePostDto = {
+  const noticeBaseDto: UserNoticeBaseDto = {
     userId,
     time,
   };
@@ -142,15 +143,46 @@ const postNotice = async (req: Request, res: Response) => {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_FAIL));
     }
 
-    const data = await UserService.postNotice(noticePostDto);
+    const data = await UserService.postNotice(noticeBaseDto);
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    if (data === exceptionMessage.ALREADY_SET_TIME) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_ALREADY));
+
+    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
+/**
+ * @route PUT /user/notice
+ * @desc Update notice time
+ * @access Public
+ */
+const updateNotice = async (req: Request, res: Response) => {
+  const err = validationResult(req);
+  const userId = req.body.user.id;
+  const time = req.body.time;
+  const noticeBaseDto: UserNoticeBaseDto = {
+    userId,
+    time,
+  };
+
+  try {
+    if (!err.isEmpty()) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
     }
 
-    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS, data));
+    const data = await UserService.updateNotice(noticeBaseDto);
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NOTICE_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -162,20 +194,20 @@ const postNotice = async (req: Request, res: Response) => {
 
 /**
  * @route PATCH /user/toggle
- * @desc Push Alarm Toggle OFF
+ * @desc PushAlarm Toggle Change
  * @access Public
  */
-const toggleOff = async (req: Request, res: Response) => {
+const toggleChange = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
 
   try {
-    const data = await UserService.toggleOff(userId);
+    const data = await UserService.toggleChange(userId);
 
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -191,5 +223,6 @@ export default {
   updateFcmToken,
   deleteUser,
   postNotice,
-  toggleOff,
+  updateNotice,
+  toggleChange,
 };

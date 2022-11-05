@@ -44,6 +44,9 @@ const UserSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
   },
+  updateCount: {
+    type: Number,
+  },
 });
 
 export default mongoose.model<UserInfo & mongoose.Document>("User", UserSchema);

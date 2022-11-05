@@ -5,10 +5,9 @@ import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import User from "../models/User";
 import userMocking from "../models/UserMocking";
-import Notice from "../models/Notice";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
-import { UserNoticePostDto } from "../interfaces/user/UserNoticePostDto";
+import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import Agenda from "agenda";
 import config from "../config";
 import exceptionMessage from "../modules/exceptionMessage";
@@ -40,7 +39,7 @@ const getUser = async (userId: string, fcm_token: string) => {
     const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
     const user: UserResponseDto | null = await User.findById(userObjectId);
 
-    const device = await Notice.find({ fcm_token: fcm_token });
+    const device = await User.find({ fcm_token: fcm_token });
 
     if (!user || !device[0]) {
       return null;
@@ -112,32 +111,62 @@ const deleteUser = async (userId: string) => {
   }
 };
 
-const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseResponseDto | null | number | undefined> => {
+const postNotice = async (noticeBaseDto: UserNoticeBaseDto): Promise<PostBaseResponseDto | null | undefined | number> => {
   try {
-    const user = await User.findById(noticePostDto.userId);
+    const user = await User.findByIdAndUpdate(noticeBaseDto.userId, {
+      $set: { time: noticeBaseDto.time, isActive: true, updateCount: 1 },
+    });
+
+    const result = await User.findById(noticeBaseDto.userId);
+
+    if (!user || !result) {
+      return null;
+    }
+    //console.log(result);
+    console.log(result.updateCount);
+    if (user.time !== null || result.time !== null) {
+      return exceptionMessage.ALREADY_SET_TIME;
+    }
+
+    console.log(result.time);
+
+    //db.agendaJobs.find();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+const updateNotice = async (
+  noticeBaseDto: UserNoticeBaseDto
+): Promise<PostBaseResponseDto | null | undefined | number | void> => {
+  try {
+    const user = await User.findById(noticeBaseDto.userId);
 
     if (!user) {
       return null;
     }
-    if (user.time !== null) {
-      return exceptionMessage.ALREADY_SET_TIME;
+    /*
+    if (user.time === null) {
+      return exceptionMessage.NOT_SET_TIME;
+    }*/
+
+    user.updateCount += 1;
+
+    await User.updateOne(
+      { _id: noticeBaseDto.userId },
+      {
+        $set: { time: noticeBaseDto.time, isActive: true, updateCount: user.updateCount },
+      }
+    );
+
+    const data = await User.findById(noticeBaseDto.userId);
+    if (!data) {
+      return null;
     }
 
-    // 기기별 입력한 푸시알림 시간 확인
-    const time = noticePostDto.time;
-
-    const timeSplit = time.split(/:| /);
-    const ampm = timeSplit[0];
-
-    let hour = parseInt(timeSplit[1]);
-    const minute = timeSplit[2];
-
-    let isDay = true; // AM, PM 판별
-    if (ampm === "AM") isDay = true;
-    if (ampm === "PM") isDay = false;
-
-    if (isDay === false && hour !== 12) hour += 12; // 오후
-    if (isDay === true && hour === 12) hour = 0;
+    const time = data.time;
+    if (!time) return null;
 
     // 푸시알림 설정
     const alarms = {
@@ -160,28 +189,43 @@ const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseRes
       },
       tokens: user.fcmTokens,
     };
+    console.log("현재 예약 수: ", data.updateCount);
 
-    agenda.define("pushAlarm", (job, done) => {
-      admin
-        .messaging()
-        .sendMulticast(alarms)
-        .then(function (res: any) {
-          console.log("Successfully sent message: ", res);
-        })
-        .catch(function (err) {
-          console.log("Error Sending message!!! : ", err);
-        });
-      job.repeatEvery("24 hours", {
-        skipImmediate: true,
-      });
+    agenda.define("pushAlarm", async (job, done) => {
+      if (!job.attrs.data) return null;
+
+      const allJobs = await agenda.jobs({ "data.userId": data._id });
+      console.log(allJobs.length);
+
+      if (allJobs.length > 1) {
+        console.log("이전 예약 취소");
+        agenda.cancel({ "data.count": job.attrs.data.count });
+      }
+      if (allJobs.length === 1) {
+        admin
+          .messaging()
+          .sendMulticast(alarms)
+          .then(function (res: any) {
+            console.log("Successfully sent message: ", res);
+          })
+          .catch(function (err) {
+            console.log("Error Sending message!!! : ", err);
+          });
+      }
+      job.repeatEvery("24 hours");
       job.save();
+      console.log("남은 예약 수: ", allJobs.length);
       done();
     });
 
-    agenda.schedule("today at " + hour + ":" + minute + "", "pushAlarm", null);
-    agenda.start();
+    const timeSplit = time.split(/ /);
+    const ampm = timeSplit[0];
+    const pushTime = timeSplit[1];
 
-    await User.updateOne({ _id: noticePostDto.userId }, { $set: { time: time, isActive: true } });
+    console.log("today at " + pushTime + ampm + "");
+
+    agenda.start();
+    agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id, count: data.updateCount });
   } catch (err) {
     console.log(err);
     throw err;
@@ -189,7 +233,7 @@ const postNotice = async (noticePostDto: UserNoticePostDto): Promise<PostBaseRes
 };
 
 // 푸시알림 끄기
-const toggleOff = async (userId: string) => {
+const toggleChange = async (userId: string) => {
   try {
     const user = await User.findById(userId);
 
@@ -197,10 +241,16 @@ const toggleOff = async (userId: string) => {
       return null;
     }
 
-    user.time = null;
-    user.isActive = false;
+    if (user.isActive == true) {
+      user.time = null;
+      user.isActive = false;
+      user.updateCount = 0;
+    }
 
-    await User.updateOne({ _id: userId }, { isActive: user.isActive, time: user.time }).exec();
+    await User.updateOne(
+      { _id: userId },
+      { $set: { isActive: user.isActive, time: user.time, updateCount: user.updateCount } }
+    ).exec();
   } catch (err) {
     console.log(err);
     throw err;
@@ -213,5 +263,6 @@ export default {
   updateFcmToken,
   deleteUser,
   postNotice,
-  toggleOff,
+  updateNotice,
+  toggleChange,
 };
