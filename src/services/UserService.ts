@@ -233,7 +233,7 @@ const updateNotice = async (
 };
 
 // 푸시알림 끄기
-const toggleChange = async (userId: string) => {
+const toggleOff = async (userId: string) => {
   try {
     const user = await User.findById(userId);
 
@@ -241,15 +241,13 @@ const toggleChange = async (userId: string) => {
       return null;
     }
 
-    if (user.isActive == true) {
-      user.time = null;
-      user.isActive = false;
-      user.updateCount = 0;
-    }
+    user.time = null;
+    user.isActive = false;
+    user.updateCount = 0;
 
     await User.updateOne(
       { _id: userId },
-      { $set: { isActive: user.isActive, time: user.time, updateCount: user.updateCount } }
+      { $set: { time: user.time, isActive: user.isActive, updateCount: user.updateCount } }
     ).exec();
   } catch (err) {
     console.log(err);
@@ -264,5 +262,5 @@ export default {
   deleteUser,
   postNotice,
   updateNotice,
-  toggleChange,
+  toggleOff,
 };

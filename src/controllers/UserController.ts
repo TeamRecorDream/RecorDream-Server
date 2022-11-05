@@ -194,14 +194,14 @@ const updateNotice = async (req: Request, res: Response) => {
 
 /**
  * @route PATCH /user/toggle
- * @desc PushAlarm Toggle Change
+ * @desc PushAlarm Toggle Off
  * @access Public
  */
-const toggleChange = async (req: Request, res: Response) => {
+const toggleOff = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
 
   try {
-    const data = await UserService.toggleChange(userId);
+    const data = await UserService.toggleOff(userId);
 
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
@@ -224,5 +224,5 @@ export default {
   deleteUser,
   postNotice,
   updateNotice,
-  toggleChange,
+  toggleOff,
 };
