@@ -9,8 +9,6 @@ import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
 import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
-import db from "../loaders/db";
-import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route PUT /user/nickname
@@ -126,44 +124,10 @@ const deleteUser = async (req: Request, res: Response) => {
 
 /**
  * @route POST /user/notice
- * @desc Post notice time
+ * @desc Save notice time
  * @access Public
  */
-const postNotice = async (req: Request, res: Response) => {
-  const err = validationResult(req);
-  const userId = req.body.user.id;
-  const time = req.body.time;
-  const noticeBaseDto: UserNoticeBaseDto = {
-    userId,
-    time,
-  };
-
-  try {
-    if (!err.isEmpty()) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.POST_NOTICE_FAIL));
-    }
-
-    const data = await UserService.postNotice(noticeBaseDto);
-    if (data === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-    }
-
-    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.POST_NOTICE_SUCCESS));
-  } catch (err) {
-    console.log(err);
-    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
-    sendMessageToSlack(errorMessage);
-
-    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
-  }
-};
-
-/**
- * @route PUT /user/notice
- * @desc Update notice time
- * @access Public
- */
-const updateNotice = async (req: Request, res: Response) => {
+const saveNotice = async (req: Request, res: Response) => {
   const err = validationResult(req);
   const userId = req.body.user.id;
   const time = req.body.time;
@@ -177,7 +141,7 @@ const updateNotice = async (req: Request, res: Response) => {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
     }
 
-    const data = await UserService.updateNotice(noticeBaseDto);
+    const data = await UserService.saveNotice(noticeBaseDto);
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
@@ -222,7 +186,6 @@ export default {
   getUser,
   updateFcmToken,
   deleteUser,
-  postNotice,
-  updateNotice,
+  saveNotice,
   toggleOff,
 };

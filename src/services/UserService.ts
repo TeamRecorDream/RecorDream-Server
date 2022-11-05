@@ -112,45 +112,13 @@ const deleteUser = async (userId: string) => {
   }
 };
 
-const postNotice = async (noticeBaseDto: UserNoticeBaseDto): Promise<PostBaseResponseDto | null | undefined | number> => {
-  try {
-    const user = await User.findByIdAndUpdate(noticeBaseDto.userId, {
-      $set: { time: noticeBaseDto.time, isActive: true, updateCount: 1 },
-    });
-
-    const result = await User.findById(noticeBaseDto.userId);
-
-    if (!user || !result) {
-      return null;
-    }
-    //console.log(result);
-    console.log(result.updateCount);
-    if (user.time !== null || result.time !== null) {
-      return exceptionMessage.ALREADY_SET_TIME;
-    }
-
-    console.log(result.time);
-
-    //db.agendaJobs.find();
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-const updateNotice = async (
-  noticeBaseDto: UserNoticeBaseDto
-): Promise<PostBaseResponseDto | null | undefined | number | void> => {
+const saveNotice = async (noticeBaseDto: UserNoticeBaseDto): Promise<PostBaseResponseDto | null | undefined | number | void> => {
   try {
     const user = await User.findById(noticeBaseDto.userId);
 
     if (!user) {
       return null;
     }
-    /*
-    if (user.time === null) {
-      return exceptionMessage.NOT_SET_TIME;
-    }*/
 
     user.updateCount += 1;
 
@@ -253,7 +221,6 @@ export default {
   getUser,
   updateFcmToken,
   deleteUser,
-  postNotice,
-  updateNotice,
+  saveNotice,
   toggleOff,
 };
