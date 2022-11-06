@@ -214,7 +214,7 @@ const toggleChange = async (userId: string) => {
       agenda.start();
     }
 
-    await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
+    await User.updateOne({ _id: userId }, { $set: { isActive: user.isActive } }).exec();
 
     const data = {
       isActive: user.isActive,
