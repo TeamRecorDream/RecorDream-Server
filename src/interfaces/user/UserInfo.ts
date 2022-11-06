@@ -11,5 +11,4 @@ export interface UserInfo {
   refreshToken: string;
   time: string | null;
   isActive: boolean;
-  updateCount: number;
 }

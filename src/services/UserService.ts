@@ -211,15 +211,6 @@ const toggleChange = async (userId: string) => {
         done();
       });
 
-      /*const time = user.time;
-      if (!time) return null;
-      const timeSplit = time.split(/ /);
-      const ampm = timeSplit[0];
-      const pushTime = timeSplit[1];
-
-     
-     agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id }); */
-
       agenda.start();
     }
 
