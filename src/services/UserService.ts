@@ -118,29 +118,34 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       time: noticeBaseDto.time,
     };
 
-    const user = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
+    await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
 
-    if (!user) {
+    const data = await User.findById(noticeBaseDto.userId);
+    if (!data) return null;
+
+    if (data.isActive === false) {
       return null;
     }
 
-    const allJobs = await agenda.jobs({ "data.userId": user._id });
+    const time = data.time;
+    if (!time) return null;
+    const timeSplit = time.split(/ /);
+    const ampm = timeSplit[0];
+    const pushTime = timeSplit[1];
 
+    const allJobs = await agenda.jobs({ "data.userId": data._id });
+
+    if (allJobs.length === 0) {
+      console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
+
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
+    }
     // 시간이 이미 설정됨을 의미
     if (allJobs.length > 0) {
       console.log("시간이 수정되어 리스케줄링합니다.");
-      await agenda.cancel({ "data.userId": user._id });
 
-      const data = await User.findById(noticeBaseDto.userId);
-      if (!data) return null;
-
-      const time = data.time;
-      if (!time) return null;
-      const timeSplit = time.split(/ /);
-      const ampm = timeSplit[0];
-      const pushTime = timeSplit[1];
-
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
+      await agenda.cancel({ "data.userId": data._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
     }
   } catch (err) {
     console.log(err);
@@ -160,18 +165,13 @@ const toggleChange = async (userId: string) => {
     if (user.isActive === true) {
       user.time = null;
       user.isActive = false;
+
+      await agenda.cancel({ "data.userId": user._id }); // 토글 off 시 푸시알림 취소
     }
 
     // 토글이 on이면 푸시알림 보내기
     else {
       user.isActive = true;
-
-      if (user.time === null) {
-        console.log("time이 null인데 푸시알림을 보내려 함");
-        return null;
-      }
-
-      const time = user.time;
 
       // 푸시알림 설정
       const alarms = {
@@ -211,16 +211,16 @@ const toggleChange = async (userId: string) => {
         done();
       });
 
+      /*const time = user.time;
+      if (!time) return null;
       const timeSplit = time.split(/ /);
       const ampm = timeSplit[0];
       const pushTime = timeSplit[1];
 
-      console.log("매일 " + `${pushTime}` + `${ampm}` + "에 푸시알림을 보냅니다.");
+     
+     agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id }); */
 
       agenda.start();
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
-      //const allJobs = await agenda.jobs({ "data.userId": user._id });
-      //console.log("현재 예약 수: ", allJobs.length);
     }
 
     await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();

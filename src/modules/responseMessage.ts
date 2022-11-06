@@ -33,10 +33,6 @@ const message = {
   SAVE_NOTICE_SUCCESS: "푸시알림 시간 저장 성공",
   SAVE_NOTICE_FAIL: "푸시알림 시간 저장 실패 (형식을 맞춰주세요.)",
   POST_NOTICE_ALREADY: "이미 시간이 설정되었습니다.",
-  POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
-  POST_NOTICE_FAIL: "푸시알림 시간 설정 실패 (형식을 맞춰주세요.)",
-  UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
-  UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패 (형식을 맞춰주세요.)",
   TOGGLE_CHANGE_SUCCESS: "푸시알림 변경 성공",
 
   // 유저 인증

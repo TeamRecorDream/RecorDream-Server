@@ -9,6 +9,7 @@ import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
 import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
+import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route PUT /user/nickname
