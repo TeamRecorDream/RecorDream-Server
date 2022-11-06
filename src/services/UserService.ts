@@ -118,7 +118,30 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       time: noticeBaseDto.time,
     };
 
-    await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
+    const user = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
+
+    if (!user) {
+      return null;
+    }
+
+    const allJobs = await agenda.jobs({ "data.userId": user._id });
+
+    // 시간이 이미 설정됨을 의미
+    if (allJobs.length > 0) {
+      console.log("시간이 수정되어 리스케줄링합니다.");
+      await agenda.cancel({ "data.userId": user._id });
+
+      const data = await User.findById(noticeBaseDto.userId);
+      if (!data) return null;
+
+      const time = data.time;
+      if (!time) return null;
+      const timeSplit = time.split(/ /);
+      const ampm = timeSplit[0];
+      const pushTime = timeSplit[1];
+
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
+    }
   } catch (err) {
     console.log(err);
     throw err;
@@ -126,7 +149,6 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
 };
 
 // 푸시알림 여부 변경
-let test = 1;
 const toggleChange = async (userId: string) => {
   try {
     const user = await User.findById(userId);
@@ -145,7 +167,7 @@ const toggleChange = async (userId: string) => {
       user.isActive = true;
 
       if (user.time === null) {
-        console.log("여기?");
+        console.log("time이 null인데 푸시알림을 보내려 함");
         return null;
       }
 
@@ -175,31 +197,17 @@ const toggleChange = async (userId: string) => {
 
       // 실행할 작업 정의
       agenda.define("pushAlarm", async (job, done) => {
-        if (!job.attrs.data) return null;
-
-        const allJobs = await agenda.jobs({ "data.userId": user._id });
-        console.log("과연: ", allJobs.length);
-
-        if (allJobs.length > 1) {
-          console.log("이전 예약 취소");
-          agenda.cancel({ "data.count": job.attrs.data.count });
-        }
-        if (allJobs.length === 1) {
-          admin
-            .messaging()
-            .sendMulticast(alarms)
-            .then(function (res: any) {
-              console.log("Successfully sent message: ", res);
-            })
-            .catch(function (err) {
-              console.log("Error Sending message!!! : ", err);
-            });
-        }
+        admin
+          .messaging()
+          .sendMulticast(alarms)
+          .then(function (res: any) {
+            console.log("Successfully sent message: ", res);
+          })
+          .catch(function (err) {
+            console.log("Error Sending message!!! : ", err);
+          });
         job.repeatEvery("24 hours");
         job.save();
-
-        console.log("예약 수: ", allJobs.length);
-
         done();
       });
 
@@ -207,14 +215,12 @@ const toggleChange = async (userId: string) => {
       const ampm = timeSplit[0];
       const pushTime = timeSplit[1];
 
-      console.log("today at " + pushTime + ampm + "");
+      console.log("매일 " + `${pushTime}` + `${ampm}` + "에 푸시알림을 보냅니다.");
 
       agenda.start();
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id, count: test });
-      test += 1;
-
-      const allJobs = await agenda.jobs({ "data.userId": user._id });
-      console.log("현재 예약 수: ", allJobs.length);
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
+      //const allJobs = await agenda.jobs({ "data.userId": user._id });
+      //console.log("현재 예약 수: ", allJobs.length);
     }
 
     await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
