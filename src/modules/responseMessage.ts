@@ -37,7 +37,7 @@ const message = {
   POST_NOTICE_FAIL: "푸시알림 시간 설정 실패 (형식을 맞춰주세요.)",
   UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
   UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패 (형식을 맞춰주세요.)",
-  TOGGLE_OFF_SUCCESS: "푸시알림 끄기 성공",
+  TOGGLE_CHANGE_SUCCESS: "푸시알림 변경 성공",
 
   // 유저 인증
   NULL_VALUE_TOKEN: "토큰이 없습니다.",

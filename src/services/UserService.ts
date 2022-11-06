@@ -11,7 +11,7 @@ import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import Agenda from "agenda";
 import config from "../config";
 import exceptionMessage from "../modules/exceptionMessage";
-import { ToggleOffDto } from "../interfaces/user/ToggleOffDto";
+import { ToggleChangeDto } from "../interfaces/user/ToggleChangeDto";
 
 // agenda setting
 const agenda = new Agenda({
@@ -112,104 +112,118 @@ const deleteUser = async (userId: string) => {
   }
 };
 
-const saveNotice = async (noticeBaseDto: UserNoticeBaseDto): Promise<PostBaseResponseDto | null | undefined | number | void> => {
+const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
   try {
-    const user = await User.findById(noticeBaseDto.userId);
-
-    if (!user) {
-      return null;
-    }
-
-    user.updateCount += 1;
-
-    await User.updateOne(
-      { _id: noticeBaseDto.userId },
-      {
-        $set: { time: noticeBaseDto.time, isActive: true, updateCount: user.updateCount },
-      }
-    );
-
-    const data = await User.findById(noticeBaseDto.userId);
-    if (!data) {
-      return null;
-    }
-
-    const time = data.time;
-    if (!time) return null;
-
-    // 푸시알림 설정
-    const alarms = {
-      android: {
-        data: {
-          title: pushMessage.title,
-          body: pushMessage.body,
-        },
-      },
-      apns: {
-        payload: {
-          aps: {
-            contentAvailable: true,
-            alert: {
-              title: pushMessage.title,
-              body: pushMessage.body,
-            },
-          },
-        },
-      },
-      tokens: user.fcmTokens,
+    const updatedTime = {
+      time: noticeBaseDto.time,
     };
-    console.log("예약 수: ", data.updateCount);
 
-    agenda.define("pushAlarm", async (job, done) => {
-      if (!job.attrs.data) return null;
-
-      const allJobs = await agenda.jobs({ "data.userId": data._id });
-      console.log(allJobs.length);
-
-      if (allJobs.length > 1) {
-        console.log("이전 예약 취소");
-        agenda.cancel({ "data.count": job.attrs.data.count });
-      }
-      if (allJobs.length === 1) {
-        admin
-          .messaging()
-          .sendMulticast(alarms)
-          .then(function (res: any) {
-            console.log("Successfully sent message: ", res);
-          })
-          .catch(function (err) {
-            console.log("Error Sending message!!! : ", err);
-          });
-      }
-      job.repeatEvery("24 hours");
-      job.save();
-      done();
-    });
-
-    const timeSplit = time.split(/ /);
-    const ampm = timeSplit[0];
-    const pushTime = timeSplit[1];
-
-    console.log("today at " + pushTime + ampm + "");
-
-    agenda.start();
-    agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id, count: data.updateCount });
+    await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-// 푸시알림 끄기
-const toggleOff = async (userId: string) => {
+// 푸시알림 여부 변경
+let test = 1;
+const toggleChange = async (userId: string) => {
   try {
-    const toggleOffDto: ToggleOffDto = {
-      time: null,
-      isActive: false,
-      updateCount: 0,
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return null;
+    }
+
+    if (user.isActive === true) {
+      user.time = null;
+      user.isActive = false;
+    }
+
+    // 토글이 on이면 푸시알림 보내기
+    else {
+      user.isActive = true;
+
+      if (user.time === null) {
+        console.log("여기?");
+        return null;
+      }
+
+      const time = user.time;
+
+      // 푸시알림 설정
+      const alarms = {
+        android: {
+          data: {
+            title: pushMessage.title,
+            body: pushMessage.body,
+          },
+        },
+        apns: {
+          payload: {
+            aps: {
+              contentAvailable: true,
+              alert: {
+                title: pushMessage.title,
+                body: pushMessage.body,
+              },
+            },
+          },
+        },
+        tokens: user.fcmTokens,
+      };
+
+      // 실행할 작업 정의
+      agenda.define("pushAlarm", async (job, done) => {
+        if (!job.attrs.data) return null;
+
+        const allJobs = await agenda.jobs({ "data.userId": user._id });
+        console.log("과연: ", allJobs.length);
+
+        if (allJobs.length > 1) {
+          console.log("이전 예약 취소");
+          agenda.cancel({ "data.count": job.attrs.data.count });
+        }
+        if (allJobs.length === 1) {
+          admin
+            .messaging()
+            .sendMulticast(alarms)
+            .then(function (res: any) {
+              console.log("Successfully sent message: ", res);
+            })
+            .catch(function (err) {
+              console.log("Error Sending message!!! : ", err);
+            });
+        }
+        job.repeatEvery("24 hours");
+        job.save();
+
+        console.log("예약 수: ", allJobs.length);
+
+        done();
+      });
+
+      const timeSplit = time.split(/ /);
+      const ampm = timeSplit[0];
+      const pushTime = timeSplit[1];
+
+      console.log("today at " + pushTime + ampm + "");
+
+      agenda.start();
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id, count: test });
+      test += 1;
+
+      const allJobs = await agenda.jobs({ "data.userId": user._id });
+      console.log("현재 예약 수: ", allJobs.length);
+    }
+
+    await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
+
+    const data = {
+      isActive: user.isActive,
     };
 
-    await User.findByIdAndUpdate(userId, toggleOffDto).exec();
+    return data;
   } catch (err) {
     console.log(err);
     throw err;
@@ -222,5 +236,5 @@ export default {
   updateFcmToken,
   deleteUser,
   saveNotice,
-  toggleOff,
+  toggleChange,
 };

@@ -138,7 +138,7 @@ const saveNotice = async (req: Request, res: Response) => {
 
   try {
     if (!err.isEmpty()) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_NOTICE_FAIL));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.SAVE_NOTICE_FAIL));
     }
 
     const data = await UserService.saveNotice(noticeBaseDto);
@@ -146,7 +146,7 @@ const saveNotice = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_NOTICE_SUCCESS));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SAVE_NOTICE_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -158,20 +158,20 @@ const saveNotice = async (req: Request, res: Response) => {
 
 /**
  * @route PATCH /user/toggle
- * @desc PushAlarm Toggle Off
+ * @desc PushAlarm Toggle Change
  * @access Public
  */
-const toggleOff = async (req: Request, res: Response) => {
+const toggleChange = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
 
   try {
-    const data = await UserService.toggleOff(userId);
+    const data = await UserService.toggleChange(userId);
 
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_OFF_SUCCESS));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_CHANGE_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -187,5 +187,5 @@ export default {
   updateFcmToken,
   deleteUser,
   saveNotice,
-  toggleOff,
+  toggleChange,
 };
