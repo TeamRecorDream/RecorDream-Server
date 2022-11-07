@@ -215,7 +215,6 @@ const toggleChange = async (userId: string) => {
         job.save();
         done();
       });
-
       agenda.start();
     }
 
