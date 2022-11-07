@@ -150,7 +150,7 @@ const saveNotice = async (req: Request, res: Response) => {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CANT_SET_TIME));
     }
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SAVE_NOTICE_SUCCESS));
+    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.SAVE_NOTICE_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
