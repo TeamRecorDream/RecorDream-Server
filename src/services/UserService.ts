@@ -115,17 +115,22 @@ const deleteUser = async (userId: string) => {
 const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
   try {
     const updatedTime = {
+      userId: noticeBaseDto.userId,
       time: noticeBaseDto.time,
     };
 
-    await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime).exec();
-
-    const data = await User.findById(noticeBaseDto.userId);
-    if (!data) return null;
-
-    if (data.isActive === false) {
+    const user = await User.findById(updatedTime.userId);
+    if (!user) {
       return null;
     }
+    if (user.isActive === false) {
+      return exceptionMessage.CANT_SET_TIME;
+    }
+
+    await User.updateOne({ _id: updatedTime.userId }, { $set: { time: updatedTime.time } }).exec();
+
+    const data = await User.findById(updatedTime.userId);
+    if (!data) return null;
 
     const time = data.time;
     if (!time) return null;
@@ -214,7 +219,7 @@ const toggleChange = async (userId: string) => {
       agenda.start();
     }
 
-    await User.updateOne({ _id: userId }, { $set: { isActive: user.isActive } }).exec();
+    await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
 
     const data = {
       isActive: user.isActive,

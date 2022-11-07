@@ -32,8 +32,8 @@ const message = {
   // 푸시알림
   SAVE_NOTICE_SUCCESS: "푸시알림 시간 저장 성공",
   SAVE_NOTICE_FAIL: "푸시알림 시간 저장 실패 (형식을 맞춰주세요.)",
-  POST_NOTICE_ALREADY: "이미 시간이 설정되었습니다.",
   TOGGLE_CHANGE_SUCCESS: "푸시알림 변경 성공",
+  CANT_SET_TIME: "토글 Off시에는 시간을 설정할 수 없습니다.",
 
   // 유저 인증
   NULL_VALUE_TOKEN: "토큰이 없습니다.",
