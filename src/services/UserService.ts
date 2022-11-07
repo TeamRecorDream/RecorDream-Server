@@ -2,16 +2,14 @@ import mongoose from "mongoose";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
-import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
+import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import User from "../models/User";
 import userMocking from "../models/UserMocking";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
-import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import Agenda from "agenda";
 import config from "../config";
 import exceptionMessage from "../modules/exceptionMessage";
-import { ToggleChangeDto } from "../interfaces/user/ToggleChangeDto";
 
 // agenda setting
 const agenda = new Agenda({
@@ -115,11 +113,10 @@ const deleteUser = async (userId: string) => {
 const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
   try {
     const updatedTime = {
-      userId: noticeBaseDto.userId,
       time: noticeBaseDto.time,
     };
 
-    const user = await User.findById(updatedTime.userId);
+    const user = await User.findById(noticeBaseDto.userId);
     if (!user) {
       return null;
     }
@@ -127,9 +124,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       return exceptionMessage.CANT_SET_TIME;
     }
 
-    await User.updateOne({ _id: updatedTime.userId }, { $set: { time: updatedTime.time } }).exec();
-
-    const data = await User.findById(updatedTime.userId);
+    const data = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime, { new: true });
     if (!data) return null;
 
     const time = data.time;
@@ -140,9 +135,10 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
 
     const allJobs = await agenda.jobs({ "data.userId": data._id });
 
+    // 첫 시간 저장
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
-
+      agenda.start();
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
     }
     // 시간이 이미 설정됨을 의미
@@ -215,7 +211,6 @@ const toggleChange = async (userId: string) => {
         job.save();
         done();
       });
-      agenda.start();
     }
 
     await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
