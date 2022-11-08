@@ -5,7 +5,7 @@ import auth from "../middleware/auth";
 
 const router: Router = Router();
 
-router.get("/:token", UserController.getUser);
+router.get("/", auth, UserController.getUser);
 router.put("/nickname", auth, [body("nickname").isLength({ min: 1, max: 8 })], UserController.updateNickname);
 router.put("/fcm-token", auth, UserController.updateFcmToken);
 router.delete("/", auth, UserController.deleteUser);
