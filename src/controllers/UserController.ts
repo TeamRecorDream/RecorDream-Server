@@ -48,18 +48,16 @@ const updateNickname = async (req: Request, res: Response) => {
  * @access Public
  */
 const getUser = async (req: Request, res: Response) => {
-  const err = validationResult(req);
-  const userId = req.header("userId");
-  const fcm_token: string = req.params.token;
-  //const userAlarmDto: UserAlarmDto = req.body;
+  const userId = req.body.user.id;
 
   try {
-    const data = await UserService.getUser(userId as string, fcm_token);
-    if (!userId || !err.isEmpty()) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    const data = await UserService.getUser(userId);
+
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
