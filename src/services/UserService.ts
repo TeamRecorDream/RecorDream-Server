@@ -37,23 +37,17 @@ const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknam
 
 const getUser = async (userId: string) => {
   try {
-    const user: UserResponseDto | null = await User.findById(userObjectId);
+    const user: UserResponseDto | null = await User.findById(userId);
 
     if (!user) {
       return null;
     }
 
-    // 조회할 회원정보가 있고
-    // is_active가 false 일 때
-    //if (device[0].is_active == false) {
-    //device[0].time = null;
-    //}
     const result = {
       nickname: user.nickname,
       email: user.email,
       is_active: user.isActive,
       time: user.time,
-      is_deleted: user.is_deleted,
     };
     return result;
   } catch (err) {
