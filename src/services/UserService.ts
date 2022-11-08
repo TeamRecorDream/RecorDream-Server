@@ -37,7 +37,7 @@ const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknam
 
 const getUser = async (userId: string) => {
   try {
-    const user: UserResponseDto | null = await User.findById(userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return null;
@@ -46,7 +46,7 @@ const getUser = async (userId: string) => {
     const result = {
       nickname: user.nickname,
       email: user.email,
-      is_active: user.isActive,
+      isActive: user.isActive,
       time: user.time,
     };
     return result;
