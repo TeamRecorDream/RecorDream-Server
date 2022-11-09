@@ -54,7 +54,7 @@ const getUser = async (req: Request, res: Response) => {
     const data = await UserService.getUser(userId);
 
     if (data === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
