@@ -144,6 +144,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     // 시간이 이미 설정됨을 의미
     if (allJobs.length > 0) {
       console.log("시간이 수정되어 리스케줄링합니다.");
+      console.log(user.fcmTokens);
 
       await agenda.cancel({ "data.userId": data._id });
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
@@ -195,6 +196,7 @@ const toggleChange = async (userId: string) => {
         },
         tokens: user.fcmTokens,
       };
+      console.log(user.fcmTokens);
 
       // 실행할 작업 정의
       agenda.define("pushAlarm", async (job, done) => {
@@ -202,10 +204,16 @@ const toggleChange = async (userId: string) => {
           .messaging()
           .sendMulticast(alarms)
           .then(function (res: any) {
-            console.log("Successfully sent message: ", res);
-          })
-          .catch(function (err) {
-            console.log("Error Sending message!!! : ", err);
+            if (res.failureCount > 0) {
+              const failedTokens: string[] = [];
+              res.responses.forEach((resp: any, idx: any) => {
+                if (!resp.success) {
+                  failedTokens.push(user.fcmTokens[idx]);
+                }
+              });
+              console.log("List of tokens that caused failures: " + failedTokens);
+            }
+            console.log("Sent message result: ", res);
           });
         job.repeatEvery("24 hours");
         job.save();
