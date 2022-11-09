@@ -125,10 +125,14 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     }
 
     const data = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime, { new: true });
-    if (!data) return null;
+    if (!data) {
+      return null;
+    }
 
     const time = data.time;
-    if (!time) return null;
+    if (!time) {
+      return null;
+    }
     const timeSplit = time.split(/ /);
     const ampm = timeSplit[0];
     const pushTime = timeSplit[1];
