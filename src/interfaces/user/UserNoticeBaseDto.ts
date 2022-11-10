@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface UserNoticePostDto {
+export interface UserNoticeBaseDto {
   userId: mongoose.Types.ObjectId;
   time: string;
 }

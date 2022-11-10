@@ -11,11 +11,9 @@ describe("[PUT] /user", () => {
   const originalTime = "PM 05:55";
 
   let updateData = {
-    fcm_token: config.fcm_token_ios,
     time: updateTime,
   };
   const originalData = {
-    fcm_token: config.fcm_token_ios,
     time: originalTime,
   };
 
@@ -42,7 +40,6 @@ describe("[PUT] /user", () => {
   it("푸시알림 시간 수정 테스트(time을 안 넣음)", async () => {
     updateTime = "";
     updateData = {
-      fcm_token: config.fcm_token_ios,
       time: updateTime,
     };
     const res = await req.put("/notice").send(updateData).set("Content-Type", "application/json").set("userId", "1");
