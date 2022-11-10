@@ -9,7 +9,6 @@ const message = {
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
   UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
   READ_USER_SUCCESS: "회원 정보 조회 성공",
-  TOGGLE_OFF_SUCCESS: "푸시알림 끄기 성공",
   UPDATE_FCM_TOKEN_SUCCESS: "fcm 토큰 refresh 성공",
 
   // 레코드
@@ -31,11 +30,10 @@ const message = {
   PLAY_VOICE_SUCCESS: "음성 녹음 재생 성공",
 
   // 푸시알림
-  POST_NOTICE_SUCCESS: "푸시알림 시간 설정 성공",
-  POST_NOTICE_FAIL: "푸시알림 시간 설정 실패 (형식을 맞춰주세요.)",
-  UPDATE_NOTICE_SUCCESS: "푸시알림 시간 수정 성공",
-  UPDATE_NOTICE_FAIL: "푸시알림 시간 수정 실패",
-  POST_NOTICE_ALREADY: "이미 시간이 설정된 디바이스입니다.",
+  SAVE_NOTICE_SUCCESS: "푸시알림 시간 저장 성공",
+  SAVE_NOTICE_FAIL: "푸시알림 시간 저장 실패 (형식을 맞춰주세요.)",
+  TOGGLE_CHANGE_SUCCESS: "푸시알림 변경 성공",
+  CANT_SET_TIME: "토글 Off시에는 시간을 설정할 수 없습니다.",
 
   // 유저 인증
   NULL_VALUE_TOKEN: "토큰이 없습니다.",
