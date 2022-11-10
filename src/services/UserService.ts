@@ -33,28 +33,19 @@ const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknam
   }
 };
 
-const getUser = async (userId: string, fcm_token: string) => {
+const getUser = async (userId: string) => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
+    const user = await User.findById(userId);
 
-    const device = await User.find({ fcm_token: fcm_token });
-
-    if (!user || !device[0]) {
+    if (!user) {
       return null;
     }
 
-    // 조회할 회원정보가 있고
-    // is_active가 false 일 때
-    //if (device[0].is_active == false) {
-    //device[0].time = null;
-    //}
     const result = {
       nickname: user.nickname,
       email: user.email,
-      is_active: device[0].isActive,
-      time: device[0].time,
-      is_deleted: user.is_deleted,
+      isActive: user.isActive,
+      time: user.time,
     };
     return result;
   } catch (err) {
