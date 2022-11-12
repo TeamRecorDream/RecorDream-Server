@@ -133,13 +133,13 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     // 첫 시간 저장
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
-      agenda.start();
+
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
+      agenda.start();
     }
     // 시간이 이미 설정됨을 의미
     if (allJobs.length > 0) {
       console.log("시간이 수정되어 리스케줄링합니다.");
-      console.log(user.fcmTokens);
 
       await agenda.cancel({ "data.userId": data._id });
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
@@ -191,7 +191,6 @@ const toggleChange = async (userId: string) => {
         },
         tokens: user.fcmTokens,
       };
-      console.log(user.fcmTokens);
 
       // 실행할 작업 정의
       agenda.define("pushAlarm", async (job, done) => {
