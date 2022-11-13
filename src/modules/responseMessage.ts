@@ -28,6 +28,9 @@ const message = {
   UPLOAD_VOICE_SUCCESS: "음성 녹음 업로드 성공",
   UPLOAD_VOICE_FORM_FAIL: "음성 녹음 실패 (잘못된 폼 데이터입니다.)",
   PLAY_VOICE_SUCCESS: "음성 녹음 재생 성공",
+  PLAY_VOICE_FAIL: "음성 녹음 재생 실패",
+  UPDATE_VOICE_SUCCESS: "음성 재녹음 성공",
+  UPDATE_VOICE_FAIL: "음성 재녹음 실패",
 
   // 푸시알림
   SAVE_NOTICE_SUCCESS: "푸시알림 시간 저장 성공",
