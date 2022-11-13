@@ -170,7 +170,11 @@ const toggleChange = async (userId: string) => {
     else {
       user.isActive = true;
 
-      // 푸시알림 설정
+      // for fcmToken refreshness
+      if (user.fcmTokens.length === 0) {
+        return exceptionMessage.SEND_ALARM_FAIL;
+      }
+
       const alarms = {
         android: {
           data: {

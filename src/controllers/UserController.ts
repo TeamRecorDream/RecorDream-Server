@@ -172,6 +172,9 @@ const toggleChange = async (req: Request, res: Response) => {
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
+    if (data === exceptionMessage.SEND_ALARM_FAIL) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.SEND_ALARM_FAIL));
+    }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_CHANGE_SUCCESS, data));
   } catch (err) {
