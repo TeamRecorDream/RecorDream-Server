@@ -41,6 +41,8 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
         gender: gender || null,
         age_range: age_range || null,
         fcmTokens: fcmToken,
+        time: null,
+        isActive: false,
       });
 
       user.accessToken = jwtHandler.getAccessToken(user.id);

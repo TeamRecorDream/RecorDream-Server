@@ -10,4 +10,5 @@ export interface UserInfo {
   accessToken: string;
   refreshToken: string;
   time: string | null;
+  isActive: boolean;
 }

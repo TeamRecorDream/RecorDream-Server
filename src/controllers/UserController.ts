@@ -8,6 +8,8 @@ import UserService from "../services/UserService";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
+import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
+import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route PUT /user/nickname
@@ -46,18 +48,16 @@ const updateNickname = async (req: Request, res: Response) => {
  * @access Public
  */
 const getUser = async (req: Request, res: Response) => {
-  const err = validationResult(req);
-  const userId = req.header("userId");
-  const fcm_token: string = req.params.token;
-  //const userAlarmDto: UserAlarmDto = req.body;
+  const userId = req.body.user.id;
 
   try {
-    const data = await UserService.getUser(userId as string, fcm_token);
-    if (!userId || !err.isEmpty()) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    const data = await UserService.getUser(userId);
+
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -99,14 +99,14 @@ const updateFcmToken = async (req: Request, res: Response) => {
  * @access Private
  */
 const deleteUser = async (req: Request, res: Response) => {
-  const userId = req.header("userId");
+  const userId = req.body.user.id;
 
   try {
     if (!userId) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
-    const data = await UserService.deleteUser(userId as string);
+    const data = await UserService.deleteUser(userId);
 
     if (data === null) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.ALREADY_DELETED_USER));
@@ -121,9 +121,73 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @route POST /user/notice
+ * @desc Save notice time
+ * @access Public
+ */
+const saveNotice = async (req: Request, res: Response) => {
+  const err = validationResult(req);
+  const userId = req.body.user.id;
+  const time = req.body.time;
+  const noticeBaseDto: UserNoticeBaseDto = {
+    userId,
+    time,
+  };
+
+  try {
+    if (!err.isEmpty()) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.SAVE_NOTICE_FAIL));
+    }
+
+    const data = await UserService.saveNotice(noticeBaseDto);
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    if (data === exceptionMessage.CANT_SET_TIME) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CANT_SET_TIME));
+    }
+
+    res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.SAVE_NOTICE_SUCCESS));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
+/**
+ * @route PATCH /user/toggle
+ * @desc PushAlarm Toggle Change
+ * @access Public
+ */
+const toggleChange = async (req: Request, res: Response) => {
+  const userId = req.body.user.id;
+
+  try {
+    const data = await UserService.toggleChange(userId);
+
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_CHANGE_SUCCESS, data));
+  } catch (err) {
+    console.log(err);
+    const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
+    sendMessageToSlack(errorMessage);
+
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  }
+};
+
 export default {
   updateNickname,
   getUser,
   updateFcmToken,
   deleteUser,
+  saveNotice,
+  toggleChange,
 };

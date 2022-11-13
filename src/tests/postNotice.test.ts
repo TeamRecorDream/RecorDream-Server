@@ -11,7 +11,6 @@ describe("[POST] /notice", () => {
   //201 CREATED - 푸시알림 시간 설정 성공
   it("푸시알림 시간 설정 테스트", async () => {
     const noticeData = {
-      fcm_token: config.fcm_token_ios,
       time: "PM 05:55",
     };
 
@@ -22,7 +21,6 @@ describe("[POST] /notice", () => {
   //400 Bad Request - 헤더에 userId 없음
   it("푸시알림 시간 설정 테스트(헤더에 userId 없음)", async () => {
     const noticeData = {
-      fcm_token: config.fcm_token_ios,
       time: "PM 05:55",
     };
 
@@ -34,7 +32,6 @@ describe("[POST] /notice", () => {
   //400 Bad Request - 해당 Fcm 토큰으로 이미 시간 설정을 한 경우
   it("푸시알림 시간 설정 테스트(해당 Fcm 토큰으로 이미 시간 설정 함)", async () => {
     const noticeData = {
-      fcm_token: config.fcm_token_ios,
       time: "PM 05:55",
     };
 
@@ -46,7 +43,6 @@ describe("[POST] /notice", () => {
   //404 Not Found - 헤더에 1 이외의 userId가 들어감
   it("푸시알림 시간 설정 테스트(헤더에 1 이외의 userId)", async () => {
     const noticeData = {
-      fcm_token: config.fcm_token_ios,
       time: "PM 05:55",
     };
 
