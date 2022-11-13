@@ -77,6 +77,7 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
     if (record.voice) {
       voiceResponse = {
         _id: record.voice._id,
+        recorder: record.voice.recorder,
         url: record.voice.url,
       };
     }
