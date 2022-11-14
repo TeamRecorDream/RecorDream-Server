@@ -18,8 +18,8 @@ import exceptionMessage from "../modules/exceptionMessage";
  */
 const updateNickname = async (req: Request, res: Response) => {
   const err = validationResult(req);
-  const userId = req.body.user.id;
   const userNicknameUpdateDto: UserNicknameUpdateDto = req.body;
+  const userId = req.body.user.id;
 
   try {
     const data = await UserService.updateNickname(userId, userNicknameUpdateDto);
@@ -69,21 +69,24 @@ const getUser = async (req: Request, res: Response) => {
 
 /**
  * @router PUT /user/fcm-token
- * @desc Refresh User's fcm token
+ * @desc Refresh User's fcmToken
  * @access Public
  */
 const updateFcmToken = async (req: Request, res: Response) => {
   const fcmTokenUpdateDto: FcmTokenUpdateDto = req.body;
-  const userId = req.header("userId");
+  const userId = req.body.user.id;
 
   try {
-    const updatedToken = await UserService.updateFcmToken(userId as string, fcmTokenUpdateDto);
+    const data = await UserService.updateFcmToken(userId, fcmTokenUpdateDto);
 
-    if (updatedToken === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
+    if (data === null) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    if (data === exceptionMessage.NOT_FOUND_FCM) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_FCM_TOKEN_SUCCESS));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_FCM_TOKEN_SUCCESS));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -171,6 +174,9 @@ const toggleChange = async (req: Request, res: Response) => {
 
     if (data === null) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    if (data === exceptionMessage.SEND_ALARM_FAIL) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.SEND_ALARM_FAIL));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.TOGGLE_CHANGE_SUCCESS, data));
