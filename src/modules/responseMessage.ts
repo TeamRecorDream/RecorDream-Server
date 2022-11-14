@@ -10,6 +10,7 @@ const message = {
   UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
   READ_USER_SUCCESS: "회원 정보 조회 성공",
   UPDATE_FCM_TOKEN_SUCCESS: "fcm Token 갱신 성공",
+  NOT_FOUND_FCM: "존재하지 않는 fcm Token 입니다.",
 
   // 레코드
   CREATE_RECORD_SUCCESS: "꿈 기록 작성 성공",
@@ -50,11 +51,8 @@ const message = {
   NO_USER: "존재하지 않는 유저",
   SIGNIN_SUCCESS: "로그인 성공",
   SIGNUP_SUCCESS: "회원가입 성공",
-  LOGIN_FAIL: "로그인 실패",
   LOGOUT_SUCCESS: "로그아웃 성공",
-
-  // 로그아웃
-  NOT_FOUND_FCM: "존재하지 않는 fcm Token 입니다.",
+  LOGIN_FAIL: "로그인 실패",
 
   // 회원탈퇴
   DELETE_USER_SUCCESS: "회원탈퇴 성공",
