@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
-import userMocking from "./UserMocking";
 
 const RecordSchema = new mongoose.Schema(
   {
     writer: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      default: userMocking,
     },
     date: {
       type: Date,
@@ -25,9 +23,6 @@ const RecordSchema = new mongoose.Schema(
       type: String,
     },
     emotion: {
-      type: Number,
-    },
-    dream_color: {
       type: Number,
     },
     genre: {
