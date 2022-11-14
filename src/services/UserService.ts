@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
 import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
-import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import User from "../models/User";
-import userMocking from "../models/UserMocking";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
 import Agenda from "agenda";
@@ -54,32 +51,26 @@ const getUser = async (userId: string) => {
   }
 };
 
-// fcm_token: req.body -> 즉, 유저의 fcm token을 하나하나 업데이트 (fcm token이 여러 개면 여러번 해야함)
+// 유저의 fcmToken을 하나하나 업데이트
 const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateDto) => {
-  const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-
   try {
-    const user = await User.findById(userObjectId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return null;
     }
 
     const tokens = {
-      fcm_token: fcmTokenUpdateDto.fcm_token,
-      new_token: fcmTokenUpdateDto.new_token,
+      originToken: fcmTokenUpdateDto.originToken,
+      newToken: fcmTokenUpdateDto.newToken,
     };
 
-    if (user.fcmTokens[0] !== tokens.fcm_token && user.fcmTokens[1] !== tokens.fcm_token) {
-      return null;
+    // 입력받은 fcmToken이 DB에 없을 경우
+    if (!user.fcmTokens.includes(tokens.originToken)) {
+      return exceptionMessage.NOT_FOUND_FCM;
     }
 
-    if (user.fcmTokens[0] === tokens.fcm_token) {
-      await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
-    }
-    if (user.fcmTokens[1] === tokens.fcm_token) {
-      await User.updateOne({ fcm_token: tokens.fcm_token }, { "fcm_token.$": tokens.new_token }).exec();
-    }
+    await User.updateOne({ fcmTokens: tokens.originToken }, { $set: { "fcmTokens.$": tokens.newToken } }).exec();
   } catch (err) {
     console.log(err);
     throw err;
