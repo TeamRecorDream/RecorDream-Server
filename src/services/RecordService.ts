@@ -21,12 +21,11 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
   try {
     const record = new Record(recordCreateDto);
 
+    if (record.emotion !== null && (record.emotion < 1 || record.emotion > 5)) {
+      return null;
+    }
     if (record.emotion === null) {
       record.emotion = 0;
-    } else {
-      if (record.emotion < 1 || record.emotion > 5) {
-        return null;
-      }
     }
 
     let genre_error = false;
