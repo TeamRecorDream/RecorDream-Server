@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 
 export interface RecordCreateDto {
-  date?: Date; //required
+  writer: mongoose.Types.ObjectId; //required
   title: string; //required
+  date: Date; //required
   content?: string | null;
   emotion?: number | null; //default
-  dream_color?: number | null; //default
   genre?: number[] | null; //default
   note?: string | null;
-  writer?: mongoose.Types.ObjectId; //required
   voice?: mongoose.Types.ObjectId | null;
 }

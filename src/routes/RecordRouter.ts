@@ -1,12 +1,14 @@
 import { Router } from "express";
 import RecordController from "../controllers/RecordController";
 import { body, check } from "express-validator";
+import auth from "../middleware/auth";
 
 const router: Router = Router();
 
 // title null 안됨, 공백만 안됨, 공백 제외 글자수 25까지 가능. voice와 writer는 수정불가
 router.post(
   "/",
+  auth,
   [
     body("title").exists(),
     body("title")
