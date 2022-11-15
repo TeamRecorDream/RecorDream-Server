@@ -1,13 +1,12 @@
-import { VoiceResponseDto } from "../voice/VoiceResponseDto";
+import { VoiceResponseInRecordDto } from "../voice/VoiceResponseInRecordDto";
 
 export interface RecordResponseDto {
   writer: string; // nickname
-  date: string; // 2022/06/26 (일)
-  voice: VoiceResponseDto | null;
+  date: string; // 2022/06/26 (SUN)
   title: string;
+  voice: VoiceResponseInRecordDto | null;
   content: string;
   emotion: number;
-  dream_color: number;
   genre: number[];
   note: string;
 }
