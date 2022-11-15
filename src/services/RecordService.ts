@@ -59,8 +59,7 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
 
 const getRecord = async (userId: string, recordId: string): Promise<RecordResponseDto | null | number> => {
   try {
-    //const record = await Record.findById(recordId).populate("writer", "nickname").populate("voice", "url");
-    const record = await Record.findOne({ _id: recordId, writer: userId });
+    const record = await Record.findOne({ _id: recordId, writer: userId }).populate("writer", "nickname").populate("voice");
     if (!record) return null;
 
     let voiceResponse: VoiceResponseInRecordDto | null = null;
