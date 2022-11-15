@@ -3,8 +3,8 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import jwtHandler from "../modules/jwtHandler";
 import { AuthResponseDto } from "../interfaces/auth/AuthResponseDto";
-import exceptionMessage from "../modules/exceptionMessage";
 import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
+import exceptionMessage from "../modules/exceptionMessage";
 
 const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
   try {
@@ -22,8 +22,10 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     }
 
     const userData = response.data.kakao_account;
+    const nickname = userData.profile.nickname.substr(0, 8);
     const email = userData.email;
-    const nickname = userData.profile.nickname;
+    const gender = userData.gender;
+    const ageRange = userData.age_range;
 
     const existUser = await User.findOne({
       email: email,
@@ -31,15 +33,12 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
 
     // db에 유저가 없으면 회원 가입
     if (!existUser) {
-      const gender = userData.gender;
-      const age_range = userData.age_range;
-
       const user = new User({
         isAlreadyUser: false,
         nickname: nickname,
         email: email,
         gender: gender || null,
-        age_range: age_range || null,
+        ageRange: ageRange || null,
         fcmTokens: fcmToken,
         time: null,
         isActive: false,
@@ -117,7 +116,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
 
     let nickname = "";
     if ((appleUser as jwt.JwtPayload).nickname) {
-      nickname = (appleUser as jwt.JwtPayload).nickname;
+      nickname = (appleUser as jwt.JwtPayload).nickname.substr(0, 8);
     }
 
     // db에 유저가 없으면 회원 가입
