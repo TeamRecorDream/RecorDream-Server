@@ -49,8 +49,10 @@ const createRecord = async (req: Request, res: Response) => {
  */
 const getRecord = async (req: Request, res: Response) => {
   const { recordId } = req.params;
+  const userId = req.body.user.id;
+
   try {
-    const data = await RecordService.getRecord(recordId);
+    const data = await RecordService.getRecord(userId, recordId);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }

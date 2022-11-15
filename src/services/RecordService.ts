@@ -1,7 +1,6 @@
 import Record from "../models/Record";
 import User from "../models/User";
 import dayjs from "dayjs";
-import "dayjs/locale/ko";
 import mongoose from "mongoose";
 import userMocking from "../models/UserMocking";
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
@@ -10,12 +9,10 @@ import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordListResponseDto } from "../interfaces/record/RecordListResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
-import { VoiceResponseDto } from "../interfaces/voice/VoiceResponseDto";
+import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
-
-dayjs.locale("ko");
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto | null> => {
   try {
@@ -60,16 +57,16 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
   }
 };
 
-const getRecord = async (recordId: string): Promise<RecordResponseDto | null> => {
+const getRecord = async (userId: string, recordId: string): Promise<RecordResponseDto | null | number> => {
   try {
-    const record = await Record.findById(recordId).populate("writer", "nickname").populate("voice", "url");
+    //const record = await Record.findById(recordId).populate("writer", "nickname").populate("voice", "url");
+    const record = await Record.findOne({ _id: recordId, writer: userId });
     if (!record) return null;
 
-    let voiceResponse: VoiceResponseDto | null = null;
+    let voiceResponse: VoiceResponseInRecordDto | null = null;
     if (record.voice) {
       voiceResponse = {
         _id: record.voice._id,
-        recorder: record.voice.recorder,
         url: record.voice.url,
       };
     }
@@ -82,7 +79,6 @@ const getRecord = async (recordId: string): Promise<RecordResponseDto | null> =>
       voice: voiceResponse,
       content: record.content,
       emotion: record.emotion,
-      dream_color: record.dream_color,
       genre: record.genre,
       note: record.note,
     };
