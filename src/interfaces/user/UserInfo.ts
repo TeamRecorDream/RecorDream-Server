@@ -3,7 +3,7 @@ export interface UserInfo {
   nickname: string;
   email: string;
   gender: string;
-  age_range: string;
+  ageRange: string;
   emotion_arr: number[];
   isAlreadyUser: boolean;
   fcmTokens: string[];
