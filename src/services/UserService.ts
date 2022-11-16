@@ -111,6 +111,49 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       return null;
     }
 
+    const alarms = {
+      android: {
+        data: {
+          title: pushMessage.title,
+          body: pushMessage.body,
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            contentAvailable: true,
+            alert: {
+              title: pushMessage.title,
+              body: pushMessage.body,
+            },
+          },
+        },
+      },
+      tokens: user.fcmTokens,
+    };
+
+    // 실행할 작업 정의
+    agenda.define("pushAlarm", async (job, done) => {
+      admin
+        .messaging()
+        .sendMulticast(alarms)
+        .then(function (res: any) {
+          if (res.failureCount > 0) {
+            const failedTokens: string[] = [];
+            res.responses.forEach((resp: any, idx: any) => {
+              if (!resp.success) {
+                failedTokens.push(user.fcmTokens[idx]);
+              }
+            });
+            console.log("List of tokens that caused failures: " + failedTokens);
+          }
+          console.log("Sent message result: ", res);
+        });
+      job.repeatEvery("24 hours");
+      job.save();
+      done();
+    });
+
     const time = data.time;
     if (!time) {
       return null;
@@ -165,49 +208,6 @@ const toggleChange = async (userId: string) => {
       if (user.fcmTokens.length === 0) {
         return exceptionMessage.SEND_ALARM_FAIL;
       }
-
-      const alarms = {
-        android: {
-          data: {
-            title: pushMessage.title,
-            body: pushMessage.body,
-          },
-        },
-        apns: {
-          payload: {
-            aps: {
-              contentAvailable: true,
-              alert: {
-                title: pushMessage.title,
-                body: pushMessage.body,
-              },
-            },
-          },
-        },
-        tokens: user.fcmTokens,
-      };
-
-      // 실행할 작업 정의
-      agenda.define("pushAlarm", async (job, done) => {
-        admin
-          .messaging()
-          .sendMulticast(alarms)
-          .then(function (res: any) {
-            if (res.failureCount > 0) {
-              const failedTokens: string[] = [];
-              res.responses.forEach((resp: any, idx: any) => {
-                if (!resp.success) {
-                  failedTokens.push(user.fcmTokens[idx]);
-                }
-              });
-              console.log("List of tokens that caused failures: " + failedTokens);
-            }
-            console.log("Sent message result: ", res);
-          });
-        job.repeatEvery("24 hours");
-        job.save();
-        done();
-      });
     }
 
     await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
