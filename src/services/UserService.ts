@@ -153,6 +153,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       job.save();
       done();
     });
+    agenda.start();
 
     const time = user.time;
     user;
@@ -170,7 +171,6 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
 
-      agenda.start();
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
     }
     // 시간이 이미 설정됨
