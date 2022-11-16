@@ -98,17 +98,12 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       time: noticeBaseDto.time,
     };
 
-    const user = await User.findById(noticeBaseDto.userId);
+    const user = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime, { new: true });
     if (!user) {
       return null;
     }
     if (user.isActive === false) {
       return exceptionMessage.CANT_SET_TIME;
-    }
-
-    const data = await User.findByIdAndUpdate(noticeBaseDto.userId, updatedTime, { new: true });
-    if (!data) {
-      return null;
     }
 
     const alarms = {
@@ -132,6 +127,11 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       tokens: user.fcmTokens,
     };
 
+    // for fcmToken refreshness
+    if (alarms.tokens.length === 0) {
+      return exceptionMessage.SEND_ALARM_FAIL;
+    }
+
     // 실행할 작업 정의
     agenda.define("pushAlarm", async (job, done) => {
       admin
@@ -154,29 +154,31 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       done();
     });
 
-    const time = data.time;
+    const time = user.time;
+    user;
     if (!time) {
       return null;
+      user;
     }
     const timeSplit = time.split(/ /);
     const ampm = timeSplit[0];
     const pushTime = timeSplit[1];
 
-    const allJobs = await agenda.jobs({ "data.userId": data._id });
+    const allJobs = await agenda.jobs({ "data.userId": user._id });
 
     // 첫 시간 저장
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
 
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
       agenda.start();
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
     }
-    // 시간이 이미 설정됨을 의미
-    if (allJobs.length > 0) {
+    // 시간이 이미 설정됨
+    if (allJobs.length === 1) {
       console.log("시간이 수정되어 리스케줄링합니다.");
 
-      await agenda.cancel({ "data.userId": data._id });
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: data._id });
+      await agenda.cancel({ "data.userId": user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
     }
   } catch (err) {
     console.log(err);
@@ -203,11 +205,6 @@ const toggleChange = async (userId: string) => {
     // 토글이 on이면 푸시알림 보내기
     else {
       user.isActive = true;
-
-      // for fcmToken refreshness
-      if (user.fcmTokens.length === 0) {
-        return exceptionMessage.SEND_ALARM_FAIL;
-      }
     }
 
     await User.updateOne({ _id: userId }, { $set: { time: user.time, isActive: user.isActive } }).exec();
