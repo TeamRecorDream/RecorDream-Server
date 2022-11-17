@@ -156,10 +156,8 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     agenda.start();
 
     const time = user.time;
-    user;
     if (!time) {
       return null;
-      user;
     }
     const timeSplit = time.split(/ /);
     const ampm = timeSplit[0];
