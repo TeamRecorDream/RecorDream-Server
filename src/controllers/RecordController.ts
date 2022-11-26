@@ -77,7 +77,7 @@ const getRecordHome = async (req: Request, res: Response) => {
 
   try {
     if (!userId) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
     const data = await RecordService.getRecordHome(userId);
