@@ -235,7 +235,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
         const result = {
           _id: record._id,
           emotion: record.emotion,
-          date: dayjs(record.date).format("YYYY/MM/DD (ddd)").toUpperCase(),
+          date: dayjs(record.date).format("YYYY/MM/DD ddd").toUpperCase(),
           title: record.title,
           genre: record.genre,
         };
