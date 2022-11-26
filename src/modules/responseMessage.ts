@@ -23,6 +23,7 @@ const message = {
   DELETE_RECORD_SUCCESS: "꿈 기록 삭제 성공",
   READ_RECORD_LIST_SUCCESS: "꿈 기록 목록(홈) 조회 성공",
   READ_RECORD_STORAGE_SUCCESS: "꿈 기록 목록(보관함) 조회 성공",
+  READ_RECORD_STORAGE_FAIL: "감정 범위를 벗어났습니다.",
   SEARCH_RECORD_SUCCESS: "꿈 기록 검색 성공",
 
   //voice
