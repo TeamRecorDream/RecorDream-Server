@@ -7,7 +7,7 @@ import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
-import { RecordListResponseDto } from "../interfaces/record/RecordListResponseDto";
+import { RecordHomeResponseDto } from "../interfaces/record/RecordHomeResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
 import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
@@ -89,9 +89,9 @@ const getRecord = async (userId: string, recordId: string): Promise<RecordRespon
   }
 };
 
-const getRecordList = async (userId: string): Promise<RecordListResponseDto | null> => {
+const getRecordList = async (userId: string): Promise<RecordHomeResponseDto | null> => {
   try {
-    const user: UserResponseDto | null = await User.findById(userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return null;
@@ -109,7 +109,6 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
           content: record.content,
           genre: record.genre,
         };
-
         return result;
       })
     );
