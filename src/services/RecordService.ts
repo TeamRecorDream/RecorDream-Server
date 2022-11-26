@@ -91,14 +91,13 @@ const getRecord = async (userId: string, recordId: string): Promise<RecordRespon
 
 const getRecordList = async (userId: string): Promise<RecordListResponseDto | null> => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
+    const user: UserResponseDto | null = await User.findById(userId);
 
     if (!user) {
       return null;
     }
 
-    const recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 }).limit(10);
+    const recordList = await Record.find({ writer: userId }).sort({ date: -1, _id: -1 }).limit(10);
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {

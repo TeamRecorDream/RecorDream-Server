@@ -73,14 +73,15 @@ const getRecord = async (req: Request, res: Response) => {
  *  @access Public
  */
 const getRecordList = async (req: Request, res: Response) => {
-  const userId = req.header("userId");
+  const userId = req.body.user.id;
 
   try {
     if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NULL_VALUE));
     }
 
-    const data = await RecordService.getRecordList(userId as string);
+    const data = await RecordService.getRecordList(userId);
+
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
