@@ -160,10 +160,10 @@ const getRecordStorage = async (req: Request, res: Response) => {
 
   try {
     if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    const data = await RecordService.getRecordStorage(userId as string, filter as string);
+    const data = await RecordService.getRecordStorage(userId, filter as string);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
