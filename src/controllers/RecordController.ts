@@ -86,7 +86,7 @@ const getRecordHome = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_HOME_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
