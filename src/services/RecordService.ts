@@ -103,10 +103,10 @@ const getRecordList = async (userId: string): Promise<RecordListResponseDto | nu
       recordList.map((record: any) => {
         const result = {
           _id: record._id,
-          dream_color: record.dream_color,
           emotion: record.emotion,
-          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+          date: dayjs(record.date).format("YYYY/MM/DD ddd").toUpperCase(),
           title: record.title,
+          content: record.content,
           genre: record.genre,
         };
 
