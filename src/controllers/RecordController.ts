@@ -156,7 +156,8 @@ const deleteRecord = async (req: Request, res: Response) => {
  */
 const getRecordStorage = async (req: Request, res: Response) => {
   const { filter } = req.query;
-  const userId = req.header("userId");
+  const userId = req.body.user.id;
+
   try {
     if (!userId) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
