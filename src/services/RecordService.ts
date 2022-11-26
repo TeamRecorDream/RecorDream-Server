@@ -89,7 +89,7 @@ const getRecord = async (userId: string, recordId: string): Promise<RecordRespon
   }
 };
 
-const getRecordList = async (userId: string): Promise<RecordHomeResponseDto | null> => {
+const getRecordHome = async (userId: string): Promise<RecordHomeResponseDto | null> => {
   try {
     const user = await User.findById(userId);
 
@@ -309,7 +309,7 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
 export default {
   createRecord,
   getRecord,
-  getRecordList,
+  getRecordHome,
   updateRecord,
   deleteRecord,
   getRecordStorage,
