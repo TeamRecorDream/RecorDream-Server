@@ -97,7 +97,7 @@ const getRecordList = async (userId: string): Promise<RecordHomeResponseDto | nu
       return null;
     }
 
-    const recordList = await Record.find({ writer: userId }).sort({ date: -1, _id: -1 }).limit(10);
+    const recordList = await Record.aggregate([{ $match: { writer: user._id } }, { $sample: { size: 10 } }]);
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {
@@ -106,8 +106,8 @@ const getRecordList = async (userId: string): Promise<RecordHomeResponseDto | nu
           emotion: record.emotion,
           date: dayjs(record.date).format("YYYY/MM/DD ddd").toUpperCase(),
           title: record.title,
-          content: record.content,
           genre: record.genre,
+          content: record.content,
         };
         return result;
       })
