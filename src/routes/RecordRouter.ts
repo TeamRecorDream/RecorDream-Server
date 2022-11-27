@@ -42,7 +42,7 @@ router.patch(
   RecordController.updateRecord
 );
 router.delete("/:recordId", RecordController.deleteRecord);
-router.get("/storage/list", RecordController.getRecordStorage);
+router.get("/storage/list", auth, RecordController.getRecordStorage);
 router.get("/storage/search", RecordController.getRecordsBySearch);
 
 export default router;
