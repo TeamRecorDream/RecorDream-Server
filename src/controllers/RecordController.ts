@@ -156,15 +156,16 @@ const deleteRecord = async (req: Request, res: Response) => {
  */
 const getRecordStorage = async (req: Request, res: Response) => {
   const { filter } = req.query;
-  const userId = req.header("userId");
+  const userId = req.body.user.id;
+
   try {
     if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    const data = await RecordService.getRecordStorage(userId as string, filter as string);
+    const data = await RecordService.getRecordStorage(userId, filter as string);
     if (!data) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.READ_RECORD_STORAGE_FAIL));
     }
 
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_STORAGE_SUCCESS, data));

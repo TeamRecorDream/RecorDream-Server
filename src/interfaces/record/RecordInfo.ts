@@ -14,9 +14,8 @@ export interface RecordInfo {
 }
 
 export interface RecordListInfo {
+  emotion: number;
   date: string;
   title: string;
-  emotion: number;
-  dream_color: number;
   genre: number[];
 }

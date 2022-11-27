@@ -203,27 +203,24 @@ const deleteRecord = async (recordId: string): Promise<boolean> => {
 
 const getRecordStorage = async (userId: string, filter: string): Promise<RecordStorageResponseDto | null> => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return null;
     }
 
     let recordList;
-
     switch (filter) {
-      case "0":
-        // eslint-disable-next-line no-var
-        recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 });
+      case "0": // 전체
+        recordList = await Record.find({ _writer: userId }).sort({ date: -1, _id: -1 });
         break;
       case "1":
       case "2":
       case "3":
       case "4":
       case "5":
-      case "6":
-        recordList = await Record.find({ $and: [{ writer: userObjectId }, { emotion: parseInt(filter) }] }).sort({
+      case "6": // 미설정
+        recordList = await Record.find({ $and: [{ _writer: userId }, { emotion: parseInt(filter) }] }).sort({
           date: -1,
           _id: -1,
         });
@@ -233,14 +230,12 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     }
 
     let count = 0;
-
     const records: RecordListInfo[] = await Promise.all(
-      recordList.map((record: any) => {
+      recordList.map((record) => {
         const result = {
           _id: record._id,
-          dream_color: record.dream_color,
           emotion: record.emotion,
-          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+          date: dayjs(record.date).format("YYYY/MM/DD ddd").toUpperCase(),
           title: record.title,
           genre: record.genre,
         };
@@ -249,8 +244,8 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
       })
     );
 
-    const data = {
-      records_count: count,
+    const data: RecordStorageResponseDto = {
+      recordsCount: count,
       records: records,
     };
 
@@ -297,7 +292,7 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
     );
 
     const data = {
-      records_count: count,
+      recordsCount: count,
       records: records,
     };
 
