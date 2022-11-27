@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
+import moment from "moment";
+import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route POST /record
@@ -107,15 +109,23 @@ const updateRecord = async (req: Request, res: Response) => {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_FORM_FAIL));
   }
 
-  req.body.date = dayjs(req.body.date).format("YYYY-MM-DD");
-  const recordUpdateDto: RecordUpdateDto = req.body;
   const { recordId } = req.params;
+  const userId = req.body.user.id;
+
+  const date = req.body.date;
+  const dateFormatValidation = moment(date, "YYYY-MM-DD", true).isValid();
+  if (!dateFormatValidation) {
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_DATE_FAIL));
+  }
+
+  const recordUpdateDto: RecordUpdateDto = req.body;
+
   try {
-    const data = await RecordService.updateRecord(recordId, recordUpdateDto);
-    if (!data || data === 1) {
+    const data = await RecordService.updateRecord(userId, recordId, recordUpdateDto);
+    if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
-    if (data === 2) {
+    if (data === exceptionMessage.RECORD_UPDATE_NUMBER_FAIL) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.UPDATE_RECORD_NUMBER_FAIL));
     }
     return res.status(statusCode.OK).send(util.success(statusCode.OK, message.UPDATE_RECORD_SUCCESS));
