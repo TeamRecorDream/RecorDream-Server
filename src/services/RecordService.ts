@@ -7,7 +7,7 @@ import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
-import { RecordListResponseDto } from "../interfaces/record/RecordListResponseDto";
+import { RecordHomeResponseDto } from "../interfaces/record/RecordHomeResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
 import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
@@ -89,28 +89,26 @@ const getRecord = async (userId: string, recordId: string): Promise<RecordRespon
   }
 };
 
-const getRecordList = async (userId: string): Promise<RecordListResponseDto | null> => {
+const getRecordHome = async (userId: string): Promise<RecordHomeResponseDto | null> => {
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return null;
     }
 
-    const recordList = await Record.find({ writer: userObjectId }).sort({ date: -1, _id: -1 }).limit(10);
+    const recordList = await Record.aggregate([{ $match: { writer: user._id } }, { $sample: { size: 10 } }]);
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {
         const result = {
           _id: record._id,
-          dream_color: record.dream_color,
           emotion: record.emotion,
-          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+          date: dayjs(record.date).format("YYYY/MM/DD ddd").toUpperCase(),
           title: record.title,
           genre: record.genre,
+          content: record.content,
         };
-
         return result;
       })
     );
@@ -306,7 +304,7 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
 export default {
   createRecord,
   getRecord,
-  getRecordList,
+  getRecordHome,
   updateRecord,
   deleteRecord,
   getRecordStorage,

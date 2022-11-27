@@ -69,23 +69,24 @@ const getRecord = async (req: Request, res: Response) => {
 
 /**
  *  @route GET /record
- *  @desc Get RecordList
+ *  @desc Get RecordList for Home view
  *  @access Public
  */
-const getRecordList = async (req: Request, res: Response) => {
-  const userId = req.header("userId");
+const getRecordHome = async (req: Request, res: Response) => {
+  const userId = req.body.user.id;
 
   try {
     if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    const data = await RecordService.getRecordList(userId as string);
+    const data = await RecordService.getRecordHome(userId);
+
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_LIST_SUCCESS, data));
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_RECORD_HOME_SUCCESS, data));
   } catch (err) {
     console.log(err);
     const errorMessage: string = slackMessage(req.method.toUpperCase(), req.originalUrl, err, req.body.user?.id);
@@ -212,7 +213,7 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
 export default {
   createRecord,
   getRecord,
-  getRecordList,
+  getRecordHome,
   updateRecord,
   deleteRecord,
   getRecordStorage,

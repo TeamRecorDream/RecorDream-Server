@@ -23,7 +23,7 @@ router.post(
   RecordController.createRecord
 );
 router.get("/:recordId", auth, RecordController.getRecord);
-router.get("/", RecordController.getRecordList);
+router.get("/", auth, RecordController.getRecordHome);
 router.patch(
   "/:recordId",
   [

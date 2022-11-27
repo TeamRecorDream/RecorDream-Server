@@ -8,14 +8,13 @@ export interface RecordInfo {
   title: string;
   content: string;
   emotion: number;
-  dream_color: number;
   genre: number[];
   note: string;
 }
 
 export interface RecordListInfo {
-  emotion: number;
   date: string;
   title: string;
+  emotion: number;
   genre: number[];
 }
