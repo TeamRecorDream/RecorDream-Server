@@ -10,7 +10,7 @@ router.post(
   "/",
   auth,
   [
-    body("date").notEmpty(),
+    body("date").exists().notEmpty(),
     body("title").exists(),
     body("title")
       .custom((title) => {
@@ -27,9 +27,11 @@ router.get("/:recordId", auth, RecordController.getRecord);
 router.get("/", auth, RecordController.getRecordHome);
 router.patch(
   "/:recordId",
+  auth,
   [
-    check("title")
-      .if(body("title").exists())
+    body("date").exists().notEmpty(),
+    body("title").exists(),
+    body("title")
       .custom((title) => {
         if (title.toString().replace(/(\s*)/g, "").length > 25 || title.toString().replace(/(\s*)/g, "").length < 1) {
           return false;
@@ -38,7 +40,6 @@ router.patch(
       })
       .withMessage("제목 오류"),
     body("voice").not().exists(),
-    body("writer").not().exists(),
   ],
   RecordController.updateRecord
 );
