@@ -22,7 +22,7 @@ const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseR
       return null;
     }
     if (record.emotion === null) {
-      record.emotion = 0;
+      record.emotion = 6;
     }
 
     let genre_error = false;

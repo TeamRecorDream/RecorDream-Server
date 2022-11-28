@@ -10,6 +10,7 @@ router.post(
   "/",
   auth,
   [
+    body("date").notEmpty(),
     body("title").exists(),
     body("title")
       .custom((title) => {
