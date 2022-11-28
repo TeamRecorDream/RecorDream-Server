@@ -10,6 +10,8 @@ router.post(
   "/",
   auth,
   [
+    body("date").exists(),
+    body("date").notEmpty(),
     body("title").exists(),
     body("title")
       .custom((title) => {
@@ -28,6 +30,8 @@ router.patch(
   "/:recordId",
   auth,
   [
+    body("date").exists(),
+    body("date").notEmpty(),
     body("title").exists(),
     body("title")
       .custom((title) => {
