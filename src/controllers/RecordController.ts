@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 /**
  * @route POST /record
