@@ -133,7 +133,9 @@ const updateRecord = async (
 ): Promise<RecordInfo | null | number> => {
   try {
     const record = await Record.findOne({ _id: recordId, writer: userId });
-    if (!record) return null;
+    if (!record) {
+      return null;
+    }
 
     const update = recordUpdateDto;
 
