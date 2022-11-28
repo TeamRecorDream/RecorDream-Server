@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
-import moment from "moment";
 
 /**
  * @route POST /record
@@ -23,7 +22,7 @@ const createRecord = async (req: Request, res: Response) => {
   }
 
   const date = req.body.date;
-  const dateFormatValidation = moment(date, "YYYY-MM-DD", true).isValid();
+  const dateFormatValidation = dayjs(date, "YYYY-MM-DD", true).isValid();
   if (!dateFormatValidation) {
     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.CREATE_RECORD_DATE_FAIL));
   }
