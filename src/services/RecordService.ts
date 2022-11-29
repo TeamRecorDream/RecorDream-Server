@@ -180,11 +180,12 @@ const updateRecord = async (
   }
 };
 
-const deleteRecord = async (recordId: string): Promise<boolean> => {
+const deleteRecord = async (userId: string, recordId: string): Promise<boolean> => {
   try {
-    const record = await Record.findByIdAndDelete(recordId);
-
-    if (!record) return false;
+    const record = await Record.findOneAndDelete({ _id: recordId, writer: userId });
+    if (!record) {
+      return false;
+    }
     return true;
   } catch (err) {
     console.log(err);
