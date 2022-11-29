@@ -151,8 +151,13 @@ const updateRecord = async (req: Request, res: Response) => {
  */
 const deleteRecord = async (req: Request, res: Response) => {
   const { recordId } = req.params;
+  const userId = req.body.user.id;
+
   try {
-    const data = await RecordService.deleteRecord(recordId);
+    if (!userId) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    const data = await RecordService.deleteRecord(userId, recordId);
     if (data === false) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
