@@ -13,6 +13,7 @@ import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRec
 import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
+import exceptionMessage from "../modules/exceptionMessage";
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto | null> => {
   try {
@@ -73,7 +74,7 @@ const getRecord = async (userId: string, recordId: string): Promise<RecordRespon
     const data = {
       _id: record._id,
       writer: record.writer.nickname,
-      date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
+      date: dayjs(record.date).format("YYYY/MM/DD (ddd)").toUpperCase(),
       title: record.title,
       voice: voiceResponse,
       content: record.content,
@@ -125,55 +126,47 @@ const getRecordHome = async (userId: string): Promise<RecordHomeResponseDto | nu
   }
 };
 
-const updateRecord = async (recordId: string, recordUpdateDto: RecordUpdateDto): Promise<RecordInfo | null | number> => {
+const updateRecord = async (
+  userId: string,
+  recordId: string,
+  recordUpdateDto: RecordUpdateDto
+): Promise<RecordInfo | null | number> => {
   try {
-    let exitCode = 0;
-    const record = await Record.findById(recordId);
+    const record = await Record.findOne({ _id: recordId, writer: userId });
     if (!record) {
-      exitCode = 1;
+      return null;
     }
 
     const update = recordUpdateDto;
-    if (update.date === null) {
-      exitCode = 2;
+
+    if (update.emotion !== null && (update.emotion < 1 || update.emotion > 5)) {
+      return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
     }
-    if (update.emotion < 0 || update.emotion > 6 || update.dream_color < 0 || update.dream_color > 6) {
-      exitCode = 2;
+    if (update.emotion === null) {
+      update.emotion = 6;
     }
 
     let genre_error = false;
     let genre_count = 0;
 
     if (update.genre === null) {
-      update.genre = [10];
+      update.genre = [0];
       genre_count = 1;
     } else {
       update.genre.map((genre) => {
         genre_count++;
-        if (genre < 0 || genre > 9) {
+        if (genre < 1 || genre > 10) {
           genre_error = true;
         }
       });
     }
 
     if (genre_error || genre_count > 3 || genre_count === 0) {
-      exitCode = 2;
-    }
-
-    if (update.emotion === null) {
-      update.emotion = 7;
-    }
-
-    if (update.dream_color === null) {
-      update.dream_color = 0;
-    }
-
-    if (exitCode != 0) {
-      return exitCode;
+      return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
     }
 
     const data = await Record.findOneAndUpdate(
-      { _id: recordId }, //filter
+      { _id: recordId, writer: userId }, //filter
       {
         $set: update, //수정 사항
       },

@@ -1,3 +1,4 @@
+const RECORD_UPDATE_NUMBER_FAIL = -6;
 const SEND_ALARM_FAIL = -5;
 const CANT_SET_TIME = -4;
 const EXPIRED_TOKEN = -3;
@@ -5,6 +6,7 @@ const INVALID_TOKEN = -2;
 const NOT_FOUND_FCM = -1;
 
 export default {
+  RECORD_UPDATE_NUMBER_FAIL,
   SEND_ALARM_FAIL,
   CANT_SET_TIME,
   EXPIRED_TOKEN,
