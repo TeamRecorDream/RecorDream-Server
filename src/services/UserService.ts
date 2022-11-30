@@ -133,7 +133,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     }
 
     // 실행할 작업 정의
-    agenda.define("pushAlarm", async (job, done) => {
+    agenda.define("push-" + `${user._id}`, async (job, done) => {
       admin
         .messaging()
         .sendMulticast(alarms)
@@ -168,7 +168,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
 
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push-" + `${user._id}`, { userId: user._id });
     }
     // 시간이 이미 설정됨
     if (allJobs.length === 1) {
@@ -177,7 +177,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       await agenda.cancel({ "data.userId": user._id });
 
       agenda.start();
-      agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push-" + `${user._id}`, { userId: user._id });
     }
   } catch (err) {
     console.log(err);
