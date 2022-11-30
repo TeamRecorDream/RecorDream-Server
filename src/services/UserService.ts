@@ -4,9 +4,9 @@ import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import User from "../models/User";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
-import Agenda from "agenda";
-import config from "../config";
 import exceptionMessage from "../modules/exceptionMessage";
+import config from "../config";
+import Agenda from "agenda";
 
 // agenda setting
 const agenda = new Agenda({
@@ -149,8 +149,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
           }
           console.log("Sent message result: ", res);
         });
-      job.repeatEvery("24 hours");
-      job.save();
+      job.repeatEvery("24 hours").save();
       done();
     });
     agenda.start();
@@ -176,6 +175,8 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       console.log("시간이 수정되어 리스케줄링합니다.");
 
       await agenda.cancel({ "data.userId": user._id });
+
+      agenda.start();
       agenda.schedule("today at " + pushTime + ampm + "", "pushAlarm", { userId: user._id });
     }
   } catch (err) {
