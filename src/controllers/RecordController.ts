@@ -201,20 +201,15 @@ const getRecordStorage = async (req: Request, res: Response) => {
 };
 
 /**
- *  @route GET /record/search?keyword=
+ *  @route GET /record/storage/search?keyword=
  *  @desc Get record by search
  *  @access Public
  */
 const getRecordsBySearch = async (req: Request, res: Response) => {
   const { keyword } = req.query;
-  const userId = req.header("userId");
-
+  const userId = req.body.user.id;
   try {
-    if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
-    }
-
-    const data = await RecordService.getRecordsBySearch(userId as string, keyword as string);
+    const data = await RecordService.getRecordsBySearch(userId, keyword as string);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
