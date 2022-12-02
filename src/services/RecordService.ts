@@ -252,16 +252,14 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
   const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
 
   try {
-    const userObjectId: mongoose.Types.ObjectId = userMocking[parseInt(userId) - 1];
-    const user: UserResponseDto | null = await User.findById(userObjectId);
-
-    if (!user) {
-      return null;
-    }
-
     const Regex: RegExp = regex(keyword);
 
-    const recordList = await Record.find({ $or: [{ content: { $regex: Regex } }, { note: { $regex: Regex } }] }).sort({
+    const recordList = await Record.find({
+      $or: [
+        { content: { $regex: Regex }, writer: userId },
+        { note: { $regex: Regex }, writer: userId },
+      ],
+    }).sort({
       date: -1,
       _id: -1,
     });
@@ -272,10 +270,9 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
       recordList.map((record: any) => {
         const result = {
           _id: record._id,
-          dream_color: record.dream_color,
-          emotion: record.emotion,
-          date: dayjs(record.date).format("YYYY/MM/DD (ddd)"),
           title: record.title,
+          date: dayjs(record.date).format("YYYY/MM/DD (ddd)").toUpperCase(),
+          emotion: record.emotion,
           genre: record.genre,
         };
         count++;
