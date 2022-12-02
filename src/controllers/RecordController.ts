@@ -209,6 +209,10 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
   const { keyword } = req.query;
   const userId = req.body.user.id;
   try {
+    if (!userId) {
+      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+
     const data = await RecordService.getRecordsBySearch(userId, keyword as string);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
