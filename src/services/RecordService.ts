@@ -1,8 +1,6 @@
 import Record from "../models/Record";
 import User from "../models/User";
 import dayjs from "dayjs";
-import mongoose from "mongoose";
-import userMocking from "../models/UserMocking";
 import { PostBaseResponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { RecordCreateDto } from "../interfaces/record/RecordCreateDto";
 import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
@@ -10,7 +8,6 @@ import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordHomeResponseDto } from "../interfaces/record/RecordHomeResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
 import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
-import { UserResponseDto } from "../interfaces/user/UserResponseDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
 import exceptionMessage from "../modules/exceptionMessage";
