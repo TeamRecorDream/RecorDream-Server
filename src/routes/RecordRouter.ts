@@ -1,6 +1,6 @@
 import { Router } from "express";
 import RecordController from "../controllers/RecordController";
-import { body, check } from "express-validator";
+import { body } from "express-validator";
 import auth from "../middleware/auth";
 
 const router: Router = Router();
