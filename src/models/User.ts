@@ -20,9 +20,6 @@ const UserSchema = new mongoose.Schema({
   ageRange: {
     type: String,
   },
-  emotion_arr: {
-    type: Array,
-  },
   isAlreadyUser: {
     type: Boolean,
   },

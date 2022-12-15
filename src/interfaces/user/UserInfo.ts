@@ -4,7 +4,6 @@ export interface UserInfo {
   email: string;
   gender: string;
   ageRange: string;
-  emotion_arr: number[];
   isAlreadyUser: boolean;
   fcmTokens: string[];
   accessToken: string;
