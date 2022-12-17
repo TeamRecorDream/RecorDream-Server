@@ -5,13 +5,12 @@ import User from "../models/User";
 import pushMessage from "../modules/pushMessage";
 import * as admin from "firebase-admin";
 import exceptionMessage from "../modules/exceptionMessage";
-import config from "../config";
-import Agenda from "agenda";
+import agenda from "../config/agenda";
 
 // agenda setting
-const agenda = new Agenda({
-  db: { address: config.mongoURI },
-});
+// const agenda = new Agenda({
+//   db: { address: config.mongoURI },
+// });
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
