@@ -74,7 +74,7 @@
 </details> <br>
 <br />
 
-## Coding Convention
+## Code Convention
 
 <details>
 <summary>변수</summary>
@@ -133,47 +133,48 @@
 ------📄app.ts
 ------📁tests
 ------📁config
+---------📄agenda.ts
 ---------📄index.ts
 ---------📄multer.ts
 ---------📄s3Config.ts
 ---------📄firebase-admin.json
 ------📁controllers
 ---------📄index.ts
----------📄NoticeController.ts
+---------📄AuthController.ts
 ---------📄RecordController.ts
 ---------📄UserController.ts
 ---------📄VoiceController.ts
 ------📁interfaces
 ---------📁common
----------📁notice
+---------📁auth
 ---------📁record
 ---------📁user
 ---------📁voice
 ------📁loaders
 ---------📄db.ts
 ------📁models
----------📄Notice.ts
 ---------📄Record.ts
 ---------📄User.ts
----------📄UserMocking.ts
 ---------📄Voice.ts
 ---------📄VoiceMocking.ts
 ------📁modules
+---------📄exceptionMessage.ts
+---------📄jwtHandler.ts
 ---------📄pushMessage.ts
 ---------📄responseMessage.ts
 ---------📄returnToSlackMessage.ts
----------📄slackApi.ts
+---------📄slackApI.ts
 ---------📄statusCode.ts
 ---------📄util.ts
 ------📁routes
 ---------📄index.ts
----------📄NoticeRouter.ts
+---------📄AuthRouter.ts
 ---------📄RecordRouter.ts
 ---------📄UserRouter.ts
 ---------📄VoiceRouter.ts
 ------📁services
 ---------📄index.ts
----------📄NoticeService.ts
+---------📄AuthService.ts
 ---------📄RecordService.ts
 ---------📄UserService.ts
 ---------📄VoiceService.ts
@@ -258,7 +259,7 @@
 |[GET] 꿈 기록 리스트 조회 (보관함 뷰) | 추서연 | ✅ |
 |[GET] 꿈 기록 조회 (상세보기 뷰) | 김시연 | ✅ |
 |[PATCH] 꿈 기록 일부 수정 | 김시연 | ✅ |
-|[DELETE]꿈 기록 삭제 | 김시연 | ✅ |
+|[DELETE] 꿈 기록 삭제 | 김시연 | ✅ |
 |[GET] 꿈 검색 | 추서연 | ✅ |
 |[POST] 푸시알림 시간 설정 | 황서경| ✅ |
 |[PUT] 푸시알림 시간 수정 |황서경| ✅ |
