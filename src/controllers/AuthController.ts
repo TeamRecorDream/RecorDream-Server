@@ -80,7 +80,7 @@ const reissueToken = async (req: Request, res: Response) => {
     }
 
     if (data === "valid_token") {
-      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.VALID_TOKEN));
+      return res.status(statusCode.FORBIDDEN).send(util.fail(statusCode.FORBIDDEN, message.VALID_TOKEN));
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.REISSUE_TOKEN_SUCCESS, data));
