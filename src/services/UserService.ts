@@ -185,15 +185,15 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
 };
 
 // 푸시알림 여부 변경
-const toggleChange = async (userId: string, isActive: string) => {
+const toggleChange = async (userId: string, isActive: boolean) => {
   try {
     const user = await User.findById(userId);
 
-    if (!user || !isActive) {
+    if (!user || isActive === undefined) {
       return null;
     }
 
-    if (isActive === "false") {
+    if ((isActive as boolean) === false) {
       user.time = null;
       user.isActive = false;
 
