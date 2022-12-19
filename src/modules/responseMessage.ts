@@ -39,8 +39,8 @@ const message = {
   // 푸시알림
   SAVE_NOTICE_SUCCESS: "푸시알림 시간 저장 성공",
   SAVE_NOTICE_FAIL: "푸시알림 시간 저장 실패 (형식을 맞춰주세요.)",
-  TOGGLE_CHANGE_SUCCESS: "푸시알림 변경 성공",
-  TOGGLE_CHANGE_FAIL: "푸시알림 변경 실패",
+  TOGGLE_CHANGE_SUCCESS: "푸시알림 토글 변경 성공",
+  TOGGLE_CHANGE_FAIL: "푸시알림 토글 변경 실패",
   CANT_SET_TIME: "토글 Off시에는 시간을 설정할 수 없습니다.",
   SEND_ALARM_FAIL: "푸시알림 전송 실패, 저장된 fcm Token이 없습니다.",
 
