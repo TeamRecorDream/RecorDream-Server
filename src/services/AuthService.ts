@@ -108,39 +108,30 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
       appleId: (appleUser as jwt.JwtPayload).sub,
     });
 
-    // 출력해서 확인해 볼 것!
-    let email = "";
-    if ((appleUser as jwt.JwtPayload).email) {
-      email = (appleUser as jwt.JwtPayload).email;
-    }
-
-    let nickname = "";
-    if ((appleUser as jwt.JwtPayload).nickname) {
-      nickname = (appleUser as jwt.JwtPayload).nickname.substr(0, 8);
-    }
+    const email = (appleUser as jwt.JwtPayload).email;
+    const nickname = email.substring(0, 8);
 
     // db에 유저가 없으면 회원 가입
     if (!existUser) {
       const user = new User({
         isAlreadyUser: false,
         appleId: (appleUser as jwt.JwtPayload).sub,
-        email: email,
         nickname: nickname,
-        fcmToken: fcmToken,
+        email: email,
+        fcmTokens: fcmToken,
+        time: null,
+        isActive: false,
       });
 
-      const jwtToken = jwtHandler.getAccessToken(user.id);
-      user.accessToken = jwtToken;
-
-      const refreshToken = jwtHandler.getRefreshToken();
-      user.refreshToken = refreshToken;
+      user.accessToken = jwtHandler.getAccessToken(user.id);
+      user.refreshToken = jwtHandler.getRefreshToken();
 
       await user.save();
 
       const data: AuthResponseDto = {
         isAlreadyUser: user.isAlreadyUser,
         accessToken: user.accessToken,
-        refreshToken: refreshToken,
+        refreshToken: user.refreshToken,
         nickname: nickname,
       };
 
