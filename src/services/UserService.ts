@@ -2,15 +2,10 @@ import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import User from "../models/User";
-import pushMessage from "../modules/pushMessage";
-import * as admin from "firebase-admin";
+// import pushMessage from "../modules/pushMessage";
+// import * as admin from "firebase-admin";
 import exceptionMessage from "../modules/exceptionMessage";
-import agenda from "../config/agenda";
-
-// agenda setting
-// const agenda = new Agenda({
-//   db: { address: config.mongoURI },
-// });
+import agenda from "../loaders/agenda";
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -105,54 +100,6 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       return exceptionMessage.CANT_SET_TIME;
     }
 
-    const alarms = {
-      android: {
-        data: {
-          title: pushMessage.title,
-          body: pushMessage.body,
-        },
-      },
-      apns: {
-        payload: {
-          aps: {
-            contentAvailable: true,
-            alert: {
-              title: pushMessage.title,
-              body: pushMessage.body,
-            },
-          },
-        },
-      },
-      tokens: user.fcmTokens,
-    };
-
-    // for fcmToken refreshness
-    if (alarms.tokens.length === 0) {
-      return exceptionMessage.SEND_ALARM_FAIL;
-    }
-
-    // 실행할 작업 정의
-    agenda.define("push-" + `${user._id}`, async (job, done) => {
-      admin
-        .messaging()
-        .sendMulticast(alarms)
-        .then(function (res: any) {
-          if (res.failureCount > 0) {
-            const failedTokens: string[] = [];
-            res.responses.forEach((resp: any, idx: any) => {
-              if (!resp.success) {
-                failedTokens.push(user.fcmTokens[idx]);
-              }
-            });
-            console.log("List of tokens that caused failures: " + failedTokens);
-          }
-          console.log("Sent message result: ", res);
-        });
-      job.repeatEvery("24 hours").save();
-      done();
-    });
-    agenda.start();
-
     const time = user.time;
     if (!time) {
       return null;
@@ -167,7 +114,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
 
-      agenda.schedule("today at " + pushTime + ampm + "", "push-" + `${user._id}`, { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push" + `${user._id}`, { userId: user._id });
     }
     // 시간이 이미 설정됨
     if (allJobs.length === 1) {
@@ -175,8 +122,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
 
       await agenda.cancel({ "data.userId": user._id });
 
-      agenda.start();
-      agenda.schedule("today at " + pushTime + ampm + "", "push-" + `${user._id}`, { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push" + `${user._id}`, { userId: user._id });
     }
   } catch (err) {
     console.log(err);
