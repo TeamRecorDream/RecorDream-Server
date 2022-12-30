@@ -4,6 +4,7 @@ import * as admin from "firebase-admin";
 import serviceAccount from "../config/firebase-admin.json";
 import User from "../models/User";
 import agenda from "./agenda";
+import pushMessage from "../modules/pushMessage";
 
 const connectDB = async () => {
   let firebase;
@@ -28,8 +29,8 @@ const connectDB = async () => {
       const alarms = {
         android: {
           data: {
-            title: "test recordream",
-            body: "테스트입니다.",
+            title: pushMessage.title,
+            body: pushMessage.body,
           },
         },
         apns: {
@@ -37,8 +38,8 @@ const connectDB = async () => {
             aps: {
               contentAvailable: true,
               alert: {
-                title: "test recordream",
-                body: "테스트입니다.",
+                title: pushMessage.title,
+                body: pushMessage.body,
               },
             },
           },
