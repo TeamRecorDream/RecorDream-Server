@@ -7,8 +7,6 @@ const configureMongoDBObj = {
   },
 };
 
-// test1
-
 const agenda = new Agenda(configureMongoDBObj);
 
 export default agenda;
