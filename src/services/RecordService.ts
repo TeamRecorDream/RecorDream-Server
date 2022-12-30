@@ -253,6 +253,7 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
 
     const recordList = await Record.find({
       $or: [
+        { title: { $regex: Regex }, writer: userId },
         { content: { $regex: Regex }, writer: userId },
         { note: { $regex: Regex }, writer: userId },
       ],
