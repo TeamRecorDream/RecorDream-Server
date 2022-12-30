@@ -2,10 +2,10 @@ import { FcmTokenUpdateDto } from "../interfaces/user/FcmTokenUpdateDto";
 import { UserNicknameUpdateDto } from "../interfaces/user/UserNicknameUpdateDto";
 import { UserNoticeBaseDto } from "../interfaces/user/UserNoticeBaseDto";
 import User from "../models/User";
-// import pushMessage from "../modules/pushMessage";
-// import * as admin from "firebase-admin";
+import * as admin from "firebase-admin";
 import exceptionMessage from "../modules/exceptionMessage";
 import agenda from "../loaders/agenda";
+import pushMessage from "../modules/pushMessage";
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -100,6 +100,39 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
       return exceptionMessage.CANT_SET_TIME;
     }
 
+    const alarms = {
+      android: {
+        data: {
+          title: pushMessage.title,
+          body: pushMessage.body,
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            contentAvailable: true,
+            alert: {
+              title: pushMessage.title,
+              body: pushMessage.body,
+            },
+          },
+        },
+      },
+      tokens: user.fcmTokens,
+    };
+
+    agenda.define("push_" + `${user._id}`, async (job: any, done: any) => {
+      admin
+        .messaging()
+        .sendMulticast(alarms)
+        .then(function (res: any) {
+          console.log("Sent message result: ", res);
+        });
+      job.repeatEvery("24 hours").save();
+      done();
+    });
+    agenda.start();
+
     const time = user.time;
     if (!time) {
       return null;
@@ -114,7 +147,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
     if (allJobs.length === 0) {
       console.log("매일 " + pushTime + " " + `${ampm}` + "에 푸시알림을 보냅니다.");
 
-      agenda.schedule("today at " + pushTime + ampm + "", "push" + `${user._id}`, { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push_" + `${user._id}`, { userId: user._id });
     }
     // 시간이 이미 설정됨
     if (allJobs.length === 1) {
@@ -122,7 +155,7 @@ const saveNotice = async (noticeBaseDto: UserNoticeBaseDto) => {
 
       await agenda.cancel({ "data.userId": user._id });
 
-      agenda.schedule("today at " + pushTime + ampm + "", "push" + `${user._id}`, { userId: user._id });
+      agenda.schedule("today at " + pushTime + ampm + "", "push_" + `${user._id}`, { userId: user._id });
     }
   } catch (err) {
     console.log(err);

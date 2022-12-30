@@ -46,7 +46,7 @@ const connectDB = async () => {
         tokens: user[i].fcmTokens,
       };
 
-      agenda.define("push" + `${user[i]._id}`, async (job: any, done: any) => {
+      agenda.define("push_" + `${user[i]._id}`, async (job: any, done: any) => {
         admin
           .messaging()
           .sendMulticast(alarms)
