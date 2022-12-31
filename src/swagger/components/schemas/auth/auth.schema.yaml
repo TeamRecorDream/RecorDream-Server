@@ -1,6 +1,7 @@
 type: object
 required:
   - kakaoToken
+  - appleToken
   - fcmToken
 properties:
   kakaoToken:
