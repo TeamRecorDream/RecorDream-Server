@@ -13,8 +13,6 @@ tags:
     description: Record resource APIs
   - name: Voices
     description: Voice resource APIs
-  - name: Notice
-    description: Push Notification APIs
   - name: Auth
     description: Authorization APIs
   - name: User
