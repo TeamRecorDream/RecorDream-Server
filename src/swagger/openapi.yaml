@@ -29,5 +29,7 @@ paths:
     $ref: "./paths/records/record-storage-list.openapi.yaml"
   /record/storage/search?keyword=:
     $ref: "./paths/records/record-storage-search.openapi.yaml"
+  /auth/login:
+    $ref: "./paths/auth/auth-login.openapi.yaml"
 
 components:

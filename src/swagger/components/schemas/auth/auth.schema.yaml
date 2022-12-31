@@ -1,0 +1,11 @@
+type: object
+required:
+  - kakaoToken
+  - fcmToken
+properties:
+  kakaoToken:
+    type: string
+  appleToken:
+    type: string
+  fcmToken:
+    type: string
