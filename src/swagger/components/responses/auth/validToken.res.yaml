@@ -1,0 +1,9 @@
+description: accessToken이 만료되지 않았을 경우
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 403
+      success: false
+      message: 아직 유효한 토큰입니다.

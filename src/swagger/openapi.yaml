@@ -31,5 +31,9 @@ paths:
     $ref: "./paths/records/record-storage-search.openapi.yaml"
   /auth/login:
     $ref: "./paths/auth/auth-login.openapi.yaml"
+  /auth/token:
+    $ref: "./paths/auth/auth-token.openapi.yaml"
+  /auth/logout:
+    $ref: "./paths/auth/auth-logout.openapi.yaml"
 
 components:

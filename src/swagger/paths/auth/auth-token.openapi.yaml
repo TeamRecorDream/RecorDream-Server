@@ -1,0 +1,36 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/auth/auth-token.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# POST /auth/token
+post:
+  tags:
+    - Auth
+  summary: Refresh AccessToken
+  description: Refresh AccessToken
+  parameters:
+    - $ref: "../../components/parameters/accessToken.param.yaml"
+    - $ref: "../../components/parameters/refreshToken.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/auth/refreshTokenSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/auth/nullValueToken.res.yaml"
+    "401":
+      content:
+        application/json:
+          examples:
+            유효하지 않은 accessToken, refreshToken:
+              value:
+                status: 401
+                success: false
+                message: 유효하지 않은 토큰입니다.
+            accessToken, refreshToken 둘 다 만료:
+              value:
+                status: 401
+                success: false
+                message: Access, Refresh Token 모두 만료되었습니다. 재로그인이 필요합니다.
+    "403":
+      $ref: "../../components/responses/auth/validToken.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

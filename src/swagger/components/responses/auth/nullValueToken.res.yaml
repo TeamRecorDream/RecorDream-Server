@@ -1,0 +1,9 @@
+description: accessToken이나 refreshToken이 없을 경우
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 400
+      success: false
+      message: 토큰이 없습니다.

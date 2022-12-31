@@ -82,14 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                  success:
-                    type: boolean
-                  message:
-                    type: string
+                $ref: '#/paths/~1auth~1token/post/responses/200/content/application~1json/schema'
               example:
                 status: 200
                 success: true
@@ -405,6 +398,7 @@ paths:
               type: object
               required:
                 - kakaoToken
+                - appleToken
                 - fcmToken
               properties:
                 kakaoToken:
@@ -463,4 +457,87 @@ paths:
                     message: 필요한 값이 없습니다.
         '500':
           $ref: '#/paths/~1record/get/responses/500'
+  /auth/token:
+    post:
+      tags:
+        - Auth
+      summary: Refresh AccessToken
+      description: Refresh AccessToken
+      parameters:
+        - name: access
+          description: 액세스 토큰
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlkRmlyZWJhc2UiOm51bGwsImlhdCI6MTY0OTY3Nzg1MiwiZXhwIjoxNjQ5NzY0MjUyLCJpc3MiOiJoYXZpdCJ9.ik0zU_quZuTdOis9kSLkoXwM6pCz10uBbpjmcsVuf5
+        - name: refresh
+          description: 리프레시 토큰
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDk2Nzc4NTIsImV4cCI6MTY1MDg4NzQ1MiwiaXNzIjoiaGF2aXQifQ.Ehg_y2Kv3YT_IIPRATp14nbd6bFQxf00TlP61XbkxXA
+      responses:
+        '200':
+          description: Access Token 재발급 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                status: 200
+                success: true
+                message: Access Token 재발급 성공
+                data:
+                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYjM4NjhjMjQ1YzkwNzhhMjQ0NGZlIn0sImlhdCI6MTY2NDg2MTY4NywiZXhwIjoxNjY0ODY1Mjg3fQ.2AboGVE9Gkdm5of861FLVLaZIWGPmGRIRDKaOcbzkbc
+                  refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjQ4MjcxNzksImV4cCI6MTY2NjAzNjc3OX0.MZ63t_R2PWQqusAMiMPZMMcLlRqhY_qz9WTSVSnQ0Hk
+        '400':
+          description: accessToken이나 refreshToken이 없을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1record/get/responses/400/content/application~1json/schema'
+              example:
+                status: 400
+                success: false
+                message: 토큰이 없습니다.
+        '401':
+          content:
+            application/json:
+              examples:
+                '유효하지 않은 accessToken, refreshToken':
+                  value:
+                    status: 401
+                    success: false
+                    message: 유효하지 않은 토큰입니다.
+                'accessToken, refreshToken 둘 다 만료':
+                  value:
+                    status: 401
+                    success: false
+                    message: 'Access, Refresh Token 모두 만료되었습니다. 재로그인이 필요합니다.'
+        '403':
+          description: accessToken이 만료되지 않았을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1record/get/responses/400/content/application~1json/schema'
+              example:
+                status: 403
+                success: false
+                message: 아직 유효한 토큰입니다.
+        '500':
+          $ref: '#/paths/~1record/get/responses/500'
+  /auth/logout: !<tag:yaml.org,2002:js/undefined> ''
 components: null
