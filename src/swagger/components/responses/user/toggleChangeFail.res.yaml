@@ -1,0 +1,9 @@
+description: request-body에 isActive 넣지 않았을 경우
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/error/error.schema.yaml"
+    example:
+      status: 400
+      success: false
+      message: 푸시알림 토글 변경 실패

@@ -1,0 +1,24 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/user/user-toggle.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# PATCH /user/toggle
+patch:
+  tags:
+    - User
+  summary: PushAlarm Toggle Change
+  description: PushAlarm Toggle Change
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/user/user-toggle.schema.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/user/toggleChangeSuccess.res.yaml"
+    "400":
+      $ref: "../../components/responses/user/toggleChangeFail.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

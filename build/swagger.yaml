@@ -623,11 +623,10 @@ paths:
                 success: true
                 message: 회원정보 조회 성공
                 data:
-                  data:
-                    nickname: 레코드림
-                    email: recordream@gmail.com
-                    isActive: true
-                    time: 'PM 03:10'
+                  nickname: 레코드림
+                  email: recordream@gmail.com
+                  isActive: true
+                  time: 'PM 03:10'
         '404':
           description: 존재하지 않는 자원
           content:
@@ -719,7 +718,6 @@ paths:
               required:
                 - originToken
                 - newToken
-              description: fjjdkdk
               properties:
                 originToken:
                   type: string
@@ -753,6 +751,51 @@ paths:
                     status: 404
                     success: false
                     message: 존재하지 않는 fcm Token 입니다.
+        '500':
+          $ref: '#/paths/~1user/get/responses/500'
+  /user/toggle:
+    patch:
+      tags:
+        - User
+      summary: PushAlarm Toggle Change
+      description: PushAlarm Toggle Change
+      parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - isActive
+              properties:
+                isActive:
+                  type: boolean
+              example:
+                isActive: true
+      responses:
+        '200':
+          description: 푸시알림 토글 변경 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
+              example:
+                status: 200
+                success: true
+                message: 푸시알림 토글 변경 성공
+                data:
+                  isActive: true
+        '400':
+          description: request-body에 isActive 넣지 않았을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/404/content/application~1json/schema'
+              example:
+                status: 400
+                success: false
+                message: 푸시알림 토글 변경 실패
         '500':
           $ref: '#/paths/~1user/get/responses/500'
 components: null
