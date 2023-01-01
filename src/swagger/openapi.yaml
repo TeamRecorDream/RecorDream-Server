@@ -13,8 +13,6 @@ tags:
     description: Record resource APIs
   - name: Voices
     description: Voice resource APIs
-  - name: Notice
-    description: Push Notification APIs
   - name: Auth
     description: Authorization APIs
   - name: User
@@ -29,5 +27,11 @@ paths:
     $ref: "./paths/records/record-storage-list.openapi.yaml"
   /record/storage/search?keyword=:
     $ref: "./paths/records/record-storage-search.openapi.yaml"
+  /auth/login:
+    $ref: "./paths/auth/auth-login.openapi.yaml"
+  /auth/token:
+    $ref: "./paths/auth/auth-token.openapi.yaml"
+  /auth/logout:
+    $ref: "./paths/auth/auth-logout.openapi.yaml"
 
 components:

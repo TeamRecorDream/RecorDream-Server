@@ -1,0 +1,8 @@
+type: object
+required:
+  - fcmToken
+properties:
+  fcmToken:
+    type: string
+example:
+  fcmToken: egcrkqdwh00bue-rambgzd:APA91bFtQBN4KOtUgxYHUb5lsqRIiKCNHm4GeAyGELccSFARJ9BRjpm9rCPmJPiYPybswKUXC799L_5o0oQhGLKSKDrYdznVFCkaUc3i0PaWDPBaBCdY5ajFNwTTngNG7jNGGmAkZLCh

@@ -1,0 +1,68 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/auth/auth-login.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# POST /auth/login
+post:
+  tags:
+    - Auth
+  summary: Social Login
+  description: Social Login
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/auth/auth.schema.yaml"
+        examples:
+          Kakao Login:
+            value:
+              kakaoToken: example kakaoToken
+              fcmToken: egcrkqdwh00bue-rambgzd:APA91bFtQBN4KOtUgxYHUb5lsqRIiKCNHm4GeAyGELccSFARJ9BRjpm9rCPmJPiYPybswKUXC799L_5o0oQhGLKSKDrYdznVFCkaUc3i0PaWDPBaBCdY5ajFNwTTngNG7jNGGmAkZLCh
+          Apple Login:
+            value:
+              appleToken: example appleToken
+              fcmToken: egcrkqdwh00bue-rambgzd:APA91bFtQBN4KOtUgxYHUb5lsqRIiKCNHm4GeAyGELccSFARJ9BRjpm9rCPmJPiYPybswKUXC799L_5o0oQhGLKSKDrYdznVFCkaUc3i0PaWDPBaBCdY5ajFNwTTngNG7jNGGmAkZLCh
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            로그인(기존 유저):
+              value:
+                status: 200
+                success: true
+                message: 로그인 성공
+                data: {
+                isAlreadyUser: true,
+                accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM1Yjk3N2VhNWZkZDU3YzdlYmI0YzdkIn0sImlhdCI6MTY3MjQyMDU2NiwiZXhwIjoxNjc0NzUzMzY2fQ.kYs0RxE3nfH-HRd2fTAlH-hYEXHkQXPHD0yETIFO-CY,
+                refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzI0MjA1NjYsImV4cCI6MTY3NTAxMjU2Nn0.x3TV0F1XB16d0UvzM5ihPrNsC4InEMpjOsfdmNN0gMY,
+                nickname: 레코드림
+                }
+            회원가입(신규 유저):
+              value:
+                status: 200
+                success: true
+                message: 회원가입 성공
+                data: {
+                  isAlreadyUser: false,
+                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM1Yjk3N2VhNWZkZDU3YzdlYmI0YzdkIn0sImlhdCI6MTY3MjQyMDU2NiwiZXhwIjoxNjc0NzUzMzY2fQ.kYs0RxE3nfH-HRd2fTAlH-hYEXHkQXPHD0yETIFO-CY,
+                  refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzI0MjA1NjYsImV4cCI6MTY3NTAxMjU2Nn0.x3TV0F1XB16d0UvzM5ihPrNsC4InEMpjOsfdmNN0gMY,
+                  nickname: 레코드림
+                }
+    "400":
+      content:
+        application/json:
+          examples:
+            kakaToken, appleToken 둘 다 존재:
+              value:
+                status: 400
+                success: false
+                message: 토큰 값은 하나이어야 합니다.
+            kakaoToken, appleToken 둘 다 없거나 fcmToken이 없음:
+              value:
+                status: 400
+                success: false
+                message: 필요한 값이 없습니다.
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

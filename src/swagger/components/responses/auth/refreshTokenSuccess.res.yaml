@@ -1,0 +1,14 @@
+description: Access Token 재발급 성공
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/success/success.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: Access Token 재발급 성공
+      data:
+        {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYjM4NjhjMjQ1YzkwNzhhMjQ0NGZlIn0sImlhdCI6MTY2NDg2MTY4NywiZXhwIjoxNjY0ODY1Mjg3fQ.2AboGVE9Gkdm5of861FLVLaZIWGPmGRIRDKaOcbzkbc",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjQ4MjcxNzksImV4cCI6MTY2NjAzNjc3OX0.MZ63t_R2PWQqusAMiMPZMMcLlRqhY_qz9WTSVSnQ0Hk",
+        }

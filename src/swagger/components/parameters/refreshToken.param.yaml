@@ -1,0 +1,9 @@
+name: refresh
+description: 리프레시 토큰
+in: header
+required: true
+style: simple
+explode: false
+schema:
+  type: string
+  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDk2Nzc4NTIsImV4cCI6MTY1MDg4NzQ1MiwiaXNzIjoiaGF2aXQifQ.Ehg_y2Kv3YT_IIPRATp14nbd6bFQxf00TlP61XbkxXA
