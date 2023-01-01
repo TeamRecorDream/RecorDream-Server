@@ -44,7 +44,7 @@ paths:
               schema:
                 properties:
                   record:
-                    $ref: '#/paths/~1user/get/responses/200/content/application~1json/schema/properties/record'
+                    $ref: '#/paths/~1record/get/responses/200/content/application~1json/schema/properties/record'
               example:
                 status: 200
                 success: true
@@ -129,7 +129,26 @@ paths:
               schema:
                 properties:
                   record:
-                    $ref: '#/paths/~1user/get/responses/200/content/application~1json/schema/properties/record'
+                    type: object
+                    required:
+                      - _id
+                      - date
+                      - title
+                      - writer
+                    properties:
+                      _id:
+                        type: string
+                      writer:
+                        type: string
+                      date:
+                        type: string
+                        format: date
+                      title:
+                        type: string
+                      voice:
+                        type: object
+                      content:
+                        type: string
               example:
                 status: 200
                 success: true
@@ -284,7 +303,7 @@ paths:
               schema:
                 properties:
                   record:
-                    $ref: '#/paths/~1user/get/responses/200/content/application~1json/schema/properties/record'
+                    $ref: '#/paths/~1record/get/responses/200/content/application~1json/schema/properties/record'
               example:
                 status: 200
                 success: true
@@ -588,26 +607,16 @@ paths:
             application/json:
               schema:
                 properties:
-                  record:
+                  user:
                     type: object
-                    required:
-                      - _id
-                      - date
-                      - title
-                      - writer
                     properties:
-                      _id:
+                      nickname:
                         type: string
-                      writer:
+                      email:
                         type: string
-                      date:
-                        type: string
-                        format: date
-                      title:
-                        type: string
-                      voice:
-                        type: object
-                      content:
+                      isActive:
+                        type: Boolean
+                      time:
                         type: string
               example:
                 status: 200

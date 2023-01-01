@@ -3,8 +3,8 @@ content:
   application/json:
     schema:
       properties:
-        record:
-          $ref: "../../schemas/record/record.schema.yaml"
+        user:
+          $ref: "../../schemas/user/user.schema.yaml"
     example:
       status: 200
       success: true
