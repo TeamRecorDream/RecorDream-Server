@@ -80,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1auth~1token/post/responses/200/content/application~1json/schema'
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
               example:
                 status: 200
                 success: true
@@ -482,14 +482,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                  success:
-                    type: boolean
-                  message:
-                    type: string
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
               example:
                 status: 200
                 success: true
@@ -540,15 +533,7 @@ paths:
       summary: Social Logout
       description: 해당 유저를 로그아웃 처리합니다.
       parameters:
-        - name: Authorization
-          description: 유저 인증(Access Token)
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlkRmlyZWJhc2UiOm51bGwsImlhdCI6MTY0OTY3Nzg1MiwiZXhwIjoxNjQ5NzY0MjUyLCJpc3MiOiJoYXZpdCJ9.ik0zU_quZuTdOis9kSLkoXwM6pCz10uBbpjmcsVuf5
+        - $ref: '#/paths/~1user/delete/parameters/0'
       requestBody:
         content:
           application/json:
@@ -560,7 +545,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1auth~1token/post/responses/200/content/application~1json/schema'
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
               example:
                 status: 200
                 success: true
@@ -579,6 +564,56 @@ paths:
                     status: 404
                     success: false
                     message: 존재하지 않는 fcm Token 입니다.
+        '500':
+          $ref: '#/paths/~1record/get/responses/500'
+  /user:
+    delete:
+      tags:
+        - User
+      summary: Delete User
+      description: Delete User
+      parameters:
+        - name: Authorization
+          description: 유저 인증(Access Token)
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlkRmlyZWJhc2UiOm51bGwsImlhdCI6MTY0OTY3Nzg1MiwiZXhwIjoxNjQ5NzY0MjUyLCJpc3MiOiJoYXZpdCJ9.ik0zU_quZuTdOis9kSLkoXwM6pCz10uBbpjmcsVuf5
+      responses:
+        '200':
+          description: 회원탈퇴 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                status: 200
+                success: true
+                message: 회원탈퇴 성공
+        '400':
+          content:
+            application/json:
+              examples:
+                존재하지 않는 유저:
+                  value:
+                    status: 400
+                    success: false
+                    message: 필요한 값이 없습니다.
+                이미 삭제된 유저:
+                  value:
+                    status: 400
+                    success: false
+                    message: 이미 삭제된 유저입니다.
         '500':
           $ref: '#/paths/~1record/get/responses/500'
 components: null

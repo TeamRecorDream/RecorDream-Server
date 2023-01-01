@@ -1,0 +1,31 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/user/user.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# DELETE /user
+delete:
+  tags:
+    - User
+  summary: Delete User
+  description: Delete User
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/user/deleteUserSuccess.res.yaml"
+    "400":
+      content:
+        application/json:
+          examples:
+            존재하지 않는 유저:
+              value:
+                status: 400
+                success: false
+                message: 필요한 값이 없습니다.
+            이미 삭제된 유저:
+              value:
+                status: 400
+                success: false
+                message: 이미 삭제된 유저입니다.
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
