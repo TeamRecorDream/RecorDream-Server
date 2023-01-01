@@ -8,6 +8,8 @@ patch:
     - Auth
   summary: Social Logout
   description: 해당 유저를 로그아웃 처리합니다.
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
   requestBody:
     content:
       application/json:
