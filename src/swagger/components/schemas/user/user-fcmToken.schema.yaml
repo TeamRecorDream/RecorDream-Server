@@ -1,0 +1,12 @@
+type: object
+required:
+  - originToken
+  - newToken
+properties:
+  originToken:
+    type: string
+  newToken:
+    type: string
+example:
+  originToken: dCzOp-n2TELwmhENJ_TbfH:APA91bF7c3jNLxaU9rv8-rFYtwGlC8TO4HFMti8Vk9vfIZpZ613u3ok8e1G2z-AAq9niRpBwFzwQtiYxWvaz796W1PECezxu7dCs_Qy3z2Rerz7KO2wuMCINumfOZESSdxQrKz51MMV2
+  newToken: cxxvrsrJQEYFnLMW_YsQ9J:APA91bGXuwSX5XbgtZIwMsvBkCRJNib-ry--86YMTQdgm6-RR5qDnH7KcUJqauniPxhPmhtBP5bW5YzXlbGFecLFK8IbDQ7D7MQ_VW4JnJxFfxKyGig_t6lVqs8hmmdFynTGr3QkaLz1

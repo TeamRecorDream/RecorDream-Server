@@ -702,4 +702,57 @@ paths:
                     message: '닉네임은 최소 1글자, 최대 8글자여야 합니다.'
         '500':
           $ref: '#/paths/~1user/get/responses/500'
+  /user/fcm-token:
+    put:
+      tags:
+        - User
+      summary: Refresh User's fcmToken
+      description: Refresh User's fcmToken
+      parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
+      requestBody:
+        description: 'originToken = 원래의 fcm Token, newToken = 변경할 fcm Token'
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - originToken
+                - newToken
+              description: fjjdkdk
+              properties:
+                originToken:
+                  type: string
+                newToken:
+                  type: string
+              example:
+                originToken: 'dCzOp-n2TELwmhENJ_TbfH:APA91bF7c3jNLxaU9rv8-rFYtwGlC8TO4HFMti8Vk9vfIZpZ613u3ok8e1G2z-AAq9niRpBwFzwQtiYxWvaz796W1PECezxu7dCs_Qy3z2Rerz7KO2wuMCINumfOZESSdxQrKz51MMV2'
+                newToken: 'cxxvrsrJQEYFnLMW_YsQ9J:APA91bGXuwSX5XbgtZIwMsvBkCRJNib-ry--86YMTQdgm6-RR5qDnH7KcUJqauniPxhPmhtBP5bW5YzXlbGFecLFK8IbDQ7D7MQ_VW4JnJxFfxKyGig_t6lVqs8hmmdFynTGr3QkaLz1'
+      responses:
+        '200':
+          description: fcm Token 갱신 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
+              example:
+                status: 200
+                success: true
+                message: fcm Token 갱신 성공
+        '404':
+          content:
+            application/json:
+              examples:
+                존재하지 않는 유저:
+                  value:
+                    status: 404
+                    success: false
+                    message: 필요한 값이 없습니다.
+                입력한 originToken이 DB에 없음:
+                  value:
+                    status: 404
+                    success: false
+                    message: 존재하지 않는 fcm Token 입니다.
+        '500':
+          $ref: '#/paths/~1user/get/responses/500'
 components: null
