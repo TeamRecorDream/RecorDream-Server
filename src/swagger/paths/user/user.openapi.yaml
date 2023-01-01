@@ -29,3 +29,19 @@ delete:
                 message: 이미 삭제된 유저입니다.
     "500":
       $ref: "../../components/responses/global/internalServerError.res.yaml"
+
+# GET /user
+get:
+  tags:
+    - User
+  summary: Get User
+  description: Get User
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/user/getUserSuccess.res.yaml"
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

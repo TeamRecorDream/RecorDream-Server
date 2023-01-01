@@ -1,0 +1,12 @@
+description: 회원정보 조회 성공
+content:
+  application/json:
+    schema:
+      properties:
+        record:
+          $ref: "../../schemas/record/record.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: 회원정보 조회 성공
+      data: { "data": { "nickname": "레코드림", "email": "recordream@gmail.com", "isActive": true, "time": "PM 03:10" } }
