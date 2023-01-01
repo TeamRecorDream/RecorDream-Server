@@ -1,0 +1,8 @@
+type: object
+required:
+  - time
+properties:
+  time:
+    type: string
+example:
+  time: PM 03:10

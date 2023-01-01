@@ -1,0 +1,39 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/user/user-notice.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# POST /user/notice
+post:
+  tags:
+    - User
+  summary: Save notice time
+  description: Save notice time
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
+  requestBody:
+    description: time 형식 반드시 "AM/PM 00:00" 이여야 합니다!!! (AM/PM 대문자여야 함)
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/user/user-notice.schema.yaml"
+  responses:
+    "201":
+      $ref: "../../components/responses/user/saveNoticeSuccess.res.yaml"
+    "400":
+      content:
+        application/json:
+          examples:
+            time 형식 지키지 않음:
+              value:
+                status: 400
+                success: false
+                message: 푸시알림 시간 저장 실패 (형식을 맞춰주세요.)
+            토글 Off인데 시간 설정을 하려함:
+              value:
+                status: 400
+                success: false
+                message: 토글 Off시에는 시간을 설정할 수 없습니다.
+    "404":
+      $ref: "../../components/responses/global/notFound.res.yaml"
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"

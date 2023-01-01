@@ -798,4 +798,54 @@ paths:
                 message: 푸시알림 토글 변경 실패
         '500':
           $ref: '#/paths/~1user/get/responses/500'
+  /user/notice:
+    post:
+      tags:
+        - User
+      summary: Save notice time
+      description: Save notice time
+      parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
+      requestBody:
+        description: 'time 형식 반드시 "AM/PM 00:00" 이여야 합니다!!! (AM/PM 대문자여야 함)'
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - time
+              properties:
+                time:
+                  type: string
+              example:
+                time: 'PM 03:10'
+      responses:
+        '201':
+          description: 푸시알림 시간 저장 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
+              example:
+                status: 201
+                success: true
+                message: 푸시알림 시간 저장 성공
+        '400':
+          content:
+            application/json:
+              examples:
+                time 형식 지키지 않음:
+                  value:
+                    status: 400
+                    success: false
+                    message: 푸시알림 시간 저장 실패 (형식을 맞춰주세요.)
+                토글 Off인데 시간 설정을 하려함:
+                  value:
+                    status: 400
+                    success: false
+                    message: 토글 Off시에는 시간을 설정할 수 없습니다.
+        '404':
+          $ref: '#/paths/~1user/get/responses/404'
+        '500':
+          $ref: '#/paths/~1user/get/responses/500'
 components: null

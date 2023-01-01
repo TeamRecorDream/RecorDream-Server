@@ -41,5 +41,7 @@ paths:
     $ref: "./paths/user/user-fcmToken.openapi.yaml"
   /user/toggle:
     $ref: "./paths/user/user-toggle.openapi.yaml"
+  /user/notice:
+    $ref: "./paths/user/user-notice.openapi.yaml"
 
 components:
