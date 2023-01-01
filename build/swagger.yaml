@@ -655,4 +655,51 @@ paths:
                 status: 500
                 success: false
                 message: 서버 내부 오류
+  /user/nickname:
+    put:
+      tags:
+        - User
+      summary: Update User Nickname
+      description: Update User Nickname
+      parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nickname
+              properties:
+                nickname:
+                  type: string
+              example:
+                nickname: 레코드림 짱
+      responses:
+        '200':
+          description: 닉네임 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/delete/responses/200/content/application~1json/schema'
+              example:
+                status: 200
+                success: true
+                message: 닉네임 수정 성공
+        '400':
+          content:
+            application/json:
+              examples:
+                request body 비어있음:
+                  value:
+                    status: 400
+                    success: false
+                    message: 닉네임 수정 실패
+                닉네임 룰 지키지 않음:
+                  value:
+                    status: 400
+                    success: false
+                    message: '닉네임은 최소 1글자, 최대 8글자여야 합니다.'
+        '500':
+          $ref: '#/paths/~1user/get/responses/500'
 components: null

@@ -1,0 +1,36 @@
+# -----------------------------------------------------------------------------
+# openapi/paths/user/user-nickname.openapi.yaml
+# -----------------------------------------------------------------------------
+
+# PUT /user/nickname
+put:
+  tags:
+    - User
+  summary: Update User Nickname
+  description: Update User Nickname
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/user/user-nickname.schema.yaml"
+  responses:
+    "200":
+      $ref: "../../components/responses/user/updateNicknameSuccess.res.yaml"
+    "400":
+      content:
+        application/json:
+          examples:
+            request body 비어있음:
+              value:
+                status: 400
+                success: false
+                message: 닉네임 수정 실패
+            닉네임 룰 지키지 않음:
+              value:
+                status: 400
+                success: false
+                message: 닉네임은 최소 1글자, 최대 8글자여야 합니다.
+    "500":
+      $ref: "../../components/responses/global/internalServerError.res.yaml"
