@@ -339,6 +339,7 @@ paths:
       description: |
         Search Keyword
       parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
         - name: keyword
           description: 검색 키워드
           in: query
@@ -350,7 +351,34 @@ paths:
             example: 화이팅
       responses:
         '200':
-          $ref: '#/paths/~1record~1storage~1list%3Ffilter%3D/get/responses/200'
+          description: 꿈 기록 검색 성공
+          content:
+            application/json:
+              schema:
+                properties:
+                  record:
+                    $ref: '#/paths/~1record/get/responses/200/content/application~1json/schema/properties/record'
+              example:
+                status: 200
+                success: true
+                message: 꿈 기록 검색 성공
+                data:
+                  records_count: 2
+                  records:
+                    - _id: 62d32a47fc88f70097698fff
+                      title: fighting_note2
+                      date: 2023/07/15 (토)
+                      emotion: 1
+                      genre:
+                        - 1
+                        - 2
+                        - 5
+                    - _id: 62d32a41fc88f70097698ffd
+                      title: 화이팅ㅇㅇ
+                      date: 2023/07/16 (일)
+                      emotion: 4
+                      genre:
+                        - 0
         '400':
           description: 필요한 값이 없습니다.
           content:
