@@ -154,6 +154,7 @@ paths:
       description: |
         Delete a record.
       parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
         - $ref: '#/paths/~1record~1%7BrecordId%7D/get/parameters/1'
       responses:
         '204':

@@ -70,6 +70,7 @@ delete:
   description: >
     Delete a record.
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/recordId.param.yaml"
   responses:
     "204":
