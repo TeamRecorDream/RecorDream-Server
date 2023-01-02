@@ -10,6 +10,7 @@ get:
   description: >
     Return a single instance of a record.
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/recordId.param.yaml"
   responses:
     "200":
