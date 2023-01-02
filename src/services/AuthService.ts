@@ -5,6 +5,7 @@ import jwtHandler from "../modules/jwtHandler";
 import { AuthResponseDto } from "../interfaces/auth/AuthResponseDto";
 import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
 import exceptionMessage from "../modules/exceptionMessage";
+import agenda from "../loaders/agenda";
 
 const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
   try {
@@ -219,7 +220,8 @@ const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
 
     const remainedfcmToken = user.fcmTokens.filter((element) => element !== fcmToken);
 
-    await user.updateOne({ fcmTokens: remainedfcmToken });
+    await User.updateOne({ _id: user._id }, { $set: { time: null, isActive: false, fcmTokens: remainedfcmToken } }).exec();
+    await agenda.cancel({ "data.userId": user._id });
 
     return remainedfcmToken;
   } catch (err) {
