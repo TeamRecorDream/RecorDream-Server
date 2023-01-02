@@ -191,6 +191,8 @@ paths:
         - Records
       summary: Create a record
       description: Create a record
+      parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
       requestBody:
         content:
           application/json:
@@ -210,15 +212,11 @@ paths:
                   type: string
                 emotion:
                   type: number
-                dream_color:
-                  type: number
                 genre:
                   type: array
                   items:
                     type: number
                 note:
-                  type: string
-                writer:
                   type: string
                 voice:
                   type: string
@@ -228,14 +226,12 @@ paths:
                   date: '2022-07-22T11:14:49.196'
                   content: 귀엽다
                   emotion: 2
-                  dream_color: 3
                   genre:
                     - 1
                     - 2
                     - 5
                   note: null
                   voice: 62cdb868c3032f2b7af76531
-                  writer: 62c9cf068094605c781a2fb9
       responses:
         '201':
           description: 꿈 기록 작성 성공
@@ -257,15 +253,24 @@ paths:
                 data:
                   _id: 62cfc9f8e9ce27c134401f70
         '400':
-          description: '제목이 없거나 길이를 초과하였습니다 or 감정, 색깔, 장르 범위 오류입니다'
           content:
             application/json:
-              schema:
-                $ref: '#/paths/~1user/get/responses/404/content/application~1json/schema'
-              example:
-                status: 400
-                success: false
-                message: '제목이 없거나 길이를 초과하였습니다 or 감정, 색깔, 장르 범위 오류입니다'
+              examples:
+                제목이 비어있거나 길이 초과:
+                  value:
+                    status: 400
+                    success: false
+                    message: 제목이 없거나 길이를 초과하였습니다.
+                '감정, 장르 범위 오류':
+                  value:
+                    status: 400
+                    success: false
+                    message: '감정, 장르 범위 오류입니다.'
+                날짜 포맷이 틀림:
+                  value:
+                    status: 400
+                    success: false
+                    message: 날짜 포맷이 틀립니다.
         '500':
           $ref: '#/paths/~1user/get/responses/500'
   /record/storage/list?filter=:
