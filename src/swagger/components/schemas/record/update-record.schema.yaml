@@ -1,0 +1,25 @@
+type: object
+required:
+  - title
+  - date
+  - writer
+properties:
+  date:
+    type: string
+    format: date-time
+  title:
+    type: string
+  content:
+    type: string
+  emotion:
+    type: number
+  genre:
+    type: array
+    items:
+      type: number
+  note:
+    type: string
+  voice:
+    type: string
+example:
+  data: { "title": "aaaaabbbbbcccccdddddeeeee", "date": "2022-07-22", "content": "고쳐라", "genre": [8], "note": "라뷰" }

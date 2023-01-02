@@ -76,7 +76,43 @@ paths:
       description: |
         Update a record.
       parameters:
+        - $ref: '#/paths/~1user/get/parameters/0'
         - $ref: '#/paths/~1record~1%7BrecordId%7D/get/parameters/1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - date
+                - writer
+              properties:
+                date:
+                  type: string
+                  format: date-time
+                title:
+                  type: string
+                content:
+                  type: string
+                emotion:
+                  type: number
+                genre:
+                  type: array
+                  items:
+                    type: number
+                note:
+                  type: string
+                voice:
+                  type: string
+              example:
+                data:
+                  title: aaaaabbbbbcccccdddddeeeee
+                  date: '2022-07-22'
+                  content: 고쳐라
+                  genre:
+                    - 8
+                  note: 라뷰
       responses:
         '200':
           description: 꿈 기록 수정 성공
@@ -89,15 +125,24 @@ paths:
                 success: true
                 message: 꿈 기록 수정 성공
         '400':
-          description: '제목 오류 또는 음성/작성자 수정 시도 or 감정, 색깔, 장르 범위 오류입니다'
           content:
             application/json:
-              schema:
-                $ref: '#/paths/~1user/get/responses/404/content/application~1json/schema'
-              example:
-                status: 400
-                success: false
-                message: '제목 오류 또는 음성/작성자 수정 시도 or 감정, 색깔, 장르 범위 오류입니다'
+              examples:
+                제목이 비어있거나 길이 초과:
+                  value:
+                    status: 400
+                    success: false
+                    message: 제목이 없거나 길이를 초과하였습니다.
+                '감정, 장르 범위 오류':
+                  value:
+                    status: 400
+                    success: false
+                    message: '감정, 장르 범위 오류입니다.'
+                날짜 포맷이 틀림:
+                  value:
+                    status: 400
+                    success: false
+                    message: 날짜 포맷이 틀립니다.
         '404':
           $ref: '#/paths/~1user/get/responses/404'
         '500':
