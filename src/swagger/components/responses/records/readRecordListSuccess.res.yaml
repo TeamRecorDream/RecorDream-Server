@@ -11,7 +11,7 @@ content:
       message: 꿈 기록 목록(홈) 조회 성공
       data:
         {
-          "nickname": "세정",
+          "nickname": "레코드림",
           "records":
             [
               {

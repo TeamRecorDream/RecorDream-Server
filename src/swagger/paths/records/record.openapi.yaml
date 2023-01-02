@@ -9,11 +9,11 @@ get:
   summary: Home(list)
   description: >
     Home
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
   responses:
     "200":
       $ref: "../../components/responses/records/readRecordListSuccess.res.yaml"
-    "400":
-      $ref: "../../components/responses/global/nullValue.res.yaml"
     "404":
       $ref: "../../components/responses/global/notFound.res.yaml"
     "500":
