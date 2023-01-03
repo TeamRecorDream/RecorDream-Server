@@ -7,14 +7,13 @@ import agenda from "./agenda";
 import pushMessage from "../modules/pushMessage";
 
 const connectDB = async () => {
-  let firebase;
   try {
     if (admin.apps.length === 0) {
-      firebase = admin.initializeApp({
+      admin.initializeApp({
         credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
       });
     } else {
-      firebase = admin.app();
+      admin.app();
       console.log("FCM 준비 완료!");
     }
 
@@ -58,6 +57,15 @@ const connectDB = async () => {
         done();
       });
       agenda.start();
+    }
+
+    const jobs = await agenda.jobs({ lockedAt: { $exists: true, $ne: null } });
+
+    if (jobs.length > 0) {
+      for (let i = 0; i < jobs.length; i++) {
+        const job = jobs[i];
+        (job.attrs.lockedAt = null), await job.save();
+      }
     }
 
     const graceful = () => {
