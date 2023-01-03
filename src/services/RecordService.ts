@@ -201,7 +201,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
     let recordList;
     switch (filter) {
       case "0": // 전체
-        recordList = await Record.find({ _writer: userId }).sort({ date: -1, _id: -1 });
+        recordList = await Record.find({ writer: userId }).sort({ date: -1, _id: -1 });
         break;
       case "1":
       case "2":
@@ -209,7 +209,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
       case "4":
       case "5":
       case "6": // 미설정
-        recordList = await Record.find({ $and: [{ _writer: userId }, { emotion: parseInt(filter) }] }).sort({
+        recordList = await Record.find({ $and: [{ writer: userId }, { emotion: parseInt(filter) }] }).sort({
           date: -1,
           _id: -1,
         });
