@@ -1,0 +1,9 @@
+name: Authorization
+description: 유저 인증(Access Token)
+in: header
+required: true
+style: simple
+explode: false
+schema:
+  type: string
+  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlkRmlyZWJhc2UiOm51bGwsImlhdCI6MTY0OTY3Nzg1MiwiZXhwIjoxNjQ5NzY0MjUyLCJpc3MiOiJoYXZpdCJ9.ik0zU_quZuTdOis9kSLkoXwM6pCz10uBbpjmcsVuf5

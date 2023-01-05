@@ -1,0 +1,9 @@
+description: fcm Token 갱신 성공
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/success/success.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: fcm Token 갱신 성공

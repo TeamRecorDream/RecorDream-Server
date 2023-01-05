@@ -16,19 +16,17 @@ content:
             [
               {
                 "_id": "62d16f41e8b4508dbca5eaf4",
-                "dream_color": 2,
                 "emotion": 2,
-                "date": "2023/07/15 (토)",
-                "title": "우리 유저14",
+                "date": "2022/06/26 SUN",
+                "title": "오늘 친구들이랑 피자 먹고 진짜 재밌는 일이 많은 꿈을 꿨다.",
                 "genre": [1, 2, 5],
               },
               {
-                "_id": "62d16f3ee8b4508dbca5eaf2",
-                "dream_color": 2,
+                "_id": "638222560861027fe3e8b0c4",
                 "emotion": 2,
-                "date": "2023/07/15 (토)",
-                "title": "우리 유저13",
-                "genre": [10],
+                "date": "2022/11/26 SAT",
+                "title": "오늘은 11월 26일",
+                "genre": [3, 4],
               },
             ],
         }

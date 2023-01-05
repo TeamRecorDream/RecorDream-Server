@@ -22,13 +22,4 @@ properties:
   voice:
     type: string
 example:
-  data:
-    {
-      "title": "오늘은 7월 20일",
-      "date": "2022-07-22T11:14:49.196",
-      "content": "귀엽다",
-      "emotion": 2,
-      "genre": [1, 2, 5],
-      "note": null,
-      "voice": "62cdb868c3032f2b7af76531",
-    }
+  data: { "title": "aaaaabbbbbcccccdddddeeeee", "date": "2022-07-22", "content": "고쳐라", "genre": [8], "note": "라뷰" }

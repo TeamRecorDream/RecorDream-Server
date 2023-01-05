@@ -1,0 +1,10 @@
+type: object
+properties:
+  nickname:
+    type: string
+  email:
+    type: string
+  isActive:
+    type: Boolean
+  time:
+    type: string

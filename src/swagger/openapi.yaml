@@ -33,5 +33,15 @@ paths:
     $ref: "./paths/auth/auth-token.openapi.yaml"
   /auth/logout:
     $ref: "./paths/auth/auth-logout.openapi.yaml"
+  /user:
+    $ref: "./paths/user/user.openapi.yaml"
+  /user/nickname:
+    $ref: "./paths/user/user-nickname.openapi.yaml"
+  /user/fcm-token:
+    $ref: "./paths/user/user-fcmToken.openapi.yaml"
+  /user/toggle:
+    $ref: "./paths/user/user-toggle.openapi.yaml"
+  /user/notice:
+    $ref: "./paths/user/user-notice.openapi.yaml"
 
 components:

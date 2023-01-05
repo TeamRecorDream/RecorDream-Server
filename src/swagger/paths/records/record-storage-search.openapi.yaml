@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# openapi/paths/records/record-storage-list.openapi.yaml
+# openapi/paths/records/record-storage-search.openapi.yaml
 # -----------------------------------------------------------------------------
 
 # GET /record/storage/search?keyword=
@@ -10,10 +10,11 @@ get:
   description: >
     Search Keyword
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/searchKeyword.param.yaml"
   responses:
     "200":
-      $ref: "../../components/responses/records/readRecordStorageSuccess.res.yaml"
+      $ref: "../../components/responses/records/searchRecordSuccess.res.yaml"
     "400":
       $ref: "../../components/responses/global/nullValue.res.yaml"
     "404":

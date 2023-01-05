@@ -9,11 +9,11 @@ get:
   summary: Home(list)
   description: >
     Home
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
   responses:
     "200":
       $ref: "../../components/responses/records/readRecordListSuccess.res.yaml"
-    "400":
-      $ref: "../../components/responses/global/nullValue.res.yaml"
     "404":
       $ref: "../../components/responses/global/notFound.res.yaml"
     "500":
@@ -25,6 +25,8 @@ post:
     - Records
   summary: Create a record
   description: Create a record
+  parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
   requestBody:
     content:
       application/json:
@@ -34,6 +36,23 @@ post:
     "201":
       $ref: "../../components/responses/records/createRecordSuccess.res.yaml"
     "400":
-      $ref: "../../components/responses/records/createRecordFail.res.yaml"
+      content:
+        application/json:
+          examples:
+            제목이 비어있거나 길이 초과:
+              value:
+                status: 400
+                success: false
+                message: 제목이 없거나 길이를 초과하였습니다.
+            감정, 장르 범위 오류:
+              value:
+                status: 400
+                success: false
+                message: 감정, 장르 범위 오류입니다.
+            날짜 포맷이 틀림:
+              value:
+                status: 400
+                success: false
+                message: 날짜 포맷이 틀립니다.
     "500":
       $ref: "../../components/responses/global/internalServerError.res.yaml"

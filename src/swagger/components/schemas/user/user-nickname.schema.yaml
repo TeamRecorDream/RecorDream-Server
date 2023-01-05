@@ -1,0 +1,8 @@
+type: object
+required:
+  - nickname
+properties:
+  nickname:
+    type: string
+example:
+  nickname: 레코드림 짱

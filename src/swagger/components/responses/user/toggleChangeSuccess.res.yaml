@@ -1,0 +1,13 @@
+description: 푸시알림 토글 변경 성공
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/success/success.schema.yaml"
+    example:
+      status: 200
+      success: true
+      message: 푸시알림 토글 변경 성공
+      data: 
+        {
+	        "isActive": true
+	      }

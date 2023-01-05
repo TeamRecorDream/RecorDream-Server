@@ -10,12 +10,13 @@ get:
   description: >
     Storage(list)
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/listFilter.param.yaml"
   responses:
     "200":
       $ref: "../../components/responses/records/readRecordStorageSuccess.res.yaml"
     "400":
-      $ref: "../../components/responses/global/nullValue.res.yaml"
+      $ref: "../../components/responses/records/readRecordStorageFail.res.yaml"
     "404":
       $ref: "../../components/responses/global/notFound.res.yaml"
     "500":

@@ -1,33 +1,34 @@
 # -----------------------------------------------------------------------------
-# openapi/paths/auth/auth-logout.openapi.yaml
+# openapi/paths/user/user-fcmToken.openapi.yaml
 # -----------------------------------------------------------------------------
 
-# PATCH /auth/logout
-patch:
+# PUT /user/fcm-token
+put:
   tags:
-    - Auth
-  summary: Social Logout
-  description: 해당 유저를 로그아웃 처리합니다.
+    - User
+  summary: Refresh User's fcmToken
+  description: Refresh User's fcmToken
   parameters:
     - $ref: "../../components/parameters/authorization.param.yaml"
   requestBody:
+    description: originToken = 원래의 fcm Token, newToken = 변경할 fcm Token
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/auth/auth.schema.yaml"
+          $ref: "../../components/schemas/user/user-fcmToken.schema.yaml"
   responses:
     "200":
-      $ref: "../../components/responses/auth/logoutSuccess.res.yaml"
+      $ref: "../../components/responses/user/updatefcmTokenSuccess.res.yaml"
     "404":
       content:
         application/json:
           examples:
-            fcmToken을 안 넣음:
+            존재하지 않는 유저:
               value:
                 status: 404
                 success: false
-                message: 존재하지 않는 자원
-            DB에 존재하지 않는 fcmToken:
+                message: 필요한 값이 없습니다.
+            입력한 originToken이 DB에 없음:
               value:
                 status: 404
                 success: false

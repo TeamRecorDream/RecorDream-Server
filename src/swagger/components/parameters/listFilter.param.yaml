@@ -1,5 +1,5 @@
 name: filter
-description: 조회할 감정
+description: 조회할 감정(0~6)
 in: query
 required: true
 style: simple

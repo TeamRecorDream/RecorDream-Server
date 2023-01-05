@@ -1,0 +1,8 @@
+type: object
+required:
+  - isActive
+properties:
+  isActive:
+    type: boolean
+example:
+  isActive: true

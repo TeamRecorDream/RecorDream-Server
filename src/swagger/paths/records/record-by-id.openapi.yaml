@@ -10,6 +10,7 @@ get:
   description: >
     Return a single instance of a record.
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/recordId.param.yaml"
   responses:
     "200":
@@ -27,12 +28,35 @@ patch:
   description: >
     Update a record.
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/recordId.param.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/record/update-record.schema.yaml"
   responses:
     "200":
       $ref: "../../components/responses/records/updateRecordSuccess.res.yaml"
     "400":
-      $ref: "../../components/responses/records/updateRecordFail.res.yaml"
+      content:
+        application/json:
+          examples:
+            제목이 비어있거나 길이 초과:
+              value:
+                status: 400
+                success: false
+                message: 제목이 없거나 길이를 초과하였습니다.
+            감정, 장르 범위 오류:
+              value:
+                status: 400
+                success: false
+                message: 감정, 장르 범위 오류입니다.
+            날짜 포맷이 틀림:
+              value:
+                status: 400
+                success: false
+                message: 날짜 포맷이 틀립니다.
     "404":
       $ref: "../../components/responses/global/notFound.res.yaml"
     "500":
@@ -46,6 +70,7 @@ delete:
   description: >
     Delete a record.
   parameters:
+    - $ref: "../../components/parameters/authorization.param.yaml"
     - $ref: "../../components/parameters/recordId.param.yaml"
   responses:
     "204":

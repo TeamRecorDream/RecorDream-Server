@@ -1,36 +1,36 @@
 # -----------------------------------------------------------------------------
-# openapi/paths/auth/auth-logout.openapi.yaml
+# openapi/paths/user/user-nickname.openapi.yaml
 # -----------------------------------------------------------------------------
 
-# PATCH /auth/logout
-patch:
+# PUT /user/nickname
+put:
   tags:
-    - Auth
-  summary: Social Logout
-  description: 해당 유저를 로그아웃 처리합니다.
+    - User
+  summary: Update User Nickname
+  description: Update User Nickname
   parameters:
     - $ref: "../../components/parameters/authorization.param.yaml"
   requestBody:
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/auth/auth.schema.yaml"
+          $ref: "../../components/schemas/user/user-nickname.schema.yaml"
   responses:
     "200":
-      $ref: "../../components/responses/auth/logoutSuccess.res.yaml"
-    "404":
+      $ref: "../../components/responses/user/updateNicknameSuccess.res.yaml"
+    "400":
       content:
         application/json:
           examples:
-            fcmToken을 안 넣음:
+            request body 비어있음:
               value:
-                status: 404
+                status: 400
                 success: false
-                message: 존재하지 않는 자원
-            DB에 존재하지 않는 fcmToken:
+                message: 닉네임 수정 실패
+            닉네임 룰 지키지 않음:
               value:
-                status: 404
+                status: 400
                 success: false
-                message: 존재하지 않는 fcm Token 입니다.
+                message: 닉네임은 최소 1글자, 최대 8글자여야 합니다.
     "500":
       $ref: "../../components/responses/global/internalServerError.res.yaml"
