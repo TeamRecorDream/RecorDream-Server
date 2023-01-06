@@ -136,30 +136,34 @@ const updateRecord = async (
 
     const update = recordUpdateDto;
 
-    if (update.emotion !== null && (update.emotion < 1 || update.emotion > 5)) {
-      return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
-    }
-    if (update.emotion === null) {
-      update.emotion = 6;
+    if (update.emotion !== undefined) {
+      if (update.emotion !== null && (update.emotion < 1 || update.emotion > 5)) {
+        return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
+      }
+      if (update.emotion === null) {
+        update.emotion = 6;
+      }
     }
 
     let genre_error = false;
     let genre_count = 0;
 
-    if (update.genre === null) {
-      update.genre = [0];
-      genre_count = 1;
-    } else {
-      update.genre.map((genre) => {
-        genre_count++;
-        if (genre < 1 || genre > 10) {
-          genre_error = true;
-        }
-      });
-    }
+    if (update.genre !== undefined) {
+      if (update.genre === null) {
+        update.genre = [0];
+        genre_count = 1;
+      } else {
+        update.genre.map((genre) => {
+          genre_count++;
+          if (genre < 1 || genre > 10) {
+            genre_error = true;
+          }
+        });
+      }
 
-    if (genre_error || genre_count > 3 || genre_count === 0) {
-      return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
+      if (genre_error || genre_count > 3 || genre_count === 0) {
+        return exceptionMessage.RECORD_UPDATE_NUMBER_FAIL;
+      }
     }
 
     const data = await Record.findOneAndUpdate(
