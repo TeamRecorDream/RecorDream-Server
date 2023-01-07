@@ -196,13 +196,8 @@ const deleteRecord = async (userId: string, recordId: string): Promise<boolean> 
 
 const getRecordStorage = async (userId: string, filter: string): Promise<RecordStorageResponseDto | null> => {
   try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return null;
-    }
-
     let recordList;
+
     switch (filter) {
       case "0": // 전체
         recordList = await Record.find({ writer: userId }).sort({ date: -1, _id: -1 });
