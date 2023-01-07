@@ -74,12 +74,6 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
 
 const deleteUser = async (userId: string) => {
   try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return null;
-    }
-
     await User.deleteOne({ _id: userId });
     await Record.deleteMany({ writer: userId });
   } catch (err) {
