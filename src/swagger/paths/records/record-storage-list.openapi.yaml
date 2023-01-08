@@ -17,7 +17,7 @@ get:
       $ref: "../../components/responses/records/readRecordStorageSuccess.res.yaml"
     "400":
       $ref: "../../components/responses/records/readRecordStorageFail.res.yaml"
-    "404":
-      $ref: "../../components/responses/global/notFound.res.yaml"
+    "401":
+      $ref: "../../components/responses/global/noUser.res.yaml"
     "500":
       $ref: "../../components/responses/global/internalServerError.res.yaml"

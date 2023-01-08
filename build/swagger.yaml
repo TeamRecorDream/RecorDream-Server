@@ -381,8 +381,8 @@ paths:
                 status: 400
                 success: false
                 message: 감정 범위를 벗어났습니다.
-        '404':
-          $ref: '#/paths/~1user/get/responses/404'
+        '401':
+          $ref: '#/paths/~1user/delete/responses/401'
         '500':
           $ref: '#/paths/~1user/get/responses/500'
   /record/storage/search?keyword=:
@@ -657,20 +657,16 @@ paths:
                 status: 200
                 success: true
                 message: 회원탈퇴 성공
-        '400':
+        '401':
+          description: 존재하지 않는 유저
           content:
             application/json:
-              examples:
-                존재하지 않는 유저:
-                  value:
-                    status: 400
-                    success: false
-                    message: 필요한 값이 없습니다.
-                이미 삭제된 유저:
-                  value:
-                    status: 400
-                    success: false
-                    message: 이미 삭제된 유저입니다.
+              schema:
+                $ref: '#/paths/~1user/get/responses/404/content/application~1json/schema'
+              example:
+                status: 401
+                success: false
+                message: 존재하지 않는 유저
         '500':
           $ref: '#/paths/~1user/get/responses/500'
     get:

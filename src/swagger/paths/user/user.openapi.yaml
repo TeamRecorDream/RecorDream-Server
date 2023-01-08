@@ -13,20 +13,8 @@ delete:
   responses:
     "200":
       $ref: "../../components/responses/user/deleteUserSuccess.res.yaml"
-    "400":
-      content:
-        application/json:
-          examples:
-            존재하지 않는 유저:
-              value:
-                status: 400
-                success: false
-                message: 필요한 값이 없습니다.
-            이미 삭제된 유저:
-              value:
-                status: 400
-                success: false
-                message: 이미 삭제된 유저입니다.
+    "401":
+      $ref: "../../components/responses/global/noUser.res.yaml"
     "500":
       $ref: "../../components/responses/global/internalServerError.res.yaml"
 
