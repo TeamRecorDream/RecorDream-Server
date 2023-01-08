@@ -6,6 +6,7 @@ import * as admin from "firebase-admin";
 import exceptionMessage from "../modules/exceptionMessage";
 import agenda from "../loaders/agenda";
 import pushMessage from "../modules/pushMessage";
+import Record from "../models/Record";
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -73,13 +74,8 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
 
 const deleteUser = async (userId: string) => {
   try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return null;
-    }
-
     await User.deleteOne({ _id: userId });
+    await Record.deleteMany({ writer: userId });
   } catch (err) {
     console.log(err);
     throw err;
