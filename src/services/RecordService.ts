@@ -11,6 +11,7 @@ import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRec
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
 import exceptionMessage from "../modules/exceptionMessage";
+import Voice from "../models/Voice";
 
 const createRecord = async (recordCreateDto: RecordCreateDto): Promise<PostBaseResponseDto | null> => {
   try {
@@ -184,8 +185,15 @@ const updateRecord = async (
 const deleteRecord = async (userId: string, recordId: string): Promise<boolean> => {
   try {
     const record = await Record.findOneAndDelete({ _id: recordId, writer: userId });
+
     if (!record) {
       return false;
+    }
+    if (record.voice != null) {
+      const voice = await Voice.deleteOne({ _id: record.voice });
+      if (!voice) {
+        return false;
+      }
     }
     return true;
   } catch (err) {
