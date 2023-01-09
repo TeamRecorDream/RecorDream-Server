@@ -181,11 +181,8 @@ const getRecordStorage = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
 
   try {
-    if (!userId) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-    }
-
     const data = await RecordService.getRecordStorage(userId, filter as string);
+
     if (!data) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.READ_RECORD_STORAGE_FAIL));
     }

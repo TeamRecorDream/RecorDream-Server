@@ -105,15 +105,7 @@ const deleteUser = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
 
   try {
-    if (!userId) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
-    }
-
-    const data = await UserService.deleteUser(userId);
-
-    if (data === null) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.ALREADY_DELETED_USER));
-    }
+    await UserService.deleteUser(userId);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.DELETE_USER_SUCCESS));
   } catch (err) {
