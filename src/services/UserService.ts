@@ -7,6 +7,8 @@ import exceptionMessage from "../modules/exceptionMessage";
 import agenda from "../loaders/agenda";
 import pushMessage from "../modules/pushMessage";
 import Record from "../models/Record";
+import Voice from "../models/Voice";
+import mongoose from "mongoose";
 
 const updateNickname = async (userId: string, userNicknameUpdateDto: UserNicknameUpdateDto) => {
   try {
@@ -74,8 +76,12 @@ const updateFcmToken = async (userId: string, fcmTokenUpdateDto: FcmTokenUpdateD
 
 const deleteUser = async (userId: string) => {
   try {
+    const id = new mongoose.Types.ObjectId(userId);
+
     await User.deleteOne({ _id: userId });
     await Record.deleteMany({ writer: userId });
+    await Voice.deleteMany({ recorder: userId });
+    await agenda.cancel({ "data.userId": id });
   } catch (err) {
     console.log(err);
     throw err;
