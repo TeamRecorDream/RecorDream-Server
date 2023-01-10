@@ -18,6 +18,16 @@ const socailLogin = async (req: Request, res: Response) => {
   let user;
 
   try {
+    // fcmToken이 없거나 kakaoToken과 appleToken이 둘 다 없으면 에러
+    if (!fcmToken || (!kakaoToken && !appleToken)) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+
+    // kakaoToken과 appleToken이 둘 다 있어도 에러
+    if (kakaoToken && appleToken) {
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.ONE_TOKEN));
+    }
+
     // 카카오 로그인
     if (!appleToken) {
       user = await AuthService.kakaoLogin(kakaoToken, fcmToken);
@@ -29,16 +39,6 @@ const socailLogin = async (req: Request, res: Response) => {
 
     if (user === null) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.INVALID_TOKEN));
-    }
-
-    // fcmToken이 없거나 kakaoToken과 appleToken이 둘 다 없으면 에러
-    if (!fcmToken || (!kakaoToken && !appleToken)) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
-    }
-
-    // kakaoToken과 appleToken이 둘 다 있어도 에러
-    if (kakaoToken && appleToken) {
-      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.ONE_TOKEN));
     }
 
     if (user?.isAlreadyUser === false) {
