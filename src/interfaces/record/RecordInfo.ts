@@ -10,6 +10,7 @@ export interface RecordInfo {
   emotion: number;
   genre: number[];
   note: string;
+  isExistVoice: boolean;
 }
 
 export interface RecordListInfo {
