@@ -19,7 +19,7 @@ const socailLogin = async (req: Request, res: Response) => {
 
   try {
     // fcmToken이 없거나 kakaoToken과 appleToken이 둘 다 없으면 에러
-    if (!fcmToken || (!kakaoToken && !appleToken)) {
+    if (!fcmToken || (!kakaoToken && !appleToken && kakaoToken == "")) {
       return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
