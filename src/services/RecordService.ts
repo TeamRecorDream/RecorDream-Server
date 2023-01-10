@@ -100,6 +100,11 @@ const getRecordHome = async (userId: string): Promise<RecordHomeResponseDto | nu
 
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {
+        record.isExistVoice = false;
+        if (record.voice !== null) {
+          record.isExistVoice = true;
+        }
+
         const result = {
           _id: record._id,
           emotion: record.emotion,
@@ -107,6 +112,7 @@ const getRecordHome = async (userId: string): Promise<RecordHomeResponseDto | nu
           title: record.title,
           genre: record.genre,
           content: record.content,
+          isExistVoice: record.isExistVoice,
         };
         return result;
       })
