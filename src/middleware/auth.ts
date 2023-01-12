@@ -21,7 +21,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const decoded = jwtHandler.verifyToken(token);
 
     if (decoded === exceptionMessage.EXPIRED_TOKEN) {
-      return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, message.EXPIRED_TOKEN));
+      return res.status(statusCode.NOT_ACCEPTABLE).send(util.fail(statusCode.NOT_ACCEPTABLE, message.EXPIRED_TOKEN));
     }
 
     if (decoded === exceptionMessage.INVALID_TOKEN) {
