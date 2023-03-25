@@ -6,7 +6,6 @@ import { sendMessageToSlack } from "../modules/slackAPI";
 import { slackMessage } from "../modules/returnToSlackMessage";
 import AuthService from "../services/AuthService";
 import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
-import exceptionMessage from "../modules/exceptionMessage";
 
 /**
  * @route POST /auth/login
@@ -95,28 +94,18 @@ const reissueToken = async (req: Request, res: Response) => {
 };
 
 /**
- * @Route PATCH /auth/logout
+ * @Route POST /auth/logout
  * @desc social logout
  * @access Private
  */
 const socialLogout = async (req: Request, res: Response) => {
   const userId = req.body.user.id;
-  const fcmToken = req.body.fcmToken;
   const authLogoutDto: AuthLogoutDto = {
     userId,
-    fcmToken,
   };
 
   try {
-    const data = await AuthService.socialLogout(authLogoutDto);
-
-    if (data === null) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-    }
-
-    if (data === exceptionMessage.NOT_FOUND_FCM) {
-      return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND_FCM));
-    }
+    await AuthService.socialLogout(authLogoutDto);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.LOGOUT_SUCCESS));
   } catch (err) {
