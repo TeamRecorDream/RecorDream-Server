@@ -6,6 +6,6 @@ const router: Router = Router();
 
 router.post("/login", AuthController.socailLogin);
 router.post("/token", AuthController.reissueToken);
-router.patch("/logout", auth, AuthController.socialLogout);
+router.post("/logout", auth, AuthController.socialLogout);
 
 export default router;

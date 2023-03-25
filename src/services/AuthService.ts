@@ -210,24 +210,13 @@ const reissueToken = async (accessToken: string, refreshToken: string) => {
 const socialLogout = async (authLogoutDto: AuthLogoutDto) => {
   try {
     const user = await User.findById(authLogoutDto.userId);
-    const fcmToken = authLogoutDto.fcmToken;
 
-    // 존재하지 않는 유저이거나 fcmToken 안 넣었을 경우
-    if (!user || !fcmToken) {
+    if (!user) {
       return null;
     }
 
-    // 존재하지 않는 fcmToken일 경우
-    if (!user.fcmTokens.includes(fcmToken)) {
-      return exceptionMessage.NOT_FOUND_FCM;
-    }
-
-    const remainedfcmToken = user.fcmTokens.filter((element) => element !== fcmToken);
-
-    await User.updateOne({ _id: user._id }, { $set: { time: null, isActive: false, fcmTokens: remainedfcmToken } }).exec();
+    await User.updateOne({ _id: user._id }, { $set: { time: null, isActive: false, fcmTokens: [] } }).exec();
     await agenda.cancel({ "data.userId": user._id });
-
-    return remainedfcmToken;
   } catch (err) {
     console.log(err);
     throw err;
