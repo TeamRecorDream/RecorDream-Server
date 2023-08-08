@@ -265,7 +265,7 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
   }
 };
 
-const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordSearchResponseDto | null> => {
+const getRecordsBySearch = async (userId: string, keyword: any): Promise<RecordSearchResponseDto | null> => {
   if (!keyword || keyword.trim().length === 0) {
     return { keyword: "null 또는 undefined 또는 공백", recordsCount: 0, records: [] };
   }
