@@ -1,7 +1,7 @@
 import { RecordListInfo } from "./RecordInfo";
 
 export interface RecordSearchResponseDto {
-  keyword: string;
+  keyword: any;
   recordsCount: number;
   records: RecordListInfo[];
 }
