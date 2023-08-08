@@ -265,6 +265,10 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
 };
 
 const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordStorageResponseDto | null> => {
+  if (keyword === "" || keyword === " ") {
+    return { recordsCount: 0, records: [] };
+  }
+
   const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
 
   try {
