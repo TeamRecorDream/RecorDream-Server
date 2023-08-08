@@ -7,7 +7,6 @@ import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordHomeResponseDto } from "../interfaces/record/RecordHomeResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
-import { RecordSearchResponseDto } from "../interfaces/record/RecordSearchResponseDto";
 import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
@@ -265,9 +264,9 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
   }
 };
 
-const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordSearchResponseDto | null> => {
+const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordStorageResponseDto | null> => {
   if (!keyword || keyword.trim().length === 0) {
-    return { keyword: "null 또는 undefined 또는 공백", recordsCount: 0, records: [] };
+    return { recordsCount: 0, records: [] };
   }
 
   const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
@@ -303,7 +302,6 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
     );
 
     const data = {
-      keyword: keyword,
       recordsCount: count,
       records: records,
     };
