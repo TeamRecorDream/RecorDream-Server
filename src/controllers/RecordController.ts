@@ -210,7 +210,7 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    const data = await RecordService.getRecordsBySearch(userId, keyword);
+    const data = await RecordService.getRecordsBySearch(userId, keyword as string);
     if (!data) {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
