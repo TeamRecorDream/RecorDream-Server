@@ -7,7 +7,6 @@ import { RecordUpdateDto } from "../interfaces/record/RecordUpdateDto";
 import { RecordResponseDto } from "../interfaces/record/RecordResponseDto";
 import { RecordHomeResponseDto } from "../interfaces/record/RecordHomeResponseDto";
 import { RecordStorageResponseDto } from "../interfaces/record/RecordStorageResponseDto";
-import { RecordSearchResponseDto } from "../interfaces/record/RecordSearchResponseDto";
 import { VoiceResponseInRecordDto } from "../interfaces/voice/VoiceResponseInRecordDto";
 import { RecordInfo } from "../interfaces/record/RecordInfo";
 import { RecordListInfo } from "../interfaces/record/RecordInfo";
@@ -265,16 +264,11 @@ const getRecordStorage = async (userId: string, filter: string): Promise<RecordS
   }
 };
 
-const getRecordsBySearch = async (userId: string, keyword: any): Promise<RecordSearchResponseDto | null> => {
-  if (!keyword || keyword.trim().length === 0) {
-    return { keyword: "null 또는 undefined 또는 공백", recordsCount: 0, records: [] };
-  }
-
+const getRecordsBySearch = async (userId: string, keyword: string): Promise<RecordStorageResponseDto | null> => {
   const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
 
   try {
     const Regex: RegExp = regex(keyword);
-
     const recordList = await Record.find({
       $or: [
         { title: { $regex: Regex }, writer: userId },
@@ -285,9 +279,7 @@ const getRecordsBySearch = async (userId: string, keyword: any): Promise<RecordS
       date: -1,
       _id: -1,
     });
-
     let count = 0;
-
     const records: RecordListInfo[] = await Promise.all(
       recordList.map((record: any) => {
         const result = {
@@ -301,13 +293,10 @@ const getRecordsBySearch = async (userId: string, keyword: any): Promise<RecordS
         return result;
       })
     );
-
     const data = {
-      keyword: keyword,
       recordsCount: count,
       records: records,
     };
-
     return data;
   } catch (err) {
     console.log(err);
