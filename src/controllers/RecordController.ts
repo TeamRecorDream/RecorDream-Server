@@ -203,7 +203,7 @@ const getRecordStorage = async (req: Request, res: Response) => {
  *  @access Public
  */
 const getRecordsBySearch = async (req: Request, res: Response) => {
-  const { keyword } = req.query;
+  const keyword = req.query.keyword;
   const userId = req.body.user.id;
   try {
     if (!userId) {
