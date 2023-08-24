@@ -268,6 +268,10 @@ const getRecordsBySearch = async (userId: string, keyword: string): Promise<Reco
   const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
 
   try {
+    if (!keyword || keyword.trim().length === 0) {
+      return { recordsCount: 0, records: [] };
+    }
+
     const Regex: RegExp = regex(keyword);
     const recordList = await Record.find({
       $or: [
