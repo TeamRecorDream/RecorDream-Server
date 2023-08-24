@@ -210,7 +210,7 @@ const getRecordsBySearch = async (req: Request, res: Response) => {
       return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
     }
 
-    if (!keyword || (keyword as string).trim().length === 0) {
+    if (!keyword || keyword.toString().trim().length == 0) {
       return res
         .status(statusCode.OK)
         .send(util.success(statusCode.OK, message.SEARCH_RECORD_SUCCESS, { recordsCount: 0, records: [] }));
