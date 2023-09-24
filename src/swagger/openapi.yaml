@@ -7,7 +7,7 @@ info:
     name: MIT
 servers:
   - url: "http://localhost:8000"
-  - url: "http://13.125.138.47:8000"
+  - url: "http://3.36.120.62:8000"
 tags:
   - name: Records
     description: Record resource APIs
