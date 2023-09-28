@@ -65,11 +65,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     existUser.accessToken = jwtHandler.getAccessToken(existUser._id);
     existUser.refreshToken = jwtHandler.getRefreshToken();
     existUser.isAlreadyUser = true;
-
-    // 한 유저가 여러 기기로 로그한 경우
-    if (!existUser.fcmTokens.includes(fcmToken)) {
-      existUser.fcmTokens.push(fcmToken);
-    }
+    existUser.fcmTokens[0] = fcmToken;
 
     const data: AuthResponseDto = {
       userId: existUser._id,
@@ -146,11 +142,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     existUser.accessToken = jwtHandler.getAccessToken(existUser._id);
     existUser.refreshToken = jwtHandler.getRefreshToken();
     existUser.isAlreadyUser = true;
-
-    // 한 유저가 여러 기기로 로그한 경우
-    if (!existUser.fcmTokens.includes(fcmToken)) {
-      existUser.fcmTokens.push(fcmToken);
-    }
+    existUser.fcmTokens[0] = fcmToken;
 
     const data: AuthResponseDto = {
       userId: existUser._id,
