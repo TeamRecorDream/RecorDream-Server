@@ -65,6 +65,7 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     existUser.accessToken = jwtHandler.getAccessToken(existUser._id);
     existUser.refreshToken = jwtHandler.getRefreshToken();
     existUser.isAlreadyUser = true;
+    existUser.fcmTokens[0] = fcmToken;
 
     const data: AuthResponseDto = {
       userId: existUser._id,
@@ -141,6 +142,7 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     existUser.accessToken = jwtHandler.getAccessToken(existUser._id);
     existUser.refreshToken = jwtHandler.getRefreshToken();
     existUser.isAlreadyUser = true;
+    existUser.fcmTokens[0] = fcmToken;
 
     const data: AuthResponseDto = {
       userId: existUser._id,
