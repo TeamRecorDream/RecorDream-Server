@@ -6,6 +6,8 @@ import { AuthResponseDto } from "../interfaces/auth/AuthResponseDto";
 import { AuthLogoutDto } from "../interfaces/auth/AuthLogoutDto";
 import exceptionMessage from "../modules/exceptionMessage";
 import agenda from "../loaders/agenda";
+import pushMessage from "../modules/pushMessage";
+import * as admin from "firebase-admin";
 
 const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthResponseDto | null | undefined> => {
   try {
@@ -76,6 +78,50 @@ const kakaoLogin = async (kakaoToken: string, fcmToken: string): Promise<AuthRes
     };
 
     await User.findByIdAndUpdate(existUser._id, existUser);
+
+    if (existUser.time != null && existUser.isActive == true) {
+      const timeSplit = existUser.time.split(/ /);
+      const ampm = timeSplit[0];
+      const pushTime = timeSplit[1];
+
+      // 새로 로그인 된 기기로 알림 리스케줄링
+      const alarms = {
+        android: {
+          data: {
+            title: pushMessage.title,
+            body: pushMessage.body,
+          },
+        },
+        apns: {
+          payload: {
+            aps: {
+              contentAvailable: true,
+              alert: {
+                title: pushMessage.title,
+                body: pushMessage.body,
+              },
+            },
+          },
+        },
+        tokens: existUser.fcmTokens,
+      };
+
+      agenda.define("push_" + `${existUser._id}`, async (job: any, done: any) => {
+        admin
+          .messaging()
+          .sendMulticast(alarms)
+          .then(function (res: any) {
+            console.log("Sent message result: ", res);
+          });
+        job.repeatEvery("24 hours").save();
+        done();
+      });
+      agenda.start();
+
+      await agenda.cancel({ "data.userId": existUser._id });
+
+      agenda.schedule("today at " + pushTime + ampm + "", "push_" + `${existUser._id}`, { userId: existUser._id });
+    }
 
     return data;
   } catch (err) {
@@ -153,6 +199,50 @@ const appleLogin = async (appleToken: string, fcmToken: string): Promise<AuthRes
     };
 
     await User.findByIdAndUpdate(existUser._id, existUser);
+
+    if (existUser.time != null && existUser.isActive == true) {
+      const timeSplit = existUser.time.split(/ /);
+      const ampm = timeSplit[0];
+      const pushTime = timeSplit[1];
+
+      // 새로 로그인 된 기기로 알림 리스케줄링
+      const alarms = {
+        android: {
+          data: {
+            title: pushMessage.title,
+            body: pushMessage.body,
+          },
+        },
+        apns: {
+          payload: {
+            aps: {
+              contentAvailable: true,
+              alert: {
+                title: pushMessage.title,
+                body: pushMessage.body,
+              },
+            },
+          },
+        },
+        tokens: existUser.fcmTokens,
+      };
+
+      agenda.define("push_" + `${existUser._id}`, async (job: any, done: any) => {
+        admin
+          .messaging()
+          .sendMulticast(alarms)
+          .then(function (res: any) {
+            console.log("Sent message result: ", res);
+          });
+        job.repeatEvery("24 hours").save();
+        done();
+      });
+      agenda.start();
+
+      await agenda.cancel({ "data.userId": existUser._id });
+
+      agenda.schedule("today at " + pushTime + ampm + "", "push_" + `${existUser._id}`, { userId: existUser._id });
+    }
 
     return data;
   } catch (err) {
