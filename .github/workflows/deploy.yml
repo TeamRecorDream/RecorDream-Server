@@ -71,7 +71,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./recordream.zip s3://recordream-new-build/deploy/
+        run: aws s3 cp --region ap-northeast-2 ./recordream.zip s3://recordream-build/deploy/
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
