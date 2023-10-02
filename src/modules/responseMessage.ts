@@ -21,7 +21,7 @@ const message = {
   UPDATE_RECORD_FORM_FAIL: "제목이 없거나 길이를 초과하였습니다.",
   UPDATE_RECORD_DATE_FAIL: "날짜 포맷이 틀립니다.",
   UPDATE_RECORD_NUMBER_FAIL: "감정, 장르 범위 오류입니다.",
-  READ_RECORD_SUCCESS: "꿈 기록 조회 성공(CD 실패 후 확인용)",
+  READ_RECORD_SUCCESS: "꿈 기록 조회 성공(서버 .env 수정 후)",
   DELETE_RECORD_SUCCESS: "꿈 기록 삭제 성공",
   READ_RECORD_HOME_SUCCESS: "꿈 기록 목록(홈) 조회 성공",
   READ_RECORD_STORAGE_SUCCESS: "꿈 기록 목록(보관함) 조회 성공",
