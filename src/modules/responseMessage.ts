@@ -8,7 +8,7 @@ const message = {
   NICKNAME_RULE_VIOLATE: "닉네임은 최소 1글자, 최대 8글자여야 합니다.",
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
   UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
-  READ_USER_SUCCESS: "회원 정보 조회 성공(확인)",
+  READ_USER_SUCCESS: "회원 정보 조회 성공(확인2)",
   UPDATE_FCM_TOKEN_SUCCESS: "fcm Token 갱신 성공",
   NOT_FOUND_FCM: "존재하지 않는 fcm Token 입니다.",
 
@@ -21,7 +21,7 @@ const message = {
   UPDATE_RECORD_FORM_FAIL: "제목이 없거나 길이를 초과하였습니다.",
   UPDATE_RECORD_DATE_FAIL: "날짜 포맷이 틀립니다.",
   UPDATE_RECORD_NUMBER_FAIL: "감정, 장르 범위 오류입니다.",
-  READ_RECORD_SUCCESS: "꿈 기록 조회 성공(확인)",
+  READ_RECORD_SUCCESS: "꿈 기록 조회 성공(확인2)",
   DELETE_RECORD_SUCCESS: "꿈 기록 삭제 성공",
   READ_RECORD_HOME_SUCCESS: "꿈 기록 목록(홈) 조회 성공",
   READ_RECORD_STORAGE_SUCCESS: "꿈 기록 목록(보관함) 조회 성공",
