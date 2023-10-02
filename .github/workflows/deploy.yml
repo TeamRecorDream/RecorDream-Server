@@ -80,4 +80,4 @@ jobs:
           --application-name recordream-codedeploy
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name GROUP
-          --s3-location bucket=recordream-build,bundleType=zip,key=deploy/recordream.zip
+          --s3-location bucket=recordream-new-build,bundleType=zip,key=deploy/recordream.zip
