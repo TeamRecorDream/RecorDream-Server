@@ -8,7 +8,7 @@ const message = {
   NICKNAME_RULE_VIOLATE: "닉네임은 최소 1글자, 최대 8글자여야 합니다.",
   UPDATE_NICKNAME_FAIL: "닉네임 수정 실패",
   UPDATE_NICKNAME_SUCCESS: "닉네임 수정 성공",
-  READ_USER_SUCCESS: "회원 정보 조회 성공(이것도)",
+  READ_USER_SUCCESS: "회원 정보 조회 성공(이것도 확인)",
   UPDATE_FCM_TOKEN_SUCCESS: "fcm Token 갱신 성공",
   NOT_FOUND_FCM: "존재하지 않는 fcm Token 입니다.",
 
